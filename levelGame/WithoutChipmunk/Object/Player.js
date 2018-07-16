@@ -4,10 +4,10 @@ class Player extends AnnimatedObject {
         super(posY, posX, veloX, veloY, alphaBounce)
     }
 
-    live(gravity, framerate) {
+    live() {
         //Do somthing w/ physic to make the player move
         // console.log(gravity)
-        super.live(gravity, framerate);
+        super.live();
     };
 
     show() {

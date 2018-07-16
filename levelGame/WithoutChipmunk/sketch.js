@@ -3,9 +3,9 @@ let player;
 
 function setup() {
     // put setup code here
-    engine = new Engine();
+    engine = new Engine(800, 400);
     //W/Height
-    engine.createGame(800, 400);
+    engine.createGame();
     Engine.changeBackgound(51);
 
     //
@@ -22,3 +22,4 @@ function draw() {
     engine.draw();
 }
 
+// Todo event declaration system mdrrr

@@ -26,7 +26,7 @@ class AnnimatedObject {
 
 
 
-    live(gravity, framerate) {
+    live() {
         //Do somthing w/ physic to make the player move
         this.detectBoderColision();
 
