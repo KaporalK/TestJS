@@ -1,3 +1,4 @@
+
 class Engine {
 
     //TODO config.json
@@ -42,11 +43,14 @@ class Engine {
         // console.log(this.getRealGravity());
         console.log(animatedObject.velocityY);
         if (animatedObject._directionY === 1) {
+            //Calcul de la nouvelle vitesse (il accelere)
             animatedObject.velocityY = animatedObject.velocityY + this.getRealGravity();
         } else if (animatedObject._directionY = -1) {
             if (animatedObject.velocityY < 0) {
+                //Le mec va vers le haut et a plus de vitesse, on le change de sens pour qu'il retombe
                 animatedObject._directionY = 1;
             } else {
+                //sinon il ralenti
                 animatedObject.velocityY = animatedObject.velocityY - this.getRealGravity();
             }
         }
@@ -62,6 +66,12 @@ class Engine {
         ellipse(mouseX, mouseY, 80, 80);
     };
 
+    /**
+     * todo ajouter un parametre pour que cette fonction calcul une force a appliquer en fonction d'un objet
+     *  genre avec son poids ou un truc comme ça je sait pas encore
+     *  voir un calcul sur Wiki?
+     * @returns {number}
+     */
     getRealGravity(){
         return this.gravity / this.frameRate;
     }
