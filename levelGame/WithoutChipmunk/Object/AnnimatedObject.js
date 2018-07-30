@@ -1,11 +1,22 @@
 class AnnimatedObject {
-
-    constructor(posY,posX, veloX, veloY, alphaBounce){
+    /**
+     * @param posY
+     * @param posX
+     * @param veloX
+     * @param veloY
+     * @param poids
+     * @param alphaBounce
+     */
+    constructor(posY,posX, veloX, veloY, poids ,alphaBounce){
 
         this.x = posX;
         this.y = posY;
         this.velocityX = veloX;
         this.velocityY = veloY;
+
+        //todo utilisé pour le calcul de la gravité quand sa remonte
+        this.poids = poids;
+
 
         this._largeur = 10;
         this._hauteur = 10;
@@ -14,12 +25,9 @@ class AnnimatedObject {
         this._directionX = 1;
         // 1 un bas;
         this._directionY = 1;
-        this._posY = posY;
-        this._posX = posX;
         this._veloX = veloX;
         this._veloY = veloY;
         this._alphaBounce = alphaBounce;
-
 
 
     }

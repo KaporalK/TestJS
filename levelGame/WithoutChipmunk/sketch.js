@@ -1,5 +1,10 @@
 let engine;
 let player;
+let config;
+
+function preload() {
+    config = loadJSON('Config/config.json');
+}
 
 function setup() {
     // put setup code here
@@ -11,7 +16,7 @@ function setup() {
     //
     // 0 = a de droite a gauche (la largeur)
     //100 = de haut en bas (la hauteur)
-    player = new Player(100, 100, 1, 1, 2);
+    player = new Player(100, 100, 1, 1, 5 ,2);
     engine.addAnimatedObject(player);
 }
 
@@ -23,3 +28,4 @@ function draw() {
 }
 
 // Todo event declaration system mdrrr
+

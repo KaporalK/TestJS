@@ -1,7 +1,14 @@
 class Player extends AnnimatedObject {
-
-    constructor(posY, posX, veloX, veloY, alphaBounce) {
-        super(posY, posX, veloX, veloY, alphaBounce)
+    /**
+     * @param posY
+     * @param posX
+     * @param veloX
+     * @param veloY
+     * @param poids
+     * @param alphaBounce
+     */
+    constructor(posY, posX, veloX, veloY, poids,  alphaBounce) {
+        super(posY, posX, veloX, veloY, poids, alphaBounce)
     }
 
     live() {

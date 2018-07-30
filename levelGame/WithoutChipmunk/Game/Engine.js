@@ -40,18 +40,18 @@ class Engine {
 
     // TODO apply grativy wiki toussa toussa
     applyGravity(animatedObject) {
-        // console.log(this.getRealGravity());
-        console.log(animatedObject.velocityY);
+        // console.log(this.getGravityForce());
+        //console.log(animatedObject.velocityY);
         if (animatedObject._directionY === 1) {
             //Calcul de la nouvelle vitesse (il accelere)
-            animatedObject.velocityY = animatedObject.velocityY + this.getRealGravity();
+            animatedObject.velocityY = animatedObject.velocityY + this.getGravityForce();
         } else if (animatedObject._directionY = -1) {
             if (animatedObject.velocityY < 0) {
                 //Le mec va vers le haut et a plus de vitesse, on le change de sens pour qu'il retombe
                 animatedObject._directionY = 1;
             } else {
                 //sinon il ralenti
-                animatedObject.velocityY = animatedObject.velocityY - this.getRealGravity();
+                animatedObject.velocityY = animatedObject.velocityY - this.getGravityForce();
             }
         }
 
@@ -68,11 +68,11 @@ class Engine {
 
     /**
      * todo ajouter un parametre pour que cette fonction calcul une force a appliquer en fonction d'un objet
-     *  genre avec son poids ou un truc comme ça je sait pas encore
+     *  genre avec son poids + un direction ou un truc comme ça je sait pas encore
      *  voir un calcul sur Wiki?
      * @returns {number}
      */
-    getRealGravity(){
+    getGravityForce(){
         return this.gravity / this.frameRate;
     }
 
