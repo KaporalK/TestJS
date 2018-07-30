@@ -7,7 +7,7 @@ class AnnimatedObject {
      * @param poids
      * @param alphaBounce
      */
-    constructor(posY,posX, veloX, veloY, poids ,alphaBounce){
+    constructor(posY,posX, largeur, hauteur,veloX, veloY, poids ,alphaBounce){
 
         this.x = posX;
         this.y = posY;
@@ -42,7 +42,7 @@ class AnnimatedObject {
         this.x += this.velocityX * this._directionX;
     };
 
-    show() {
+    draw() {
         fill(255);
         rect(this.x, this.y, this._largeur , this._hauteur);
     };

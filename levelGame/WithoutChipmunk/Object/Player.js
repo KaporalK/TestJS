@@ -17,7 +17,7 @@ class Player extends AnnimatedObject {
         super.live();
     };
 
-    show() {
+    draw() {
         super.show();
     };
 

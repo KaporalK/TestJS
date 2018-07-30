@@ -10,7 +10,7 @@ class Player extends AnnimatedObject {
         super.live(gravity, framerate);;
     };
 
-    show() {
+    draw() {
         super.show();
     };
 

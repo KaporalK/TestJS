@@ -1,10 +1,16 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "sourceMap": true
+  "Player": {
+    "xStart": 100,
+    "yStart": 100,
+    "width": 10,
+    "height": 10,
+    "veloX": 1,
+    "veloY": 1,
+    "poids": 5,
+    "alphaBounce": 2
   },
-  "exclude": [
-    "node_modules"
-  ]
+  "World": {
+    "width": 800,
+    "height": 400
+  }
 }
