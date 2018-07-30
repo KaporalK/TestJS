@@ -1,20 +1,17 @@
 
 class Engine {
 
-    //TODO config.json
-    constructor(Widht, height) {
+    constructor( framerate, width, height, gravity) {
         this._animatedObject = [];
-        this._frameRate = 60;
-        this.W = Widht;
-        this.H = height;
-        this._gravity = 9.8;
-        this._Widht = Widht;
+        this._frameRate = framerate;
+        this._widht = width;
         this._height = height;
+        this._gravity = gravity;
     }
 
     createGame() {
         frameRate(this._frameRate);
-        createCanvas(this.W, this.H)
+        createCanvas(this._widht, this._height)
     };
 
     static changeBackgound(number) {
@@ -30,7 +27,7 @@ class Engine {
 
     draw() {
         this._animatedObject.forEach(function (item, index, array) {
-            item.show();
+            item.draw();
         })
     };
 
@@ -74,14 +71,6 @@ class Engine {
      */
     getGravityForce(){
         return this.gravity / this.frameRate;
-    }
-
-    get Widht() {
-        return this._Widht;
-    }
-
-    set Widht(value) {
-        this._Widht = value;
     }
 
     get height() {

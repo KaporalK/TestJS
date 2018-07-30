@@ -1,18 +1,15 @@
 let engine;
 let player;
-let config;
 let World;
 let Gameur;
 
 function preload() {
-    config = loadJSON('Config/config.json');
-    World = config.World;
-    Gameur = config.Player;
+    loadJSON('Config/config.json', setLocalVar);
 }
 
 function setup() {
     // put setup code here
-    engine = new Engine(World.width, World.height);
+    engine = new Engine( World.frameRate, World.width, World.height, World.gravity);
     //W/Height
     engine.createGame();
     Engine.changeBackgound(51);
@@ -29,6 +26,11 @@ function draw() {
     engine.live();
     //engine.applyGravity();
     engine.draw();
+}
+
+function setLocalVar(data){
+    World = data.World;
+    Gameur = data.Player;
 }
 
 // Todo event declaration system mdrrr

@@ -1,33 +1,35 @@
-class AnnimatedObject {
+/**
+ *
+ */
+class AnimatedObject {
     /**
      * @param posY
      * @param posX
-     * @param veloX
-     * @param veloY
+     * @param largeur
+     * @param hauteur
+     * @param velocityX
+     * @param velocityY
      * @param poids
      * @param alphaBounce
      */
-    constructor(posY,posX, largeur, hauteur,veloX, veloY, poids ,alphaBounce){
+    constructor(posY,posX, largeur, hauteur,velocityX, velocityY, poids ,alphaBounce){
 
-        this.x = posX;
-        this.y = posY;
-        this.velocityX = veloX;
-        this.velocityY = veloY;
+        this._posX = posX;
+        this._posY = posY;
 
         //todo utilisé pour le calcul de la gravité quand sa remonte
-        this.poids = poids;
 
-
-        this._largeur = 10;
-        this._hauteur = 10;
+        this._largeur = largeur;
+        this._hauteur = hauteur;
 
         //1 = droite
         this._directionX = 1;
         // 1 un bas;
         this._directionY = 1;
-        this._veloX = veloX;
-        this._veloY = veloY;
         this._alphaBounce = alphaBounce;
+        this._velocityX = velocityX;
+        this._velocityY = velocityY;
+        this._poids = poids;
 
 
     }
@@ -38,37 +40,37 @@ class AnnimatedObject {
         //Do somthing w/ physic to make the player move
         this.detectBoderColision();
 
-        this.y += this.velocityY * this._directionY;
-        this.x += this.velocityX * this._directionX;
+        this.posY += this.velocityY * this.directionY;
+        this.posX += this.velocityX * this.directionX;
     };
 
     draw() {
         fill(255);
-        rect(this.x, this.y, this._largeur , this._hauteur);
+        rect(this.posX, this.posY, this.largeur , this.hauteur);
     };
 
     detectBoderColision() {
-        if (0 > this.x) {
-            this._directionX = 1;
+        if (0 > this.posX) {
+            this.directionX = 1;
         } else if (this.getBorderX() > width) {
-            this._directionX = -1;
+            this.directionX = -1;
         }
 
-        if (0 > this.y) {
-            this._directionY = 1;
+        if (0 > this.posY) {
+            this.directionY = 1;
         } else if (this.getBordeurY() > height) {
-            this._directionY = -1;
+            this.directionY = -1;
         }
     }
 
     getBorderX(){
-       // console.log( this.posX + this._largeur);
-        return this.x + this._largeur;
+       // console.log( this.posX + this.largeur);
+        return this.posX + this.largeur;
     }
 
     getBordeurY(){
         //console.log( this.posY + this._hauteur);
-        return this.y + this._hauteur;
+        return this.posY + this.hauteur;
     }
 
     get posY() {
@@ -87,20 +89,28 @@ class AnnimatedObject {
         this._posX = value;
     }
 
-    get veloX() {
-        return this._veloX;
+    get velocityX() {
+        return this._velocityX;
     }
 
-    set veloX(value) {
-        this._veloX = value;
+    set velocityX(value) {
+        this._velocityX = value;
     }
 
-    get veloY() {
-        return this._veloY;
+    get velocityY() {
+        return this._velocityY;
     }
 
-    set veloY(value) {
-        this._veloY = value;
+    set velocityY(value) {
+        this._velocityY = value;
+    }
+
+    get poids() {
+        return this._poids;
+    }
+
+    set poids(value) {
+        this._poids = value;
     }
 
     get alphaBounce() {

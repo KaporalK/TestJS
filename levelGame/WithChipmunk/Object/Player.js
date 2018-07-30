@@ -1,4 +1,4 @@
-class Player extends AnnimatedObject {
+class Player extends AnimatedObject {
 
     constructor(posY, posX, veloX, veloY, alphaBounce) {
         super(posY, posX, veloX, veloY, alphaBounce)

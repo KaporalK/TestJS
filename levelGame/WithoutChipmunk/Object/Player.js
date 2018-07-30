@@ -1,4 +1,4 @@
-class Player extends AnnimatedObject {
+class Player extends AnimatedObject {
     /**
      * @param posY
      * @param posX
@@ -18,7 +18,7 @@ class Player extends AnnimatedObject {
     };
 
     draw() {
-        super.show();
+        super.draw();
     };
 
     detectBoderColision() {

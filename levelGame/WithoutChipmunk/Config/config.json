@@ -1,5 +1,5 @@
 {
-  "Player": {
+  "Player" : {
     "xStart": 100,
     "yStart": 100,
     "width": 10,
@@ -11,6 +11,8 @@
   },
   "World": {
     "width": 800,
-    "height": 400
+    "height": 400,
+    "frameRate": 60,
+    "gravity": 9.8
   }
 }
