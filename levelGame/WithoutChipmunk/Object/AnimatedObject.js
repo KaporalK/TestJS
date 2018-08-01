@@ -31,9 +31,7 @@ class AnimatedObject {
         this._velocityY = velocityY;
         this._poids = poids;
 
-
     }
-
 
 
     live() {

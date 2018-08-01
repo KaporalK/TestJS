@@ -16,8 +16,9 @@ function setup() {
 
     // 0 = a de droite a gauche (la largeur)
     //100 = de haut en bas (la hauteur)
+
     player = new Player(Gameur.xStart, Gameur.yStart, Gameur.width, Gameur.height,
-                        Gameur.veloX, Gameur.veloY, Gameur.poids, Gameur.alphaBounce);
+                        Gameur.veloX, Gameur.veloY, Gameur.poidsPlayer, Gameur.alphaBounce);
     engine.addAnimatedObject(player);
 }
 

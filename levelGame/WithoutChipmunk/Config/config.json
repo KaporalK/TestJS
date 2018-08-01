@@ -6,7 +6,7 @@
     "height": 10,
     "veloX": 1,
     "veloY": 1,
-    "poids": 5,
+    "poidsPlayer": 5,
     "alphaBounce": 2
   },
   "World": {

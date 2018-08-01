@@ -1,7 +1,6 @@
-
 class Engine {
 
-    constructor( framerate, width, height, gravity) {
+    constructor(framerate, width, height, gravity) {
         this._animatedObject = [];
         this._frameRate = framerate;
         this._widht = width;
@@ -39,16 +38,17 @@ class Engine {
     applyGravity(animatedObject) {
         // console.log(this.getGravityForce());
         //console.log(animatedObject.velocityY);
-        if (animatedObject._directionY === 1) {
+
+        if (animatedObject._directionY === 1) { //Si il va vers le bas
             //Calcul de la nouvelle vitesse (il accelere)
-            animatedObject.velocityY = animatedObject.velocityY + this.getGravityForce();
-        } else if (animatedObject._directionY = -1) {
-            if (animatedObject.velocityY < 0) {
+            animatedObject.velocityY = animatedObject.velocityY + this.getGravityForce(animatedObject);
+        } else if (animatedObject._directionY === -1) { //Si il va vers le haut
+            if (animatedObject.velocityY < 0) { //et qu'il a 0 vitesse
                 //Le mec va vers le haut et a plus de vitesse, on le change de sens pour qu'il retombe
                 animatedObject._directionY = 1;
             } else {
                 //sinon il ralenti
-                animatedObject.velocityY = animatedObject.velocityY - this.getGravityForce();
+                animatedObject.velocityY = animatedObject.velocityY - this.getGravityForce(animatedObject);
             }
         }
 
@@ -69,8 +69,12 @@ class Engine {
      *  voir un calcul sur Wiki?
      * @returns {number}
      */
-    getGravityForce(){
-        return this.gravity / this.frameRate;
+    getGravityForce(animatedObj) {
+        if (animatedObj._directionY === 1) { //Si il va vers le bas
+            return this.gravity / this.frameRate;
+        } else if (animatedObj._directionY === -1) { //Si il va vers le haut
+            return (this.gravity + animatedObj.poids)/ this.frameRate; //todo REWORK
+        }
     }
 
     get height() {
