@@ -11,7 +11,7 @@
   },
   "World": {
     "width": 800,
-    "height": 400,
+    "height": 800,
     "frameRate": 60,
     "gravity": 9.8
   }

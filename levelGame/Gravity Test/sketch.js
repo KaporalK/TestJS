@@ -1,7 +1,7 @@
 let engine;
 let player;
 let World;
-let Gameur;
+let Gamer;
 
 function preload() {
     loadJSON('Config/config.json', setLocalVar);
@@ -17,8 +17,8 @@ function setup() {
     // 0 = a de droite a gauche (la largeur)
     //100 = de haut en bas (la hauteur)
 
-    player = new Player(Gameur.xStart, Gameur.yStart, Gameur.width, Gameur.height,
-                        Gameur.veloX, Gameur.veloY, Gameur.poidsPlayer, Gameur.alphaBounce);
+    player = new Player(Gamer.xStart, Gamer.yStart, Gamer.width, Gamer.height,
+                        Gamer.veloX, Gamer.veloY, Gamer.poidsPlayer, Gamer.alphaBounce);
     engine.addAnimatedObject(player);
 }
 
@@ -31,7 +31,7 @@ function draw() {
 
 function setLocalVar(data){
     World = data.World;
-    Gameur = data.Player;
+    Gamer = data.Player;
 }
 
 // Todo event declaration system mdrrr

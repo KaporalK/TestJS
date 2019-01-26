@@ -12,7 +12,7 @@ class AnimatedObject {
      * @param poids
      * @param alphaBounce
      */
-    constructor(posY,posX, largeur, hauteur,velocityX, velocityY, poids ,alphaBounce){
+    constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
 
         this._posX = posX;
         this._posY = posY;
@@ -35,18 +35,22 @@ class AnimatedObject {
 
 
     live() {
-        //Do somthing w/ physic to make the player move
-        this.detectBoderColision();
 
-        this.posY += this.velocityY * this.directionY;
-        this.posX += this.velocityX * this.directionX;
+
+            //Do somthing w/ physic to make the player move
+            this.detectBoderColision();
+
+            this.posY += this.velocityY * this.directionY;
+            this.posX += this.velocityX * this.directionX;
+
     };
 
     draw() {
         fill(255);
-        rect(this.posX, this.posY, this.largeur , this.hauteur);
+        rect(this.posX, this.posY, this.largeur, this.hauteur);
     };
 
+//Detect colision /w the border of the frame
     detectBoderColision() {
         if (0 > this.posX) {
             this.directionX = 1;
@@ -61,12 +65,12 @@ class AnimatedObject {
         }
     }
 
-    getBorderX(){
-       // console.log( this.posX + this.largeur);
+    getBorderX() {
+        // console.log( this.posX + this.largeur);
         return this.posX + this.largeur;
     }
 
-    getBordeurY(){
+    getBordeurY() {
         //console.log( this.posY + this._hauteur);
         return this.posY + this.hauteur;
     }
