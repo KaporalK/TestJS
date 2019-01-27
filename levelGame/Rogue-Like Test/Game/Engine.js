@@ -1,38 +1,42 @@
-const UP = 38;
-const DOWN = 40;
-const LEFT = 37;
-const RIGHT = 39;
-const SPACE = 32;
-//down 40
-//up 38
-//Right 39
-//left 37
 class Engine {
 
-    constructor(framerate, width, height, gravity) {
+    constructor(Level) {
+        let engine = this;
         this._animatedObject = [];
         this._KillableObject = [];
-        this._frameRate = framerate;
-        this._widht = width;
-        this._height = height;
-        this._gravity = gravity;
+        this._gravity = Level.gravity;
+        this._background = Level.background;
+        this._brickList = [];
+
+        // 0 = a de droite a gauche (la largeur)
+        //100 = de haut en bas (la hauteur)
+
+        this.player = new Player(Level.Player.xStart, Level.Player.yStart,
+            Level.Player.width, Level.Player.height,
+            Level.Player.veloX, Level.Player.veloY,
+            Level.Player.poidsPlayer, Level.Player.alphaBounce);
+
+        //TODO foreach sur les badGuy
+        this.badGuy = new KillableThing(Level.Ennemie.xStart, Level.Ennemie.yStart,
+            Level.Ennemie.width, Level.Ennemie.height,
+            Level.Ennemie.veloX, Level.Ennemie.veloY,
+            Level.Ennemie.poidsPlayer,Level.Ennemie.alphaBounce);
+
+        this.addAnimatedObject(this.player);
+        this.addAnimatedObject(this.badGuy);
+
+        Level.Layout.Bloc.forEach(function (item, index, array) {
+            let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
+            engine.addBrick(bloc);
+        })
+        
     }
-
-    createGame() {
-        frameRate(this._frameRate);
-        createCanvas(this._widht, this._height)
-    };
-
-    static drawBackGround(number) {
-        background(number)
-    };
 
     live() {
         let Engine = this;
         this._animatedObject.forEach(function (item, index, array) {
             if (item.shoundIBeDeleted) {
-                console.log('Add Function To Delete Item In Engine  Plz');
-                // Engine.deleteAnimatedObject(item);
+                Engine.deleteAnimatedObject(item);
                 return;
             }
             item.live(Engine);
@@ -40,10 +44,13 @@ class Engine {
     };
 
     draw() {
-        background(51);
+        this.drawBackGround();
+        this._brickList.forEach(function (item, index, array) {
+            item.draw();
+        });
         this._animatedObject.forEach(function (item, index, array) {
             item.draw();
-        })
+        });
     };
 
     getKillableThing() {
@@ -57,25 +64,36 @@ class Engine {
         this.animatedObject.push(object);
     };
 
-    deleteAnimatedObject(object) {
-        delete this.animatedObject[object];
+    addBrick(brick){
+        this.brickList.push(brick);
     }
 
-    static mousePressed(mouseIsPressed) {
-        if (mouseIsPressed) {
-            fill(0);
-        } else {
-            fill(255);
+    deleteAnimatedObject(object) {
+        let index = this.animatedObject.indexOf(object);
+        if (index > -1) {
+            this.animatedObject.splice(index, 1);
         }
-        ellipse(mouseX, mouseY, 80, 80);
+    }
+    //
+    // static mousePressed(mouseIsPressed) {
+    //     if (mouseIsPressed) {
+    //         fill(0);
+    //     } else {
+    //         fill(255);
+    //     }
+    //     ellipse(mouseX, mouseY, 80, 80);
+    // };
+
+    drawBackGround() {
+        background(this._background)
     };
 
-    get height() {
-        return this._height;
+    get background() {
+        return this._background;
     }
 
-    set height(value) {
-        this._height = value;
+    set background(value) {
+        this._background = value;
     }
 
     get animatedObject() {
@@ -94,20 +112,20 @@ class Engine {
         this._KillableObject = value;
     }
 
-    get frameRate() {
-        return this._frameRate;
-    }
-
-    set frameRate(value) {
-        this._frameRate = value;
-    }
-
     get gravity() {
         return this._gravity;
     }
 
     set gravity(value) {
         this._gravity = value;
+    }
+
+    get brickList() {
+        return this._brickList;
+    }
+
+    set brickList(value) {
+        this._brickList = value;
     }
 }
 

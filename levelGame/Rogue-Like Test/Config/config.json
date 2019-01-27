@@ -1,28 +1,49 @@
 {
-  "Player" : {
-    "xStart": 100,
-    "yStart": 100,
-    "width": 10,
-    "height": 10,
-    "veloX": 0,
-    "veloY": 0,
-    "poidsPlayer": 5,
-    "alphaBounce": 2
-  },
-  "Ennemie" : {
-    "xStart": 500,
-    "yStart": 500,
-    "width": 30,
-    "height": 30,
-    "veloX": 0,
-    "veloY": 0,
-    "poidsPlayer": 5,
-    "alphaBounce": 2
-  },
   "World": {
     "width": 800,
     "height": 800,
     "frameRate": 120,
-    "gravity": 9.8
+    "Levels": {
+      "Tests": {
+        "Ennemie": {
+          "xStart": 500,
+          "yStart": 500,
+          "width": 30,
+          "height": 30,
+          "veloX": 0,
+          "veloY": 0,
+          "poidsPlayer": 5,
+          "alphaBounce": 2
+        },
+        "Player": {
+          "xStart": 100,
+          "yStart": 100,
+          "width": 10,
+          "height": 10,
+          "veloX": 0,
+          "veloY": 0,
+          "poidsPlayer": 5,
+          "alphaBounce": 2
+        },
+        "Layout": {
+          "Bloc": [
+            {
+              "xStart": 400,
+              "yStart": 400,
+              "width": 100,
+              "height": 80
+            },
+            {
+              "xStart": 400,
+              "yStart": 400,
+              "width": 100,
+              "height": 80
+            }
+          ]
+        },
+        "gravity": 9.8,
+        "background": 51
+      }
+    }
   }
 }
