@@ -14,6 +14,8 @@ class AnimatedObject {
      */
     constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
 
+        this._shoundIBeDeleted = false;
+
         this._posX = posX;
         this._posY = posY;
 
@@ -23,26 +25,21 @@ class AnimatedObject {
         this._hauteur = hauteur;
 
         //1 = droite
-        this._directionX = 1;
+        // this._directionX = 1;
         // 1 un bas;
-        this._directionY = 1;
-        this._alphaBounce = alphaBounce;
+        // this._directionY = 1;
         this._velocityX = velocityX;
         this._velocityY = velocityY;
+
+        this._alphaBounce = alphaBounce;
         this._poids = poids;
 
     }
 
 
-    live() {
-
-
-            //Do somthing w/ physic to make the player move
-            this.detectBoderColision();
-
-            this.posY += this.velocityY * this.directionY;
-            this.posX += this.velocityX * this.directionX;
-
+    live(Engine) {
+        this.posY += this.velocityY; //* this.directionY;
+        this.posX += this.velocityX; //* this.directionX;
     };
 
     draw() {
@@ -51,26 +48,13 @@ class AnimatedObject {
     };
 
 //Detect colision /w the border of the frame
-    detectBoderColision() {
-        if (0 > this.posX) {
-            this.directionX = 1;
-        } else if (this.getBorderX() > width) {
-            this.directionX = -1;
-        }
-
-        if (0 > this.posY) {
-            this.directionY = 1;
-        } else if (this.getBordeurY() > height) {
-            this.directionY = -1;
-        }
-    }
 
     getBorderX() {
         // console.log( this.posX + this.largeur);
         return this.posX + this.largeur;
     }
 
-    getBordeurY() {
+    getBorderY() {
         //console.log( this.posY + this._hauteur);
         return this.posY + this.hauteur;
     }
@@ -153,5 +137,13 @@ class AnimatedObject {
 
     set hauteur(value) {
         this._hauteur = value;
+    }
+
+    get shoundIBeDeleted() {
+        return this._shoundIBeDeleted;
+    }
+
+    set shoundIBeDeleted(value) {
+        this._shoundIBeDeleted = value;
     }
 }
