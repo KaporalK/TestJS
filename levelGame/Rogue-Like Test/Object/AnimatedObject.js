@@ -33,6 +33,7 @@ class AnimatedObject {
 
         this._alphaBounce = alphaBounce;
         this._poids = poids;
+        this._color = 255;
 
     }
 
@@ -43,8 +44,8 @@ class AnimatedObject {
     };
 
     draw() {
-        fill(255);
-        rect(this.posX, this.posY, this.largeur, this.hauteur);
+        fill(this.color);
+        rect(this.posX * COLISION_OFFSET, this.posY * COLISION_OFFSET, this.largeur * COLISION_OFFSET, this.hauteur * COLISION_OFFSET);
     };
 
 //Detect colision /w the border of the frame
@@ -145,5 +146,13 @@ class AnimatedObject {
 
     set shoundIBeDeleted(value) {
         this._shoundIBeDeleted = value;
+    }
+
+    get color() {
+        return this._color;
+    }
+
+    set color(value) {
+        this._color = value;
     }
 }

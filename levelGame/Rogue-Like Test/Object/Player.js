@@ -20,6 +20,10 @@ class Player extends AnimatedObject {
         this._moveDown = false;
         this._moveLeft = false;
         this._moveRight = false;
+        this._canMoveUp = true;
+        this._canMoveDown = true;
+        this._canMoveLeft = true;
+        this._canMoveRight = true;
 
         this._orientation = {'X': 'right', 'Y': 'up'};
 
@@ -32,6 +36,8 @@ class Player extends AnimatedObject {
         this._keypressed = {};
         this._lastKeyPressed = '';
 
+        this._moveSpeed = 1;
+
         this.registerPlayerEvent();
     }
 
@@ -40,17 +46,17 @@ class Player extends AnimatedObject {
 
         this.detectPlayerBoderColision();
 
-        if (this.moveUp) {
-            this.posY += -2;
+        if (this.moveUp && this.canMoveUp) {
+            this.posY -= this.moveSpeed;
         }
-        if (this.moveDown) {
-            this.posY += +2;
+        if (this.moveDown && this.canMoveDown){
+            this.posY += this.moveSpeed;
         }
-        if (this.moveLeft) {
-            this.posX += -2;
+        if (this.moveLeft && this.canMoveLeft) {
+            this.posX -= this.moveSpeed;
         }
-        if (this.moveRight) {
-            this.posX += 2;
+        if (this.moveRight && this.canMoveRight) {
+            this.posX += this.moveSpeed;
         }
 
         if (this.isShooting) {
@@ -71,6 +77,11 @@ class Player extends AnimatedObject {
         //Do somthing w/ physic to make the player move
         // console.log(gravity)
         super.live();
+
+        this.canMoveUp = true;
+        this.canMoveRight = true;
+        this.canMoveDown = true;
+        this.canMoveLeft = true;
     };
 
     draw() {
@@ -177,62 +188,62 @@ class Player extends AnimatedObject {
         bulletInfo['velocity'] = {0: 'X', 1: 'Y'};
         bulletInfo['position'] = {0: 'X', 1: 'Y'};
         if (this.keypressed[UP] && this.keypressed[LEFT]) {
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['Y'] = -2;
+            bulletInfo['velocity']['X'] = -2;
             bulletInfo['position']['X'] = this.posX - 8;
             bulletInfo['position']['Y'] = this.posY - 8;
         } else if (this.keypressed[UP] && this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['Y'] = -2;
+            bulletInfo['velocity']['X'] = 2;
             bulletInfo['position']['X'] = this.posX + 8;
             bulletInfo['position']['Y'] = this.posY - 8;
         } else if (this.keypressed[RIGHT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['Y'] = 2;
+            bulletInfo['velocity']['X'] = 2;
             bulletInfo['position']['X'] = this.posX + 8;
             bulletInfo['position']['Y'] = this.posY + 8;
         } else if (this.keypressed[LEFT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['Y'] = 2;
+            bulletInfo['velocity']['X'] = -2;
             bulletInfo['position']['X'] = this.posX - 8;
             bulletInfo['position']['Y'] = this.posY + 8;
         } else if (this.keypressed[UP]) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = -4;
+            bulletInfo['velocity']['Y'] = -2;
             bulletInfo['position']['X'] = this.posX;
             bulletInfo['position']['Y'] = this.posY - 10;
         } else if (this.keypressed[LEFT]) {
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['X'] = -2;
             bulletInfo['velocity']['Y'] = 0;
             bulletInfo['position']['X'] = this.posX - 10;
             bulletInfo['position']['Y'] = this.posY;
         } else if (this.keypressed[DOWN]) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = 4;
+            bulletInfo['velocity']['Y'] = 2;
             bulletInfo['position']['X'] = this.posX;
             bulletInfo['position']['Y'] = this.posY + 10;
         } else if (this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['X'] = 2;
             bulletInfo['velocity']['Y'] = -0;
             bulletInfo['position']['X'] = this.posX + 10;
             bulletInfo['position']['Y'] = this.posY;
         } else if (this.lastKeyPressed === UP) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = -4;
+            bulletInfo['velocity']['Y'] = -2;
             bulletInfo['position']['X'] = this.posX;
             bulletInfo['position']['Y'] = this.posY - 10;
         } else if (this.lastKeyPressed === DOWN) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = 4;
+            bulletInfo['velocity']['Y'] = 2;
             bulletInfo['position']['X'] = this.posX;
             bulletInfo['position']['Y'] = this.posY + 10;
         } else if (this.lastKeyPressed === LEFT) {
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['X'] = -2;
             bulletInfo['velocity']['Y'] = 0;
             bulletInfo['position']['X'] = this.posX - 10;
             bulletInfo['position']['Y'] = this.posY;
         } else if (this.lastKeyPressed === RIGHT) {
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['X'] = 2;
             bulletInfo['velocity']['Y'] = -0;
             bulletInfo['position']['X'] = this.posX + 10;
             bulletInfo['position']['Y'] = this.posY;
@@ -305,6 +316,37 @@ class Player extends AnimatedObject {
         this._moveRight = value;
     }
 
+    get canMoveUp() {
+        return this._canMoveUp;
+    }
+
+    set canMoveUp(value) {
+        this._canMoveUp = value;
+    }
+
+    get canMoveDown() {
+        return this._canMoveDown;
+    }
+
+    set canMoveDown(value) {
+        this._canMoveDown = value;
+    }
+
+    get canMoveLeft() {
+        return this._canMoveLeft;
+    }
+
+    set canMoveLeft(value) {
+        this._canMoveLeft = value;
+    }
+
+    get canMoveRight() {
+        return this._canMoveRight;
+    }
+
+    set canMoveRight(value) {
+        this._canMoveRight = value;
+    }
 
     get orientation() {
         return this._orientation;
@@ -334,4 +376,12 @@ class Player extends AnimatedObject {
     addBullet(object) {
         this._bullets.push(object);
     };
+
+    get moveSpeed() {
+        return this._moveSpeed;
+    }
+
+    set moveSpeed(value) {
+        this._moveSpeed = value;
+    }
 }

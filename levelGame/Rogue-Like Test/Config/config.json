@@ -6,20 +6,20 @@
     "Levels": {
       "Tests": {
         "Ennemie": {
-          "xStart": 500,
-          "yStart": 500,
-          "width": 30,
-          "height": 30,
+          "xStart": 250,
+          "yStart": 250,
+          "width": 25,
+          "height": 25,
           "veloX": 0,
           "veloY": 0,
           "poidsPlayer": 5,
           "alphaBounce": 2
         },
         "Player": {
-          "xStart": 100,
-          "yStart": 100,
-          "width": 10,
-          "height": 10,
+          "xStart": 50,
+          "yStart": 50,
+          "width": 5,
+          "height": 5,
           "veloX": 0,
           "veloY": 0,
           "poidsPlayer": 5,
@@ -28,21 +28,15 @@
         "Layout": {
           "Bloc": [
             {
-              "xStart": 400,
-              "yStart": 400,
-              "width": 100,
-              "height": 80
-            },
-            {
-              "xStart": 400,
-              "yStart": 400,
-              "width": 100,
-              "height": 80
+              "xStart": 200,
+              "yStart": 200,
+              "width": 50,
+              "height": 20
             }
           ]
         },
         "gravity": 9.8,
-        "background": 51
+        "background": 220
       }
     }
   }

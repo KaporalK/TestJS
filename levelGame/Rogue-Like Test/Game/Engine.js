@@ -1,13 +1,14 @@
 class Engine {
 
     constructor(Level) {
+
         let engine = this;
-        this._animatedObject = [];
-        this._KillableObject = [];
         this._gravity = Level.gravity;
         this._background = Level.background;
-        this._brickList = [];
 
+        this._brickList = [];
+        this._KillableObject = [];
+        this._animatedObject = [];
         // 0 = a de droite a gauche (la largeur)
         //100 = de haut en bas (la hauteur)
 
@@ -20,7 +21,7 @@ class Engine {
         this.badGuy = new KillableThing(Level.Ennemie.xStart, Level.Ennemie.yStart,
             Level.Ennemie.width, Level.Ennemie.height,
             Level.Ennemie.veloX, Level.Ennemie.veloY,
-            Level.Ennemie.poidsPlayer,Level.Ennemie.alphaBounce);
+            Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
 
         this.addAnimatedObject(this.player);
         this.addAnimatedObject(this.badGuy);
@@ -29,7 +30,7 @@ class Engine {
             let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
             engine.addBrick(bloc);
         })
-        
+
     }
 
     live() {
@@ -39,6 +40,7 @@ class Engine {
                 Engine.deleteAnimatedObject(item);
                 return;
             }
+            Engine.detectColision(item);
             item.live(Engine);
         })
     };
@@ -64,7 +66,7 @@ class Engine {
         this.animatedObject.push(object);
     };
 
-    addBrick(brick){
+    addBrick(brick) {
         this.brickList.push(brick);
     }
 
@@ -74,6 +76,7 @@ class Engine {
             this.animatedObject.splice(index, 1);
         }
     }
+
     //
     // static mousePressed(mouseIsPressed) {
     //     if (mouseIsPressed) {
@@ -83,6 +86,68 @@ class Engine {
     //     }
     //     ellipse(mouseX, mouseY, 80, 80);
     // };
+    //TODO séparé le terrain en carré pour trié plus vite les element a detecter la colision
+    // meilleur offset actuellement je multipli les dessin par deux pour avoir eventuellement moins de pixel a calculer lors des colision
+    // mais ca reste bancale
+
+    detectColision(animatedObject) {
+        this.brickList.forEach(function (item, index, array) {
+            if (Engine.detectBasicColision(animatedObject, item)) {
+                //TODO implémenter une interface de colision pour que cette fonction soit jolie et que je puisse traiter
+                // tous les object de la même facon pour les colision dans l'engine
+                // Actuelement je gere que le player mdr.
+                let newY = animatedObject.posY;
+                let newX = animatedObject.posX;
+                let nextMoveX = null;
+                let nextMoveY = null;
+                if (animatedObject.moveUp && animatedObject.canMoveUp) {
+                    newY = animatedObject.posY - animatedObject.moveSpeed;
+                }
+                if (animatedObject.moveDown && animatedObject.canMoveDown) {
+                    newY = animatedObject.posY + animatedObject.moveSpeed;
+                }
+                if (animatedObject.moveLeft && animatedObject.canMoveLeft) {
+                    newX = animatedObject.posX - animatedObject.moveSpeed;
+                }
+                if (animatedObject.moveRight && animatedObject.canMoveRight) {
+                    newX = animatedObject.posX + animatedObject.moveSpeed;
+                }
+                //TODO implementer l'algorithme de detection de colision ici
+                if(Engine.detectRealColision(animatedObject, newX, newY, item)){
+                    if (animatedObject.moveUp) {
+                        animatedObject.canMoveUp = false;
+                    }
+                    if (animatedObject.moveDown) {
+                        animatedObject.canMoveDown = false;
+                    }
+                    if (animatedObject.moveLeft) {
+                        animatedObject.canMoveLeft = false;
+                    }
+                    if (animatedObject.moveRight) {
+                        animatedObject.canMoveRight = false;
+                    }
+                }
+            }
+        })
+    }
+
+    static detectBasicColision(item, brick) {
+        return !(
+            (brick.posX - COLISION_DETECTION_OFFSET >= item.posX + item.largeur)      // trop à gauche
+            || (brick.posX + brick.largeur + COLISION_DETECTION_OFFSET <= item.posX) // trop à gauchauteure
+            || (brick.posY - COLISION_DETECTION_OFFSET >= item.posY + item.hauteur) // trop en bas
+            || (brick.posY + brick.hauteur + COLISION_DETECTION_OFFSET <= item.posY)
+        );
+    }
+    //todo implémeter lee calcul des colision de ici https://openclassrooms.com/fr/courses/1374826-theorie-des-collisions/1374988-formes-simples
+    // enfin celui pour un point sur un cube, pour connaire quel coté touche
+    static detectRealColision(item, itemX, itemY, brick) {
+        return (itemX < brick.posX + brick.largeur &&
+            itemX + item.largeur > brick.posX &&
+            itemY  < brick.posY + brick.hauteur &&
+            itemY  + item.hauteur > brick.posY
+        )
+    }
 
     drawBackGround() {
         background(this._background)

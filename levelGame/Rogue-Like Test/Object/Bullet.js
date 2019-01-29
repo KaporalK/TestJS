@@ -1,7 +1,8 @@
 class Bullet extends AnimatedObject {
 
     constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
-        super(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce)
+        super(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce);
+        this.color = [0, 50, 200];
     }
 
     live(Engine){

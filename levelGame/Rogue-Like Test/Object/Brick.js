@@ -9,8 +9,9 @@ class Brick {
         this._hauteur = hauteur;
     }
 
-    draw(){
-        rect(this.posX, this.posY, this.largeur, this.hauteur);
+    draw() {
+        fill(255, 0, 0);
+        rect(this.posX * COLISION_OFFSET, this.posY * COLISION_OFFSET, this.largeur * COLISION_OFFSET, this.hauteur * COLISION_OFFSET);
     }
 
     get posY() {

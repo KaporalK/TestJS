@@ -3,6 +3,9 @@ const DOWN = 40;
 const LEFT = 37;
 const RIGHT = 39;
 const SPACE = 32;
+
+const COLISION_OFFSET = 2;
+const COLISION_DETECTION_OFFSET = 10;
 //down 40
 //up 38
 //Right 39
