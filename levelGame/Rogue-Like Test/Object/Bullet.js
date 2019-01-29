@@ -1,3 +1,11 @@
+/**
+ * @class Bullet
+ * @param super
+ *
+ * Cette classe représente les balle classique que tire le player
+ *
+ * Pourra être rework ou utiliser pour faire dautres projectiles
+ */
 class Bullet extends AnimatedObject {
 
     constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {

@@ -1,4 +1,22 @@
 /**
+ *@class AnimatedObject
+ *
+ * @param posX
+ * @param posY
+ * @param largeur
+ * @param hauteur
+ * @param velocityX pas vraiment utilisé
+ * @param velocityY pas vraiment utilisé
+ * @param poids nonUtilisé
+ * @param alphaBounce non utilisé
+ *
+ * Cette class représente la base d'un objet qui bouge
+ * elle a des fonction très simple et ne devrais pas être utiliser tel quel
+ *
+ * TODO rework cette class pour un
+ *  @class drawableObject
+ *      @class AnimatedObject
+ *      @class BrickObject
  *
  */
 class AnimatedObject {

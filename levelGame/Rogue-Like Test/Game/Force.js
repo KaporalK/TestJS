@@ -1,3 +1,12 @@
+/**
+ * @class Force
+ *
+ * @param forceX
+ * @param forceY
+ * @param puissance
+ *
+ * Pas encore utilisé, représente une poussé sur un plan en 2d
+ */
 class Force {
 
     constructor(ForceX, ForceY, Puissance) {

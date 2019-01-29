@@ -1,3 +1,20 @@
+/**
+ * @class Brick
+ *
+ * @param posY
+ * @param posX
+ * @param largeur
+ * @param hauteur
+ *
+ * Cette classe représente la base pour un mur
+ * Un mur qui ne bouge pas.
+ * On calculera pas les colision depuis une Brick
+ *
+ *TODO rework cette class pour un
+ *  @class drawableObject
+ *      @class AnimatedObject
+ *      @class BrickObject
+ */
 class Brick {
 
     constructor(posY, posX, largeur, hauteur,) {

@@ -6,10 +6,15 @@ const SPACE = 32;
 
 const COLISION_OFFSET = 2;
 const COLISION_DETECTION_OFFSET = 10;
-//down 40
-//up 38
-//Right 39
-//left 37
+
+/**
+ * @class RogueGame
+ * @param GameWorldConfig
+ *
+ * Cette class représente le jeux et son etat actuel
+ * Pour l'instant il n'y a que l'etat ou je leux tourne,
+ * mais quand on voudra implémenter la pause ou d'autre menu, ca se passera ici
+ */
 class RogueGame{
 
     constructor(World){
@@ -38,21 +43,5 @@ class RogueGame{
 
     set engine(value) {
         this._engine = value;
-    }
-
-    get player() {
-        return this._player;
-    }
-
-    set player(value) {
-        this._player = value;
-    }
-
-    get badGuy() {
-        return this._badGuy;
-    }
-
-    set badGuy(value) {
-        this._badGuy = value;
     }
 }

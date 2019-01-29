@@ -1,3 +1,8 @@
+/**
+ * @class KillableThing
+ *
+ * Class très basique pour faire un mechant
+ */
 class KillableThing extends AnimatedObject {
 
     constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {

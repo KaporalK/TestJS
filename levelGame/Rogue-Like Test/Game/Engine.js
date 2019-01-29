@@ -1,3 +1,14 @@
+/**
+ * @class Engine
+ * @param LevelConfig
+ *
+ * Cette class représente le niveaux qui tourne actuellement,
+ * le but final de cette classe est d'appeler principalement
+ * des interface qui initierons le niveaux en train de tourné en fonction des fichier de config.
+ *
+ * Normalement aucun métier ne devrais atterir ici.
+ *
+ */
 class Engine {
 
     constructor(Level) {
@@ -40,6 +51,8 @@ class Engine {
                 Engine.deleteAnimatedObject(item);
                 return;
             }
+            // TODO Mettre cette fonction dans l'animatedObject
+            //  Je peux pas detect les bullet comme ça
             Engine.detectColision(item);
             item.live(Engine);
         })

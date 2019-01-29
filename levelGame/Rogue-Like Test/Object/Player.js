@@ -1,3 +1,10 @@
+/**
+ * @class Player
+ *
+ * @param super
+ *
+ * Cette classe représente le joueur qu'on joue
+ */
 class Player extends AnimatedObject {
 
 
@@ -170,7 +177,7 @@ class Player extends AnimatedObject {
             let coordinate = this.generateBulletCoordinate();
 
             newBullet = new Bullet(coordinate['position']['Y'], coordinate['position']['X'],
-                5, 5, coordinate['velocity']['X'], coordinate['velocity']['Y'], 5, 5);
+                2, 2, coordinate['velocity']['X'], coordinate['velocity']['Y'], 5, 5);
             this.addBullet(newBullet);
             this.bulletCooldown = 10;
         }
