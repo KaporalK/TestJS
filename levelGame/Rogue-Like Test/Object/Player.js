@@ -258,6 +258,105 @@ class Player extends AnimatedObject {
         return bulletInfo
     }
 
+    //TODO check ca quand y'aura des colision mieux
+    // https://github.com/mikechambers/ExamplesByMesh/tree/master/JavaScript/QuadTree
+
+    //TODO séparé le terrain en carré pour trié plus vite les element a detecter la colision
+    // meilleur offset actuellement je multipli les dessin par deux pour avoir eventuellement moins de pixel a calculer lors des colision
+    // mais ca reste bancale
+
+    detectColision(brickList) {
+        let Player = this;
+        brickList.forEach(function (item, index, array) {
+            if (Player.detectBasicColision(item)) {
+                //TODO implémenter une interface de colision pour que cette fonction soit jolie et que je puisse traiter
+                // tous les object de la même facon pour les colision dans l'engine
+                // Actuelement je gere que le player mdr.
+                let newY = Player.posY;
+                let newX = Player.posX;
+                let nextMoveX = null;
+                let nextMoveY = null;
+                if (Player.moveUp && Player.canMoveUp) {
+                    newY = Player.posY - Player.moveSpeed;
+                }
+                if (Player.moveDown && Player.canMoveDown) {
+                    newY = Player.posY + Player.moveSpeed;
+                }
+                if (Player.moveLeft && Player.canMoveLeft) {
+                    newX = Player.posX - Player.moveSpeed;
+                }
+                if (Player.moveRight && Player.canMoveRight) {
+                    newX = Player.posX + Player.moveSpeed;
+                }
+                //du génie !
+                if(Player.detectRealColision(newX, newY, item)){
+                    if( !Player.detectLeftColision(newX, newY, item)){
+                        Player.canMoveLeft = false;
+                    }
+                    if( !Player.detectRightColision(newX, newY, item)){
+                        Player.canMoveRight = false;
+                    }
+                    if( !Player.detectDownColision(newX, newY, item)){
+                        Player.canMoveDown = false;
+                    }
+                    if( !Player.detectUpColision(newX, newY, item)){
+                        Player.canMoveUp = false;
+                    }
+                }
+            }
+        })
+    }
+
+    detectBasicColision(item) {
+        return !(
+            (this.posX - COLISION_DETECTION_OFFSET >= item.posX + item.largeur)      // trop à gauche
+            || (this.posX + this.largeur + COLISION_DETECTION_OFFSET <= item.posX) // trop à gauchauteure
+            || (this.posY - COLISION_DETECTION_OFFSET >= item.posY + item.hauteur) // trop en bas
+            || (this.posY + this.hauteur + COLISION_DETECTION_OFFSET <= item.posY)
+        );
+    }
+
+    detectRealColision(itemX, itemY, brick) {
+        return (itemX < brick.posX + brick.largeur &&
+            itemX + this.largeur > brick.posX &&
+            itemY  < brick.posY + brick.hauteur &&
+            itemY  + this.hauteur > brick.posY
+        )
+    }
+
+    //Très mauvais nom
+    detectLeftColision(itemX, itemY, brick) {
+        return (itemX + COLISION_OFFSET * this.moveSpeed < brick.posX + brick.largeur &&
+            itemX + this.largeur > brick.posX &&
+            itemY  < brick.posY + brick.hauteur &&
+            itemY  + this.hauteur > brick.posY
+        )
+    }
+
+    //Très mauvais nom
+    detectRightColision(itemX, itemY, brick) {
+        return (itemX < brick.posX + brick.largeur &&
+            itemX + this.largeur - COLISION_OFFSET * this.moveSpeed > brick.posX &&
+            itemY  < brick.posY + brick.hauteur &&
+            itemY  + this.hauteur > brick.posY
+        )
+    }
+    //Très mauvais nom
+    detectUpColision(itemX, itemY, brick) {
+        return (itemX < brick.posX + brick.largeur &&
+            itemX + this.largeur > brick.posX &&
+            itemY + COLISION_OFFSET * this.moveSpeed  < brick.posY + brick.hauteur &&
+            itemY  + this.hauteur > brick.posY
+        )
+    }
+    //Très mauvais nom
+    detectDownColision(itemX, itemY, brick) {
+        return (itemX < brick.posX + brick.largeur &&
+            itemX + this.largeur - COLISION_OFFSET * this.moveSpeed > brick.posX &&
+            itemY  < brick.posY + brick.hauteur &&
+            itemY  + this.hauteur - COLISION_OFFSET * this.moveSpeed > brick.posY
+        )
+    }
 
     get bullets() {
         return this._bullets;

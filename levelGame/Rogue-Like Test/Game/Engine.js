@@ -53,7 +53,7 @@ class Engine {
             }
             // TODO Mettre cette fonction dans l'animatedObject
             //  Je peux pas detect les bullet comme ça
-            Engine.detectColision(item);
+            item.detectColision(Engine.brickList);
             item.live(Engine);
         })
     };
@@ -99,68 +99,6 @@ class Engine {
     //     }
     //     ellipse(mouseX, mouseY, 80, 80);
     // };
-    //TODO séparé le terrain en carré pour trié plus vite les element a detecter la colision
-    // meilleur offset actuellement je multipli les dessin par deux pour avoir eventuellement moins de pixel a calculer lors des colision
-    // mais ca reste bancale
-
-    detectColision(animatedObject) {
-        this.brickList.forEach(function (item, index, array) {
-            if (Engine.detectBasicColision(animatedObject, item)) {
-                //TODO implémenter une interface de colision pour que cette fonction soit jolie et que je puisse traiter
-                // tous les object de la même facon pour les colision dans l'engine
-                // Actuelement je gere que le player mdr.
-                let newY = animatedObject.posY;
-                let newX = animatedObject.posX;
-                let nextMoveX = null;
-                let nextMoveY = null;
-                if (animatedObject.moveUp && animatedObject.canMoveUp) {
-                    newY = animatedObject.posY - animatedObject.moveSpeed;
-                }
-                if (animatedObject.moveDown && animatedObject.canMoveDown) {
-                    newY = animatedObject.posY + animatedObject.moveSpeed;
-                }
-                if (animatedObject.moveLeft && animatedObject.canMoveLeft) {
-                    newX = animatedObject.posX - animatedObject.moveSpeed;
-                }
-                if (animatedObject.moveRight && animatedObject.canMoveRight) {
-                    newX = animatedObject.posX + animatedObject.moveSpeed;
-                }
-                //TODO implementer l'algorithme de detection de colision ici
-                if(Engine.detectRealColision(animatedObject, newX, newY, item)){
-                    if (animatedObject.moveUp) {
-                        animatedObject.canMoveUp = false;
-                    }
-                    if (animatedObject.moveDown) {
-                        animatedObject.canMoveDown = false;
-                    }
-                    if (animatedObject.moveLeft) {
-                        animatedObject.canMoveLeft = false;
-                    }
-                    if (animatedObject.moveRight) {
-                        animatedObject.canMoveRight = false;
-                    }
-                }
-            }
-        })
-    }
-
-    static detectBasicColision(item, brick) {
-        return !(
-            (brick.posX - COLISION_DETECTION_OFFSET >= item.posX + item.largeur)      // trop à gauche
-            || (brick.posX + brick.largeur + COLISION_DETECTION_OFFSET <= item.posX) // trop à gauchauteure
-            || (brick.posY - COLISION_DETECTION_OFFSET >= item.posY + item.hauteur) // trop en bas
-            || (brick.posY + brick.hauteur + COLISION_DETECTION_OFFSET <= item.posY)
-        );
-    }
-    //todo implémeter lee calcul des colision de ici https://openclassrooms.com/fr/courses/1374826-theorie-des-collisions/1374988-formes-simples
-    // enfin celui pour un point sur un cube, pour connaire quel coté touche
-    static detectRealColision(item, itemX, itemY, brick) {
-        return (itemX < brick.posX + brick.largeur &&
-            itemX + item.largeur > brick.posX &&
-            itemY  < brick.posY + brick.hauteur &&
-            itemY  + item.hauteur > brick.posY
-        )
-    }
 
     drawBackGround() {
         background(this._background)

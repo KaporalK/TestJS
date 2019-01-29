@@ -66,7 +66,11 @@ class AnimatedObject {
         rect(this.posX * COLISION_OFFSET, this.posY * COLISION_OFFSET, this.largeur * COLISION_OFFSET, this.hauteur * COLISION_OFFSET);
     };
 
-//Detect colision /w the border of the frame
+
+    detectColision(){
+        //todo faire un truc
+        return true;
+    }
 
     getBorderX() {
         // console.log( this.posX + this.largeur);
