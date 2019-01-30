@@ -148,7 +148,7 @@
     Node.BOTTOM_RIGHT = 3;
 
 
-    Node.prototype.insert = function (item) { //Aparement c'est pas lui
+    Node.prototype.insert = function (item) {
         console.log('Coucou c\'est Node.prototype.insert dans QuadTree.js');
         if (this.nodes.length) {
             var index = this._findIndex(item);
@@ -320,7 +320,7 @@
 
         if (!(this._depth >= this._maxDepth) &&
                 len > this._maxChildren) {
-            console.log('subdivide');
+
             this.subdivide();
 
             var i;

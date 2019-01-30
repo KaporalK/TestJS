@@ -11,7 +11,7 @@
  */
 class Engine {
 
-    constructor(Level) {
+    constructor(Level, debug = false) {
         this._gravity = Level.gravity;
         this._background = Level.background;
 
@@ -54,6 +54,7 @@ class Engine {
             let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
             this.addBrick(bloc);
         }, this)
+        this._debug = debug;
 
     }
 
@@ -74,7 +75,9 @@ class Engine {
 
     draw() {
         this.drawBackGround();
-        this.renderQuad();
+        if (this.debug) {
+            QuadTreeHelper.drawNode(this.tree.root);
+        }
         // console.log('---------------------------------------------------------------------------------------------------------------');
         this._brickList.forEach(function (item, index, array) {
             item.draw();
@@ -96,34 +99,6 @@ class Engine {
             }
         }, this);
         this.tree.insert(this.animatedObject);
-    }
-
-    renderQuad() {
-        this.drawNode(this.tree.root);
-    }
-
-    drawNode(node) {
-        var bounds = node._bounds;
-        noFill();
-        rect(
-            (bounds.x + 1)* COLISION_OFFSET,
-            (bounds.y + 1)* COLISION_OFFSET,
-            bounds.width* COLISION_OFFSET,
-            bounds.height* COLISION_OFFSET
-        );
-
-        var len = node.nodes.length;
-
-        // console.log('len');
-        // console.log(len);
-
-        for (var i = 0; i < len; i++) {
-            // console.log('I node');
-            // console.log(i);
-            this.drawNode(node.nodes[i]);
-            // console.log('fin recurcive node');
-        }
-        // console.log('Vraie');
     }
 
     getKillableThing() {
@@ -159,6 +134,15 @@ class Engine {
     //     }
     //     ellipse(mouseX, mouseY, 80, 80);
     // };
+
+
+    get debug() {
+        return this._debug;
+    }
+
+    set debug(value) {
+        this._debug = value;
+    }
 
     drawBackGround() {
         background(this._background)

@@ -20,7 +20,7 @@ class RogueGame{
     constructor(World){
 
         RogueGame.initGame(World);
-        this.engine = new Engine(World.Levels.Tests);
+        this.engine = new Engine(World.Levels.Tests, true);
 
     };
 
