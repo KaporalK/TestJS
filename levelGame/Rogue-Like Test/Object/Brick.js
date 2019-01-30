@@ -1,10 +1,10 @@
 /**
  * @class Brick
  *
- * @param posY
- * @param posX
- * @param largeur
- * @param hauteur
+ * @param y
+ * @param x
+ * @param width
+ * @param height
  *
  * Cette classe représente la base pour un mur
  * Un mur qui ne bouge pas.
@@ -17,50 +17,50 @@
  */
 class Brick {
 
-    constructor(posY, posX, largeur, hauteur,) {
+    constructor(y, x, width, height,) {
 
         this._shoundIBeDeleted = false;
-        this._posX = posX;
-        this._posY = posY;
-        this._largeur = largeur;
-        this._hauteur = hauteur;
+        this._x = x;
+        this._y = y;
+        this._width = width;
+        this._height = height;
     }
 
     draw() {
         fill(255, 0, 0);
-        rect(this.posX * COLISION_OFFSET, this.posY * COLISION_OFFSET, this.largeur * COLISION_OFFSET, this.hauteur * COLISION_OFFSET);
+        rect(this.x * COLISION_OFFSET, this.y * COLISION_OFFSET, this.width * COLISION_OFFSET, this.height * COLISION_OFFSET);
     }
 
-    get posY() {
-        return this._posY;
+    get y() {
+        return this._y;
     }
 
-    set posY(value) {
-        this._posY = value;
+    set y(value) {
+        this._y = value;
     }
 
-    get posX() {
-        return this._posX;
+    get x() {
+        return this._x;
     }
 
-    set posX(value) {
-        this._posX = value;
+    set x(value) {
+        this._x = value;
     }
 
-    get largeur() {
-        return this._largeur;
+    get width() {
+        return this._width;
     }
 
-    set largeur(value) {
-        this._largeur = value;
+    set width(value) {
+        this._width = value;
     }
 
-    get hauteur() {
-        return this._hauteur;
+    get height() {
+        return this._height;
     }
 
-    set hauteur(value) {
-        this._hauteur = value;
+    set height(value) {
+        this._height = value;
     }
 
     get shoundIBeDeleted() {

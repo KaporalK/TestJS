@@ -18,8 +18,8 @@ class Force {
     appliForce(AnimatedObject){
         let forceX = this.getAppliablePuissanceX();
         let forceY = this.getAppliablePuissanceY();
-        AnimatedObject.posX += forceX;
-        AnimatedObject.posY += forceY;
+        AnimatedObject.x += forceX;
+        AnimatedObject.y += forceY;
 
         this.Puissance -= AnimatedObject.poids
     }

@@ -1,10 +1,10 @@
 /**
  *@class AnimatedObject
  *
- * @param posX
- * @param posY
- * @param largeur
- * @param hauteur
+ * @param x
+ * @param y
+ * @param width
+ * @param height
  * @param velocityX pas vraiment utilisé
  * @param velocityY pas vraiment utilisé
  * @param poids nonUtilisé
@@ -21,26 +21,26 @@
  */
 class AnimatedObject {
     /**
-     * @param posY
-     * @param posX
-     * @param largeur
-     * @param hauteur
+     * @param y
+     * @param x
+     * @param width
+     * @param height
      * @param velocityX
      * @param velocityY
      * @param poids
      * @param alphaBounce
      */
-    constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
+    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
 
         this._shoundIBeDeleted = false;
 
-        this._posX = posX;
-        this._posY = posY;
+        this._x = x;
+        this._y = y;
 
         //todo utilisé pour le calcul de la gravité quand sa remonte
 
-        this._largeur = largeur;
-        this._hauteur = hauteur;
+        this._width = width;
+        this._height = height;
 
         //1 = droite
         // this._directionX = 1;
@@ -57,13 +57,13 @@ class AnimatedObject {
 
 
     live(Engine) {
-        this.posY += this.velocityY; //* this.directionY;
-        this.posX += this.velocityX; //* this.directionX;
+        this.y += this.velocityY; //* this.directionY;
+        this.x += this.velocityX; //* this.directionX;
     };
 
     draw() {
         fill(this.color);
-        rect(this.posX * COLISION_OFFSET, this.posY * COLISION_OFFSET, this.largeur * COLISION_OFFSET, this.hauteur * COLISION_OFFSET);
+        rect(this.x * COLISION_OFFSET, this.y * COLISION_OFFSET, this.width * COLISION_OFFSET, this.height * COLISION_OFFSET);
     };
 
 
@@ -73,29 +73,29 @@ class AnimatedObject {
     }
 
     getBorderX() {
-        // console.log( this.posX + this.largeur);
-        return this.posX + this.largeur;
+        // console.log( this.x + this.width);
+        return this.x + this.width;
     }
 
     getBorderY() {
-        //console.log( this.posY + this._hauteur);
-        return this.posY + this.hauteur;
+        //console.log( this.y + this._height);
+        return this.y + this.height;
     }
 
-    get posY() {
-        return this._posY;
+    get y() {
+        return this._y;
     }
 
-    set posY(value) {
-        this._posY = value;
+    set y(value) {
+        this._y = value;
     }
 
-    get posX() {
-        return this._posX;
+    get x() {
+        return this._x;
     }
 
-    set posX(value) {
-        this._posX = value;
+    set x(value) {
+        this._x = value;
     }
 
     get velocityX() {
@@ -146,20 +146,20 @@ class AnimatedObject {
         this._directionY = value;
     }
 
-    get largeur() {
-        return this._largeur;
+    get width() {
+        return this._width;
     }
 
-    set largeur(value) {
-        this._largeur = value;
+    set width(value) {
+        this._width = value;
     }
 
-    get hauteur() {
-        return this._hauteur;
+    get height() {
+        return this._height;
     }
 
-    set hauteur(value) {
-        this._hauteur = value;
+    set height(value) {
+        this._height = value;
     }
 
     get shoundIBeDeleted() {

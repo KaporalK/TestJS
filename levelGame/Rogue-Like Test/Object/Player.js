@@ -10,17 +10,17 @@ class Player extends AnimatedObject {
 
     /**
      *
-     * @param posY
-     * @param posX
-     * @param largeur
-     * @param hauteur
+     * @param y
+     * @param x
+     * @param width
+     * @param height
      * @param velocityX
      * @param velocityY
      * @param poids
      * @param alphaBounce
      */
-    constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
-        super(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce)
+    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
+        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
 
 
         this._moveUp = false;
@@ -54,20 +54,20 @@ class Player extends AnimatedObject {
         this.detectPlayerBoderColision();
 
         if (this.moveUp && this.canMoveUp) {
-            this.posY -= this.moveSpeed;
+            this.y -= this.moveSpeed;
         }
         if (this.moveDown && this.canMoveDown){
-            this.posY += this.moveSpeed;
+            this.y += this.moveSpeed;
         }
         if (this.moveLeft && this.canMoveLeft) {
-            this.posX -= this.moveSpeed;
+            this.x -= this.moveSpeed;
         }
         if (this.moveRight && this.canMoveRight) {
-            this.posX += this.moveSpeed;
+            this.x += this.moveSpeed;
         }
 
         if (this.isShooting) {
-            this.shootBullet();
+            this.shootBullet(Engine.tree);
         }
 
         this.bulletCooldown -= (this.bulletCooldown !== 0 ? 1 : 0);
@@ -79,11 +79,6 @@ class Player extends AnimatedObject {
             }
             item.live(Engine);
         });
-
-        // console.log(this.posX, this.posY);
-        //Do somthing w/ physic to make the player move
-        // console.log(gravity)
-        super.live();
 
         this.canMoveUp = true;
         this.canMoveRight = true;
@@ -159,25 +154,26 @@ class Player extends AnimatedObject {
 
     detectPlayerBoderColision() {
 
-        if (10 > this.posX) {
+        if (10 > this.x) {
             this.moveLeft = false;
         } else if (this.getBorderX() > width - 10) {
             this.moveRight = false;
         }
-        if (10 > this.posY) {
+        if (10 > this.y) {
             this.moveUp = false;
         } else if (this.getBorderY() > height - 10) {
             this.moveDown = false;
         }
     }
 
-    shootBullet() {
+    shootBullet(tree) {
         if (this._bulletCooldown <= 0) {
             let newBullet;
             let coordinate = this.generateBulletCoordinate();
 
             newBullet = new Bullet(coordinate['position']['Y'], coordinate['position']['X'],
                 2, 2, coordinate['velocity']['X'], coordinate['velocity']['Y'], 5, 5);
+            tree.insert(newBullet);
             this.addBullet(newBullet);
             this.bulletCooldown = 10;
         }
@@ -197,63 +193,63 @@ class Player extends AnimatedObject {
         if (this.keypressed[UP] && this.keypressed[LEFT]) {
             bulletInfo['velocity']['Y'] = -2;
             bulletInfo['velocity']['X'] = -2;
-            bulletInfo['position']['X'] = this.posX - 8;
-            bulletInfo['position']['Y'] = this.posY - 8;
+            bulletInfo['position']['X'] = this.x - 8;
+            bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[UP] && this.keypressed[RIGHT]) {
             bulletInfo['velocity']['Y'] = -2;
             bulletInfo['velocity']['X'] = 2;
-            bulletInfo['position']['X'] = this.posX + 8;
-            bulletInfo['position']['Y'] = this.posY - 8;
+            bulletInfo['position']['X'] = this.x + 8;
+            bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[RIGHT] && this.keypressed[DOWN]) {
             bulletInfo['velocity']['Y'] = 2;
             bulletInfo['velocity']['X'] = 2;
-            bulletInfo['position']['X'] = this.posX + 8;
-            bulletInfo['position']['Y'] = this.posY + 8;
+            bulletInfo['position']['X'] = this.x + 8;
+            bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[LEFT] && this.keypressed[DOWN]) {
             bulletInfo['velocity']['Y'] = 2;
             bulletInfo['velocity']['X'] = -2;
-            bulletInfo['position']['X'] = this.posX - 8;
-            bulletInfo['position']['Y'] = this.posY + 8;
+            bulletInfo['position']['X'] = this.x - 8;
+            bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[UP]) {
             bulletInfo['velocity']['X'] = 0;
             bulletInfo['velocity']['Y'] = -2;
-            bulletInfo['position']['X'] = this.posX;
-            bulletInfo['position']['Y'] = this.posY - 10;
+            bulletInfo['position']['X'] = this.x;
+            bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.keypressed[LEFT]) {
             bulletInfo['velocity']['X'] = -2;
             bulletInfo['velocity']['Y'] = 0;
-            bulletInfo['position']['X'] = this.posX - 10;
-            bulletInfo['position']['Y'] = this.posY;
+            bulletInfo['position']['X'] = this.x - 10;
+            bulletInfo['position']['Y'] = this.y;
         } else if (this.keypressed[DOWN]) {
             bulletInfo['velocity']['X'] = 0;
             bulletInfo['velocity']['Y'] = 2;
-            bulletInfo['position']['X'] = this.posX;
-            bulletInfo['position']['Y'] = this.posY + 10;
+            bulletInfo['position']['X'] = this.x;
+            bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.keypressed[RIGHT]) {
             bulletInfo['velocity']['X'] = 2;
             bulletInfo['velocity']['Y'] = -0;
-            bulletInfo['position']['X'] = this.posX + 10;
-            bulletInfo['position']['Y'] = this.posY;
+            bulletInfo['position']['X'] = this.x + 10;
+            bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === UP) {
             bulletInfo['velocity']['X'] = 0;
             bulletInfo['velocity']['Y'] = -2;
-            bulletInfo['position']['X'] = this.posX;
-            bulletInfo['position']['Y'] = this.posY - 10;
+            bulletInfo['position']['X'] = this.x;
+            bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.lastKeyPressed === DOWN) {
             bulletInfo['velocity']['X'] = 0;
             bulletInfo['velocity']['Y'] = 2;
-            bulletInfo['position']['X'] = this.posX;
-            bulletInfo['position']['Y'] = this.posY + 10;
+            bulletInfo['position']['X'] = this.x;
+            bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.lastKeyPressed === LEFT) {
             bulletInfo['velocity']['X'] = -2;
             bulletInfo['velocity']['Y'] = 0;
-            bulletInfo['position']['X'] = this.posX - 10;
-            bulletInfo['position']['Y'] = this.posY;
+            bulletInfo['position']['X'] = this.x - 10;
+            bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === RIGHT) {
             bulletInfo['velocity']['X'] = 2;
             bulletInfo['velocity']['Y'] = -0;
-            bulletInfo['position']['X'] = this.posX + 10;
-            bulletInfo['position']['Y'] = this.posY;
+            bulletInfo['position']['X'] = this.x + 10;
+            bulletInfo['position']['Y'] = this.y;
         }
         return bulletInfo
     }
@@ -272,21 +268,21 @@ class Player extends AnimatedObject {
                 //TODO implémenter une interface de colision pour que cette fonction soit jolie et que je puisse traiter
                 // tous les object de la même facon pour les colision dans l'engine
                 // Actuelement je gere que le player mdr.
-                let newY = Player.posY;
-                let newX = Player.posX;
+                let newY = Player.y;
+                let newX = Player.x;
                 let nextMoveX = null;
                 let nextMoveY = null;
                 if (Player.moveUp && Player.canMoveUp) {
-                    newY = Player.posY - Player.moveSpeed;
+                    newY = Player.y - Player.moveSpeed;
                 }
                 if (Player.moveDown && Player.canMoveDown) {
-                    newY = Player.posY + Player.moveSpeed;
+                    newY = Player.y + Player.moveSpeed;
                 }
                 if (Player.moveLeft && Player.canMoveLeft) {
-                    newX = Player.posX - Player.moveSpeed;
+                    newX = Player.x - Player.moveSpeed;
                 }
                 if (Player.moveRight && Player.canMoveRight) {
-                    newX = Player.posX + Player.moveSpeed;
+                    newX = Player.x + Player.moveSpeed;
                 }
                 //du génie !
                 if(Player.detectRealColision(newX, newY, item)){
@@ -309,52 +305,52 @@ class Player extends AnimatedObject {
 
     detectBasicColision(item) {
         return !(
-            (this.posX - COLISION_DETECTION_OFFSET >= item.posX + item.largeur)      // trop à gauche
-            || (this.posX + this.largeur + COLISION_DETECTION_OFFSET <= item.posX) // trop à gauchauteure
-            || (this.posY - COLISION_DETECTION_OFFSET >= item.posY + item.hauteur) // trop en bas
-            || (this.posY + this.hauteur + COLISION_DETECTION_OFFSET <= item.posY)
+            (this.x - COLISION_DETECTION_OFFSET >= item.x + item.width)      // trop à gauche
+            || (this.x + this.width + COLISION_DETECTION_OFFSET <= item.x) // trop à gaucheighte
+            || (this.y - COLISION_DETECTION_OFFSET >= item.y + item.height) // trop en bas
+            || (this.y + this.height + COLISION_DETECTION_OFFSET <= item.y)
         );
     }
 
     detectRealColision(itemX, itemY, brick) {
-        return (itemX < brick.posX + brick.largeur &&
-            itemX + this.largeur > brick.posX &&
-            itemY  < brick.posY + brick.hauteur &&
-            itemY  + this.hauteur > brick.posY
+        return (itemX < brick.x + brick.width &&
+            itemX + this.width > brick.x &&
+            itemY  < brick.y + brick.height &&
+            itemY  + this.height > brick.y
         )
     }
 
     //Très mauvais nom
     detectLeftColision(itemX, itemY, brick) {
-        return (itemX + COLISION_OFFSET * this.moveSpeed < brick.posX + brick.largeur &&
-            itemX + this.largeur > brick.posX &&
-            itemY  < brick.posY + brick.hauteur &&
-            itemY  + this.hauteur > brick.posY
+        return (itemX + COLISION_OFFSET * this.moveSpeed < brick.x + brick.width &&
+            itemX + this.width > brick.x &&
+            itemY  < brick.y + brick.height &&
+            itemY  + this.height > brick.y
         )
     }
 
     //Très mauvais nom
     detectRightColision(itemX, itemY, brick) {
-        return (itemX < brick.posX + brick.largeur &&
-            itemX + this.largeur - COLISION_OFFSET * this.moveSpeed > brick.posX &&
-            itemY  < brick.posY + brick.hauteur &&
-            itemY  + this.hauteur > brick.posY
+        return (itemX < brick.x + brick.width &&
+            itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
+            itemY  < brick.y + brick.height &&
+            itemY  + this.height > brick.y
         )
     }
     //Très mauvais nom
     detectUpColision(itemX, itemY, brick) {
-        return (itemX < brick.posX + brick.largeur &&
-            itemX + this.largeur > brick.posX &&
-            itemY + COLISION_OFFSET * this.moveSpeed  < brick.posY + brick.hauteur &&
-            itemY  + this.hauteur > brick.posY
+        return (itemX < brick.x + brick.width &&
+            itemX + this.width > brick.x &&
+            itemY + COLISION_OFFSET * this.moveSpeed  < brick.y + brick.height &&
+            itemY  + this.height > brick.y
         )
     }
     //Très mauvais nom
     detectDownColision(itemX, itemY, brick) {
-        return (itemX < brick.posX + brick.largeur &&
-            itemX + this.largeur - COLISION_OFFSET * this.moveSpeed > brick.posX &&
-            itemY  < brick.posY + brick.hauteur &&
-            itemY  + this.hauteur - COLISION_OFFSET * this.moveSpeed > brick.posY
+        return (itemX < brick.x + brick.width &&
+            itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
+            itemY  < brick.y + brick.height &&
+            itemY  + this.height - COLISION_OFFSET * this.moveSpeed > brick.y
         )
     }
 

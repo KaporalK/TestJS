@@ -12,8 +12,6 @@
 class Engine {
 
     constructor(Level) {
-
-        let engine = this;
         this._gravity = Level.gravity;
         this._background = Level.background;
 
@@ -23,24 +21,39 @@ class Engine {
         // 0 = a de droite a gauche (la largeur)
         //100 = de haut en bas (la hauteur)
 
-        this.player = new Player(Level.Player.xStart, Level.Player.yStart,
+        let bounds = {
+            x: 0,
+            y: 0,
+            width: 800,
+            height: 800
+        };
+
+        this._tree = new QuadTree(bounds, false);
+
+        let player = new Player(Level.Player.xStart, Level.Player.yStart,
             Level.Player.width, Level.Player.height,
             Level.Player.veloX, Level.Player.veloY,
             Level.Player.poidsPlayer, Level.Player.alphaBounce);
 
         //TODO foreach sur les badGuy
-        this.badGuy = new KillableThing(Level.Ennemie.xStart, Level.Ennemie.yStart,
+        let badGuy = new KillableThing(Level.Ennemie.xStart, Level.Ennemie.yStart,
             Level.Ennemie.width, Level.Ennemie.height,
             Level.Ennemie.veloX, Level.Ennemie.veloY,
             Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
 
-        this.addAnimatedObject(this.player);
-        this.addAnimatedObject(this.badGuy);
+        // let badGuy2 = new KillableThing(200, 200,
+        //     Level.Ennemie.width, Level.Ennemie.height,
+        //     Level.Ennemie.veloX, Level.Ennemie.veloY,
+        //     Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
+
+        this.addAnimatedObject(player);
+        this.addAnimatedObject(badGuy);
+        // this.addAnimatedObject(badGuy2);
 
         Level.Layout.Bloc.forEach(function (item, index, array) {
             let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
-            engine.addBrick(bloc);
-        })
+            this.addBrick(bloc);
+        }, this)
 
     }
 
@@ -55,11 +68,14 @@ class Engine {
             //  Je peux pas detect les bullet comme ça
             item.detectColision(Engine.brickList);
             item.live(Engine);
-        })
+        });
+        this.updateTree();
     };
 
     draw() {
         this.drawBackGround();
+        this.renderQuad();
+        // console.log('---------------------------------------------------------------------------------------------------------------');
         this._brickList.forEach(function (item, index, array) {
             item.draw();
         });
@@ -67,6 +83,48 @@ class Engine {
             item.draw();
         });
     };
+
+    //Todo rework ca avec des interface
+    //todo voir si ca bug vraiment?
+    updateTree() {
+        this.tree.clear();
+        this.tree.insert(this.brickList);
+        this.tree.insert(this.KillableObject);
+        this.animatedObject.forEach(function (item, index, array) {
+            if (item instanceof Player && item.bullets.length !== 0) {
+                this.tree.insert(item.bullets);
+            }
+        }, this);
+        this.tree.insert(this.animatedObject);
+    }
+
+    renderQuad() {
+        this.drawNode(this.tree.root);
+    }
+
+    drawNode(node) {
+        var bounds = node._bounds;
+        noFill();
+        rect(
+            (bounds.x + 1)* COLISION_OFFSET,
+            (bounds.y + 1)* COLISION_OFFSET,
+            bounds.width* COLISION_OFFSET,
+            bounds.height* COLISION_OFFSET
+        );
+
+        var len = node.nodes.length;
+
+        // console.log('len');
+        // console.log(len);
+
+        for (var i = 0; i < len; i++) {
+            // console.log('I node');
+            // console.log(i);
+            this.drawNode(node.nodes[i]);
+            // console.log('fin recurcive node');
+        }
+        // console.log('Vraie');
+    }
 
     getKillableThing() {
         return this.KillableObject;
@@ -77,10 +135,12 @@ class Engine {
             this.KillableObject.push(object);
         }
         this.animatedObject.push(object);
+        this.tree.insert(object);
     };
 
     addBrick(brick) {
         this.brickList.push(brick);
+        this.tree.insert(brick);
     }
 
     deleteAnimatedObject(object) {
@@ -103,6 +163,14 @@ class Engine {
     drawBackGround() {
         background(this._background)
     };
+
+    get tree() {
+        return this._tree;
+    }
+
+    set tree(value) {
+        this._tree = value;
+    }
 
     get background() {
         return this._background;
@@ -143,6 +211,7 @@ class Engine {
     set brickList(value) {
         this._brickList = value;
     }
+
 }
 
 // module.exports = new Engine();

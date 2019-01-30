@@ -8,16 +8,17 @@
  */
 class Bullet extends AnimatedObject {
 
-    constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
-        super(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce);
+    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
+        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
         this.color = [0, 50, 200];
+        // this.velocityX = 0;
+        // this.velocityY = 0;
     }
 
     live(Engine){
         this.amIToFarFromHome();
 
         this.doIKillSomethingNow(Engine.getKillableThing());
-        // console.log('titi');
         super.live();
         // console.log(this.shoundIBeDeleted);
     }
@@ -27,12 +28,12 @@ class Bullet extends AnimatedObject {
     }
 
     amIToFarFromHome(){
-        if (- 50 > this.posX) {
+        if (- 50 > this.x) {
             this.shoundIBeDeleted = true;
         } else if (this.getBorderX() > width + 50) {
             this.shoundIBeDeleted = true;
         }
-        if (50 > this.posY) {
+        if (- 50 > this.y) {
             this.shoundIBeDeleted = true;
         } else if (this.getBorderY() > height + 50) {
             this.shoundIBeDeleted = true;
@@ -42,10 +43,10 @@ class Bullet extends AnimatedObject {
     doIKillSomethingNow(KillableThingList){
         let bullet = this;
         KillableThingList.forEach(function (item, index, array) {
-            if(bullet.posX < item.posX + item.largeur &&
-                bullet.posX + bullet.largeur > item.posX &&
-                bullet.posY < item.posY + item.hauteur &&
-                bullet.posY + bullet.hauteur > item.posY
+            if(bullet.x < item.x + item.width &&
+                bullet.x + bullet.width > item.x &&
+                bullet.y < item.y + item.height &&
+                bullet.y + bullet.height > item.y
             ){
                 item.shoundIBeDeleted = true;
             }

@@ -5,8 +5,8 @@
  */
 class KillableThing extends AnimatedObject {
 
-    constructor(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce) {
-        super(posY, posX, largeur, hauteur, velocityX, velocityY, poids, alphaBounce);
+    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
+        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
         this.color = [0, 168, 0];
     }
 
