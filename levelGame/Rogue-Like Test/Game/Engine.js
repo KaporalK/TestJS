@@ -16,7 +16,6 @@ class Engine {
         this._background = Level.background;
 
         this._brickList = [];
-        this._KillableObject = [];
         this._animatedObject = [];
         // 0 = a de droite a gauche (la largeur)
         //100 = de haut en bas (la hauteur)
@@ -53,7 +52,7 @@ class Engine {
         Level.Layout.Bloc.forEach(function (item, index, array) {
             let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
             this.addBrick(bloc);
-        }, this)
+        }, this);
         this._debug = debug;
 
     }
@@ -65,8 +64,6 @@ class Engine {
                 Engine.deleteAnimatedObject(item);
                 return;
             }
-            // TODO Mettre cette fonction dans l'animatedObject
-            //  Je peux pas detect les bullet comme ça
             item.detectColision(Engine.brickList);
             item.live(Engine);
         });
@@ -88,27 +85,18 @@ class Engine {
     };
 
     //Todo rework ca avec des interface
-    //todo voir si ca bug vraiment?
     updateTree() {
         this.tree.clear();
         this.tree.insert(this.brickList);
-        this.tree.insert(this.KillableObject);
         this.animatedObject.forEach(function (item, index, array) {
-            if (item instanceof Player && item.bullets.length !== 0) {
+            if (item instanceof WithBullets && item.bullets.length !== 0) {
                 this.tree.insert(item.bullets);
             }
         }, this);
         this.tree.insert(this.animatedObject);
     }
 
-    getKillableThing() {
-        return this.KillableObject;
-    }
-
     addAnimatedObject(object) {
-        if (object instanceof KillableThing) {
-            this.KillableObject.push(object);
-        }
         this.animatedObject.push(object);
         this.tree.insert(object);
     };
@@ -170,14 +158,6 @@ class Engine {
 
     set animatedObject(value) {
         this._animatedObject = value;
-    }
-
-    get KillableObject() {
-        return this._KillableObject;
-    }
-
-    set KillableObject(value) {
-        this._KillableObject = value;
     }
 
     get gravity() {

@@ -5,7 +5,7 @@
  *
  * Cette classe représente le joueur qu'on joue
  */
-class Player extends AnimatedObject {
+class Player extends WithBullets {
 
 
     /**
@@ -38,7 +38,6 @@ class Player extends AnimatedObject {
 
         this._bulletCooldown = 30;
 
-        this._bullets = [];
 
         this._keypressed = {};
         this._lastKeyPressed = '';
@@ -56,7 +55,7 @@ class Player extends AnimatedObject {
         if (this.moveUp && this.canMoveUp) {
             this.y -= this.moveSpeed;
         }
-        if (this.moveDown && this.canMoveDown){
+        if (this.moveDown && this.canMoveDown) {
             this.y += this.moveSpeed;
         }
         if (this.moveLeft && this.canMoveLeft) {
@@ -71,6 +70,16 @@ class Player extends AnimatedObject {
         }
 
         this.bulletCooldown -= (this.bulletCooldown !== 0 ? 1 : 0);
+
+
+        this._bullets.forEach(function (item, index, array) {
+            let node = Engine.tree.retrieve(item);
+            node.forEach(function (nodeItem, index, array) {
+                if( nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)){
+                    this.colidingClass.colide(nodeItem);
+                }
+            }, item)
+        });
 
         this._bullets.forEach(function (item, index, array) {
             if (item.shoundIBeDeleted) {
@@ -285,17 +294,17 @@ class Player extends AnimatedObject {
                     newX = Player.x + Player.moveSpeed;
                 }
                 //du génie !
-                if(Player.detectRealColision(newX, newY, item)){
-                    if( !Player.detectLeftColision(newX, newY, item)){
+                if (Player.detectRealColision(newX, newY, item)) {
+                    if (!Player.detectLeftColision(newX, newY, item)) {
                         Player.canMoveLeft = false;
                     }
-                    if( !Player.detectRightColision(newX, newY, item)){
+                    if (!Player.detectRightColision(newX, newY, item)) {
                         Player.canMoveRight = false;
                     }
-                    if( !Player.detectDownColision(newX, newY, item)){
+                    if (!Player.detectDownColision(newX, newY, item)) {
                         Player.canMoveDown = false;
                     }
-                    if( !Player.detectUpColision(newX, newY, item)){
+                    if (!Player.detectUpColision(newX, newY, item)) {
                         Player.canMoveUp = false;
                     }
                 }
@@ -315,8 +324,8 @@ class Player extends AnimatedObject {
     detectRealColision(itemX, itemY, brick) {
         return (itemX < brick.x + brick.width &&
             itemX + this.width > brick.x &&
-            itemY  < brick.y + brick.height &&
-            itemY  + this.height > brick.y
+            itemY < brick.y + brick.height &&
+            itemY + this.height > brick.y
         )
     }
 
@@ -324,8 +333,8 @@ class Player extends AnimatedObject {
     detectLeftColision(itemX, itemY, brick) {
         return (itemX + COLISION_OFFSET * this.moveSpeed < brick.x + brick.width &&
             itemX + this.width > brick.x &&
-            itemY  < brick.y + brick.height &&
-            itemY  + this.height > brick.y
+            itemY < brick.y + brick.height &&
+            itemY + this.height > brick.y
         )
     }
 
@@ -333,33 +342,27 @@ class Player extends AnimatedObject {
     detectRightColision(itemX, itemY, brick) {
         return (itemX < brick.x + brick.width &&
             itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
-            itemY  < brick.y + brick.height &&
-            itemY  + this.height > brick.y
+            itemY < brick.y + brick.height &&
+            itemY + this.height > brick.y
         )
     }
+
     //Très mauvais nom
     detectUpColision(itemX, itemY, brick) {
         return (itemX < brick.x + brick.width &&
             itemX + this.width > brick.x &&
-            itemY + COLISION_OFFSET * this.moveSpeed  < brick.y + brick.height &&
-            itemY  + this.height > brick.y
+            itemY + COLISION_OFFSET * this.moveSpeed < brick.y + brick.height &&
+            itemY + this.height > brick.y
         )
     }
+
     //Très mauvais nom
     detectDownColision(itemX, itemY, brick) {
         return (itemX < brick.x + brick.width &&
             itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
-            itemY  < brick.y + brick.height &&
-            itemY  + this.height - COLISION_OFFSET * this.moveSpeed > brick.y
+            itemY < brick.y + brick.height &&
+            itemY + this.height - COLISION_OFFSET * this.moveSpeed > brick.y
         )
-    }
-
-    get bullets() {
-        return this._bullets;
-    }
-
-    set bullets(value) {
-        this._bullets = value;
     }
 
     get lastKeyPressed() {

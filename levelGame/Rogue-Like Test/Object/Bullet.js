@@ -13,12 +13,13 @@ class Bullet extends AnimatedObject {
         this.color = [0, 50, 200];
         // this.velocityX = 0;
         // this.velocityY = 0;
+        this._colidingClass = new BulletColiding(this);
     }
 
     live(Engine){
         this.amIToFarFromHome();
 
-        this.doIKillSomethingNow(Engine.getKillableThing());
+        // this.doIKillSomethingNow(Engine.getKillableThing());
         super.live();
         // console.log(this.shoundIBeDeleted);
     }
@@ -51,5 +52,13 @@ class Bullet extends AnimatedObject {
                 item.shoundIBeDeleted = true;
             }
         })
+    }
+
+    get colidingClass() {
+        return this._colidingClass;
+    }
+
+    set colidingClass(value) {
+        this._colidingClass = value;
     }
 }
