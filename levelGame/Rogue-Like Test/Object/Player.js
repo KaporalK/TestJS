@@ -45,6 +45,7 @@ class Player extends WithBullets {
         this._moveSpeed = 1;
 
         this.registerPlayerEvent();
+        this.colidingClass = new PlayerColiding(this);
     }
 
     live(Engine) {
@@ -71,23 +72,7 @@ class Player extends WithBullets {
 
         this.bulletCooldown -= (this.bulletCooldown !== 0 ? 1 : 0);
 
-
-        this._bullets.forEach(function (item, index, array) {
-            let node = Engine.tree.retrieve(item);
-            node.forEach(function (nodeItem, index, array) {
-                if( nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)){
-                    this.colidingClass.colide(nodeItem);
-                }
-            }, item)
-        });
-
-        this._bullets.forEach(function (item, index, array) {
-            if (item.shoundIBeDeleted) {
-                Player.deleteBullet(item);
-                return;
-            }
-            item.live(Engine);
-        });
+        this.liveBullet(Engine);
 
         this.canMoveUp = true;
         this.canMoveRight = true;
@@ -102,9 +87,11 @@ class Player extends WithBullets {
         super.draw();
     };
 
+    //Enregistre les evenement pour le Player
     registerPlayerEvent() {
         document.addEventListener('keydown', (event) => {
                 const keyCode = event.keyCode;
+                console.log(keyCode );
                 switch (keyCode) {
                     case UP: //z
                         this.moveUp = true;
@@ -125,6 +112,7 @@ class Player extends WithBullets {
                     case SPACE: //spaceBar
                         this.isShooting = true;
                         break;
+                    case 69: //spaceBar
                 }
                 this.keypressed[keyCode] = true;
             }
@@ -162,7 +150,6 @@ class Player extends WithBullets {
     }
 
     detectPlayerBoderColision() {
-
         if (10 > this.x) {
             this.moveLeft = false;
         } else if (this.getBorderX() > width - 10) {
@@ -185,13 +172,6 @@ class Player extends WithBullets {
             tree.insert(newBullet);
             this.addBullet(newBullet);
             this.bulletCooldown = 10;
-        }
-    }
-
-    deleteBullet(bullet) {
-        let index = this.bullet.indexOf(bullet);
-        if (index > -1) {
-            this.bullet.splice(index, 1);
         }
     }
 
@@ -261,108 +241,6 @@ class Player extends WithBullets {
             bulletInfo['position']['Y'] = this.y;
         }
         return bulletInfo
-    }
-
-    //TODO check ca quand y'aura des colision mieux
-    // https://github.com/mikechambers/ExamplesByMesh/tree/master/JavaScript/QuadTree
-
-    //TODO séparé le terrain en carré pour trié plus vite les element a detecter la colision
-    // meilleur offset actuellement je multipli les dessin par deux pour avoir eventuellement moins de pixel a calculer lors des colision
-    // mais ca reste bancale
-
-    detectColision(brickList) {
-        let Player = this;
-        brickList.forEach(function (item, index, array) {
-            if (Player.detectBasicColision(item)) {
-                //TODO implémenter une interface de colision pour que cette fonction soit jolie et que je puisse traiter
-                // tous les object de la même facon pour les colision dans l'engine
-                // Actuelement je gere que le player mdr.
-                let newY = Player.y;
-                let newX = Player.x;
-                let nextMoveX = null;
-                let nextMoveY = null;
-                if (Player.moveUp && Player.canMoveUp) {
-                    newY = Player.y - Player.moveSpeed;
-                }
-                if (Player.moveDown && Player.canMoveDown) {
-                    newY = Player.y + Player.moveSpeed;
-                }
-                if (Player.moveLeft && Player.canMoveLeft) {
-                    newX = Player.x - Player.moveSpeed;
-                }
-                if (Player.moveRight && Player.canMoveRight) {
-                    newX = Player.x + Player.moveSpeed;
-                }
-                //du génie !
-                if (Player.detectRealColision(newX, newY, item)) {
-                    if (!Player.detectLeftColision(newX, newY, item)) {
-                        Player.canMoveLeft = false;
-                    }
-                    if (!Player.detectRightColision(newX, newY, item)) {
-                        Player.canMoveRight = false;
-                    }
-                    if (!Player.detectDownColision(newX, newY, item)) {
-                        Player.canMoveDown = false;
-                    }
-                    if (!Player.detectUpColision(newX, newY, item)) {
-                        Player.canMoveUp = false;
-                    }
-                }
-            }
-        })
-    }
-
-    detectBasicColision(item) {
-        return !(
-            (this.x - COLISION_DETECTION_OFFSET >= item.x + item.width)      // trop à gauche
-            || (this.x + this.width + COLISION_DETECTION_OFFSET <= item.x) // trop à gaucheighte
-            || (this.y - COLISION_DETECTION_OFFSET >= item.y + item.height) // trop en bas
-            || (this.y + this.height + COLISION_DETECTION_OFFSET <= item.y)
-        );
-    }
-
-    detectRealColision(itemX, itemY, brick) {
-        return (itemX < brick.x + brick.width &&
-            itemX + this.width > brick.x &&
-            itemY < brick.y + brick.height &&
-            itemY + this.height > brick.y
-        )
-    }
-
-    //Très mauvais nom
-    detectLeftColision(itemX, itemY, brick) {
-        return (itemX + COLISION_OFFSET * this.moveSpeed < brick.x + brick.width &&
-            itemX + this.width > brick.x &&
-            itemY < brick.y + brick.height &&
-            itemY + this.height > brick.y
-        )
-    }
-
-    //Très mauvais nom
-    detectRightColision(itemX, itemY, brick) {
-        return (itemX < brick.x + brick.width &&
-            itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
-            itemY < brick.y + brick.height &&
-            itemY + this.height > brick.y
-        )
-    }
-
-    //Très mauvais nom
-    detectUpColision(itemX, itemY, brick) {
-        return (itemX < brick.x + brick.width &&
-            itemX + this.width > brick.x &&
-            itemY + COLISION_OFFSET * this.moveSpeed < brick.y + brick.height &&
-            itemY + this.height > brick.y
-        )
-    }
-
-    //Très mauvais nom
-    detectDownColision(itemX, itemY, brick) {
-        return (itemX < brick.x + brick.width &&
-            itemX + this.width - COLISION_OFFSET * this.moveSpeed > brick.x &&
-            itemY < brick.y + brick.height &&
-            itemY + this.height - COLISION_OFFSET * this.moveSpeed > brick.y
-        )
     }
 
     get lastKeyPressed() {

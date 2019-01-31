@@ -19,7 +19,7 @@ class Engine {
         this._animatedObject = [];
         // 0 = a de droite a gauche (la largeur)
         //100 = de haut en bas (la hauteur)
-
+        //TODO instancier ca depuis les config;
         let bounds = {
             x: 0,
             y: 0,
@@ -40,10 +40,6 @@ class Engine {
             Level.Ennemie.veloX, Level.Ennemie.veloY,
             Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
 
-        // let badGuy2 = new KillableThing(200, 200,
-        //     Level.Ennemie.width, Level.Ennemie.height,
-        //     Level.Ennemie.veloX, Level.Ennemie.veloY,
-        //     Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
 
         this.addAnimatedObject(player);
         this.addAnimatedObject(badGuy);
@@ -58,15 +54,20 @@ class Engine {
     }
 
     live() {
-        let Engine = this;
         this._animatedObject.forEach(function (item, index, array) {
+            let node = this.tree.retrieve(item);
             if (item.shoundIBeDeleted) {
-                Engine.deleteAnimatedObject(item);
+                this.deleteAnimatedObject(item);
                 return;
             }
-            item.detectColision(Engine.brickList);
-            item.live(Engine);
-        });
+            node.forEach(function (nodeItem, index, array) {
+                if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                    this.colidingClass.colide(nodeItem);
+                }
+            }, item);
+
+            item.live(this);
+        }, this);
         this.updateTree();
     };
 

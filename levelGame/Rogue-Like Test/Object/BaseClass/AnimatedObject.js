@@ -53,6 +53,7 @@ class AnimatedObject {
         this._poids = poids;
         this._color = 255;
 
+        this._colidingClass = null;
     }
 
 
@@ -176,5 +177,13 @@ class AnimatedObject {
 
     set color(value) {
         this._color = value;
+    }
+
+    get colidingClass() {
+        return this._colidingClass;
+    }
+
+    set colidingClass(value) {
+        this._colidingClass = value;
     }
 }
