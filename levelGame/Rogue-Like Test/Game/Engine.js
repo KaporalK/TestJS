@@ -17,40 +17,10 @@ class Engine {
 
         this._brickList = [];
         this._animatedObject = [];
-        // 0 = a de droite a gauche (la largeur)
-        //100 = de haut en bas (la hauteur)
-        //TODO -------------------------------Instancier le lvl depuis une method magique
-        // ----------------------------------- Pour pouvoir mettre nimporte quel lvl dans les config.
-        //TODO instancier ca depuis les config;
-        let bounds = {
-            x: 0,
-            y: 0,
-            width: 800,
-            height: 800
-        };
 
-        this._tree = new QuadTree(bounds, false);
+        this._tree = new QuadTree(Level.Bounds, false);
 
-        let player = new Player(Level.Player.xStart, Level.Player.yStart,
-            Level.Player.width, Level.Player.height,
-            Level.Player.veloX, Level.Player.veloY,
-            Level.Player.poidsPlayer, Level.Player.alphaBounce);
-
-        //TODO foreach sur les badGuy
-        let badGuy = new KillableThing(Level.Ennemie.xStart, Level.Ennemie.yStart,
-            Level.Ennemie.width, Level.Ennemie.height,
-            Level.Ennemie.veloX, Level.Ennemie.veloY,
-            Level.Ennemie.poidsPlayer, Level.Ennemie.alphaBounce);
-
-
-        this.addAnimatedObject(player);
-        this.addAnimatedObject(badGuy);
-        // this.addAnimatedObject(badGuy2);
-
-        Level.Layout.Bloc.forEach(function (item, index, array) {
-            let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
-            this.addBrick(bloc);
-        }, this);
+        this._levelList = LevelCreator.createLevel(Level, this);
         this._debug = debug;
 
     }
@@ -179,6 +149,13 @@ class Engine {
         this._brickList = value;
     }
 
+    get levelList() {
+        return this._levelList;
+    }
+
+    set levelList(value) {
+        this._levelList = value;
+    }
 }
 
 // module.exports = new Engine();

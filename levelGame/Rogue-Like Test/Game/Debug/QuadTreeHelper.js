@@ -4,10 +4,10 @@ class QuadTreeHelper {
         var bounds = node._bounds;
         noFill();
         rect(
-            (bounds.x + 1) * COLISION_OFFSET,
-            (bounds.y + 1) * COLISION_OFFSET,
-            bounds.width * COLISION_OFFSET,
-            bounds.height * COLISION_OFFSET
+            (bounds.x + 1) ,
+            (bounds.y + 1) ,
+            bounds.width ,
+            bounds.height
         );
 
         var len = node.nodes.length;

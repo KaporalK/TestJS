@@ -41,7 +41,7 @@ class Player extends WithBullets {
         this._keypressed = {};
         this._lastKeyPressed = '';
 
-        this._moveSpeed = 1;
+        this._moveSpeed = 2;
 
         this.registerPlayerEvent();
         this.colidingClass = new PlayerColiding(this);
@@ -178,62 +178,62 @@ class Player extends WithBullets {
         bulletInfo['velocity'] = {0: 'X', 1: 'Y'};
         bulletInfo['position'] = {0: 'X', 1: 'Y'};
         if (this.keypressed[UP] && this.keypressed[LEFT]) {
-            bulletInfo['velocity']['Y'] = -2;
-            bulletInfo['velocity']['X'] = -2;
+            bulletInfo['velocity']['Y'] = -4;
+            bulletInfo['velocity']['X'] = -4;
             bulletInfo['position']['X'] = this.x - 8;
             bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[UP] && this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['Y'] = -2;
-            bulletInfo['velocity']['X'] = 2;
+            bulletInfo['velocity']['Y'] = -4;
+            bulletInfo['velocity']['X'] = 4;
             bulletInfo['position']['X'] = this.x + 8;
             bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[RIGHT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 2;
-            bulletInfo['velocity']['X'] = 2;
+            bulletInfo['velocity']['Y'] = 4;
+            bulletInfo['velocity']['X'] = 4;
             bulletInfo['position']['X'] = this.x + 8;
             bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[LEFT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 2;
-            bulletInfo['velocity']['X'] = -2;
+            bulletInfo['velocity']['Y'] = 4;
+            bulletInfo['velocity']['X'] = -4;
             bulletInfo['position']['X'] = this.x - 8;
             bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[UP]) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = -2;
+            bulletInfo['velocity']['Y'] = -4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.keypressed[LEFT]) {
-            bulletInfo['velocity']['X'] = -2;
+            bulletInfo['velocity']['X'] = -4;
             bulletInfo['velocity']['Y'] = 0;
             bulletInfo['position']['X'] = this.x - 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.keypressed[DOWN]) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = 2;
+            bulletInfo['velocity']['Y'] = 4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['X'] = 2;
+            bulletInfo['velocity']['X'] = 4;
             bulletInfo['velocity']['Y'] = -0;
             bulletInfo['position']['X'] = this.x + 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === UP) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = -2;
+            bulletInfo['velocity']['Y'] = -4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.lastKeyPressed === DOWN) {
             bulletInfo['velocity']['X'] = 0;
-            bulletInfo['velocity']['Y'] = 2;
+            bulletInfo['velocity']['Y'] = 4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.lastKeyPressed === LEFT) {
-            bulletInfo['velocity']['X'] = -2;
+            bulletInfo['velocity']['X'] = -4;
             bulletInfo['velocity']['Y'] = 0;
             bulletInfo['position']['X'] = this.x - 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === RIGHT) {
-            bulletInfo['velocity']['X'] = 2;
+            bulletInfo['velocity']['X'] = 4;
             bulletInfo['velocity']['Y'] = -0;
             bulletInfo['position']['X'] = this.x + 10;
             bulletInfo['position']['Y'] = this.y;

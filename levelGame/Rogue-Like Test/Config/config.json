@@ -5,122 +5,130 @@
     "frameRate": 120,
     "Levels": {
       "Tests": {
-        "Ennemie": {
-          "xStart": 250,
-          "yStart": 250,
-          "width": 25,
-          "height": 25,
-          "veloX": 0,
-          "veloY": 0,
-          "poidsPlayer": 5,
-          "alphaBounce": 2
+        "gravity": 9.8,
+        "background": 220,
+        "Bounds": {
+          "x": 0,
+          "y": 0,
+          "width": 800,
+          "height": 800
         },
         "Player": {
           "xStart": 50,
           "yStart": 50,
-          "width": 5,
-          "height": 5,
+          "width": 10,
+          "height": 10,
           "veloX": 0,
           "veloY": 0,
           "poidsPlayer": 5,
           "alphaBounce": 2
         },
+        "Ennemies": [
+          {
+            "xStart": 450,
+            "yStart": 450,
+            "width": 50,
+            "height": 50,
+            "veloX": 0,
+            "veloY": 0,
+            "poidsPlayer": 5,
+            "alphaBounce": 2
+          }
+        ],
         "Layout": {
           "Bloc": [
             {
-              "xStart": 200,
-              "yStart": 200,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 400,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 100,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 400,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 120,
-              "yStart": 100,
-              "width": 10,
-              "height": 10
+              "xStart": 240,
+              "yStart": 400,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 120,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 240,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 120,
-              "yStart": 120,
-              "width": 10,
-              "height": 10
+              "xStart": 240,
+              "yStart": 240,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 140,
-              "yStart": 100,
-              "width": 10,
-              "height": 10
+              "xStart": 280,
+              "yStart": 400,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 140,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 280,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 140,
-              "yStart": 140,
-              "width": 10,
-              "height": 10
+              "xStart": 280,
+              "yStart": 280,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 160,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 320,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 160,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 320,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 140,
-              "yStart": 160,
-              "width": 10,
-              "height": 10
+              "xStart": 280,
+              "yStart": 320,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 160,
-              "yStart": 140,
-              "width": 10,
-              "height": 10
+              "xStart": 320,
+              "yStart": 280,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 100,
-              "yStart": 180,
-              "width": 10,
-              "height": 10
+              "xStart": 400,
+              "yStart": 360,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 180,
-              "yStart": 100,
-              "width": 10,
-              "height": 10
+              "xStart": 360,
+              "yStart": 400,
+              "width": 20,
+              "height": 20
             },
             {
-              "xStart": 180,
-              "yStart": 160,
-              "width": 10,
-              "height": 10
+              "xStart": 360,
+              "yStart": 320,
+              "width": 20,
+              "height": 20
             }
           ]
-        },
-        "gravity": 9.8,
-        "background": 220
+        }
       }
     }
   }

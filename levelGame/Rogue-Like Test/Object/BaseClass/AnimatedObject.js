@@ -64,7 +64,7 @@ class AnimatedObject {
 
     draw() {
         fill(this.color);
-        rect(this.x * COLISION_OFFSET, this.y * COLISION_OFFSET, this.width * COLISION_OFFSET, this.height * COLISION_OFFSET);
+        rect(this.x , this.y , this.width , this.height );
     };
 
 
