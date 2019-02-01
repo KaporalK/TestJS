@@ -5,7 +5,7 @@ const RIGHT = 39;
 const SPACE = 32;
 
 const COLISION_OFFSET = 2;
-const COLISION_DETECTION_OFFSET = 10;
+const COLISION_DETECTION_OFFSET = 5;
 
 /**
  * @class RogueGame

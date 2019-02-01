@@ -12,6 +12,11 @@ class KillableThing extends AnimatedObject {
         this.colidingClass = new KillableThingColiding(this);
     }
 
+    respawn(){
+        this.x = Math.floor(Math.random() * 750) + 1;
+        this.y = Math.floor(Math.random() * 750) + 1;
+    }
+
     live(Engine){
         super.live();
     }

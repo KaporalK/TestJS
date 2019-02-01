@@ -22,7 +22,6 @@ class Player extends WithBullets {
     constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
         super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
 
-
         this._moveUp = false;
         this._moveDown = false;
         this._moveLeft = false;
@@ -91,7 +90,6 @@ class Player extends WithBullets {
     registerPlayerEvent() {
         document.addEventListener('keydown', (event) => {
                 const keyCode = event.keyCode;
-                console.log(keyCode );
                 switch (keyCode) {
                     case UP: //z
                         this.moveUp = true;
@@ -241,6 +239,12 @@ class Player extends WithBullets {
             bulletInfo['position']['Y'] = this.y;
         }
         return bulletInfo
+    }
+
+    respawn(){
+        this.x = this.spawn.x;
+        this.y = this.spawn.y;
+        this.bullet = [];
     }
 
     get lastKeyPressed() {

@@ -34,10 +34,10 @@ class AnimatedObject {
 
         this._shoundIBeDeleted = false;
 
+        this._spawn = {x: x, y: y};
+
         this._x = x;
         this._y = y;
-
-        //todo utilisé pour le calcul de la gravité quand sa remonte
 
         this._width = width;
         this._height = height;
@@ -71,6 +71,14 @@ class AnimatedObject {
     detectColision(){
         //todo faire un truc
         return true;
+    }
+
+    get spawn() {
+        return this._spawn;
+    }
+
+    set spawn(value) {
+        this._spawn = value;
     }
 
     getBorderX() {

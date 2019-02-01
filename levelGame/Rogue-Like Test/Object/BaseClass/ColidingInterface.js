@@ -24,6 +24,22 @@ class ColidingInterface {
         return this.item;
     }
 
+    detectRealColision(itemX, itemY, itemToColideWith) {
+        return (itemX < itemToColideWith.x + itemToColideWith.width &&
+            itemX + this.item.width > itemToColideWith.x &&
+            itemY < itemToColideWith.y + itemToColideWith.height &&
+            itemY + this.item.height > itemToColideWith.y
+        )
+    }
+    detectBasicColision(itemToColideWith) {
+        return !(
+            (this.item.x - COLISION_DETECTION_OFFSET >= itemToColideWith.x + itemToColideWith.width)      // trop à gauche
+            || (this.item.x + this.item.width + COLISION_DETECTION_OFFSET <= itemToColideWith.x) // trop à gaucheighte
+            || (this.item.y - COLISION_DETECTION_OFFSET >= itemToColideWith.y + itemToColideWith.height) // trop en bas
+            || (this.item.y + this.item.height + COLISION_DETECTION_OFFSET <= itemToColideWith.y)
+        );
+    }
+
     get item() {
         return this._item;
     }

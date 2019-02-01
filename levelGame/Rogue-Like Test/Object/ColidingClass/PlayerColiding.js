@@ -1,16 +1,16 @@
-class PlayerColiding extends ColidingInterface {
+﻿class PlayerColiding extends ColidingInterface {
 
     constructor(item) {
         super(item);
     }
 
     support() {
-        return ['Brick'];
+        return ['Brick', 'KillableThing'];
     }
 
     colide(itemToColideWith) {
-        if(itemToColideWith instanceof Brick){
-            if(this.detectBasicColision(itemToColideWith)){
+        if (itemToColideWith instanceof Brick) {
+            if (this.detectBasicColision(itemToColideWith)) {
                 let newY = this.item.y;
                 let newX = this.item.x;
                 let nextMoveX = null;
@@ -43,25 +43,13 @@ class PlayerColiding extends ColidingInterface {
                     }
                 }
             }
+        } else if (itemToColideWith instanceof KillableThing) {
+            if (this.detectBasicColision(itemToColideWith)) {
+                if (this.detectRealColision(this.item.x, this.item.y, itemToColideWith)) {
+                    this.item.respawn();
+                }
+            }
         }
-    }
-
-
-    detectBasicColision(item) {
-        return !(
-            (this.item.x - COLISION_DETECTION_OFFSET >= item.x + item.width)      // trop à gauche
-            || (this.item.x + this.item.width + COLISION_DETECTION_OFFSET <= item.x) // trop à gaucheighte
-            || (this.item.y - COLISION_DETECTION_OFFSET >= item.y + item.height) // trop en bas
-            || (this.item.y + this.item.height + COLISION_DETECTION_OFFSET <= item.y)
-        );
-    }
-
-    detectRealColision(itemX, itemY, brick) {
-        return (itemX < brick.x + brick.width &&
-            itemX + this.item.width > brick.x &&
-            itemY < brick.y + brick.height &&
-            itemY + this.item.height > brick.y
-        )
     }
 
     //Très mauvais nom
@@ -99,5 +87,4 @@ class PlayerColiding extends ColidingInterface {
             itemY + this.item.height - COLISION_OFFSET * this.item.moveSpeed > brick.y
         )
     }
-
 }

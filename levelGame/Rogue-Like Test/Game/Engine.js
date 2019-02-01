@@ -19,6 +19,8 @@ class Engine {
         this._animatedObject = [];
         // 0 = a de droite a gauche (la largeur)
         //100 = de haut en bas (la hauteur)
+        //TODO -------------------------------Instancier le lvl depuis une method magique
+        // ----------------------------------- Pour pouvoir mettre nimporte quel lvl dans les config.
         //TODO instancier ca depuis les config;
         let bounds = {
             x: 0,
