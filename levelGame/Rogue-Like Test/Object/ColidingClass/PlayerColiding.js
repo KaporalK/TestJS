@@ -8,38 +8,40 @@
         return ['Brick', 'KillableThing'];
     }
 
+
+    //TODO un fonction colide with block pour que chaque nouveaux objet implemente la logique de facon simple
     colide(itemToColideWith) {
         if (itemToColideWith instanceof Brick) {
             if (this.detectBasicColision(itemToColideWith)) {
-                let newY = this.item.y;
-                let newX = this.item.x;
-                let nextMoveX = null;
-                let nextMoveY = null;
                 if (this.item.moveUp && this.item.canMoveUp) {
-                    newY = this.item.y - this.item.moveSpeed;
+                    this.item.nextY = this.item.y - this.item.moveSpeed;
                 }
                 if (this.item.moveDown && this.item.canMoveDown) {
-                    newY = this.item.y + this.item.moveSpeed;
+                    this.item.nextY = this.item.y + this.item.moveSpeed;
                 }
                 if (this.item.moveLeft && this.item.canMoveLeft) {
-                    newX = this.item.x - this.item.moveSpeed;
+                    this.item.nextX = this.item.x - this.item.moveSpeed;
                 }
                 if (this.item.moveRight && this.item.canMoveRight) {
-                    newX = this.item.x + this.item.moveSpeed;
+                    this.item.nextX = this.item.x + this.item.moveSpeed;
                 }
                 //du génie !
-                if (this.detectRealColision(newX, newY, itemToColideWith)) {
-                    if (!this.detectLeftColision(newX, newY, itemToColideWith)) {
+                if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
+                    if (!this.detectLeftColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                         this.item.canMoveLeft = false;
+                        this.item.nextX = this.item.x;
                     }
-                    if (!this.detectRightColision(newX, newY, itemToColideWith)) {
+                    if (!this.detectRightColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                         this.item.canMoveRight = false;
+                        this.item.nextX = this.item.x;
                     }
-                    if (!this.detectDownColision(newX, newY, itemToColideWith)) {
+                    if (!this.detectDownColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                         this.item.canMoveDown = false;
+                        this.item.nextY = this.item.y;
                     }
-                    if (!this.detectUpColision(newX, newY, itemToColideWith)) {
+                    if (!this.detectUpColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                         this.item.canMoveUp = false;
+                        this.item.nextY = this.item.y;
                     }
                 }
             }
@@ -82,7 +84,7 @@
     //Très mauvais nom
     detectDownColision(itemX, itemY, brick) {
         return (itemX < brick.x + brick.width &&
-            itemX + this.item.width - COLISION_OFFSET * this.item.moveSpeed > brick.x &&
+            itemX + this.item.width > brick.x &&
             itemY < brick.y + brick.height &&
             itemY + this.item.height - COLISION_OFFSET * this.item.moveSpeed > brick.y
         )

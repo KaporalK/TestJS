@@ -39,6 +39,9 @@ class AnimatedObject {
         this._x = x;
         this._y = y;
 
+        this._nextY = y;
+        this._nextX = x;
+
         this._width = width;
         this._height = height;
 
@@ -67,6 +70,11 @@ class AnimatedObject {
         rect(this.x , this.y , this.width , this.height );
     };
 
+    applyNextMove(){
+        this.x = this.nextX;
+        this.y = this.nextY;
+    }
+
 
     detectColision(){
         //todo faire un truc
@@ -81,13 +89,17 @@ class AnimatedObject {
         this._spawn = value;
     }
 
-    getBorderX() {
-        // console.log( this.x + this.width);
+    getBorderX(nextMove = false) {
+        if(nextMove){
+            return this.nextX + this.width;
+        }
         return this.x + this.width;
     }
 
-    getBorderY() {
-        //console.log( this.y + this._height);
+    getBorderY(nextMove = false) {
+        if(nextMove){
+            return this.nextY + this.height;
+        }
         return this.y + this.height;
     }
 
@@ -193,5 +205,23 @@ class AnimatedObject {
 
     set colidingClass(value) {
         this._colidingClass = value;
+    }
+
+    get nextY(){
+        return this._nextY;
+    }
+
+
+    set nextY(value){
+        this._nextY = value;
+    }
+
+    get nextX(){
+        return this._nextX;
+    }
+
+
+    set nextX(value){
+        this._nextX = value;
     }
 }

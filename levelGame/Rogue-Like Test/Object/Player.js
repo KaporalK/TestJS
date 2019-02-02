@@ -5,7 +5,11 @@
  *
  * Cette classe représente le joueur qu'on joue
  */
-class Player extends WithBullets {
+
+//OMG implements ca exite
+//TODO use implement insted of extend
+//TODO faire un system de hp
+class Player extends WithBullets  {
 
 
     /**
@@ -30,6 +34,7 @@ class Player extends WithBullets {
         this._canMoveDown = true;
         this._canMoveLeft = true;
         this._canMoveRight = true;
+        this._canMoveNormaly = true;
 
         this._orientation = {'X': 'right', 'Y': 'up'};
 
@@ -51,19 +56,25 @@ class Player extends WithBullets {
         let Player = this;
 
         this.detectPlayerBoderColision();
+        // console.log(this.moveDown);
+        // console.log(this.canMoveDown);
+        // console.log(this.y);
+        // console.log(this.nextY);
 
-        if (this.moveUp && this.canMoveUp) {
-            this.y -= this.moveSpeed;
+        if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
+            this.nextY -= this.moveSpeed;
         }
-        if (this.moveDown && this.canMoveDown) {
-            this.y += this.moveSpeed;
+        if (this.moveDown && this.canMoveDown && this.y === this.nextY) {
+            this.nextY += this.moveSpeed;
         }
-        if (this.moveLeft && this.canMoveLeft) {
-            this.x -= this.moveSpeed;
+        if (this.moveLeft && this.canMoveLeft && this.x === this.nextX) {
+            this.nextX -= this.moveSpeed;
         }
-        if (this.moveRight && this.canMoveRight) {
-            this.x += this.moveSpeed;
+        if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
+            this.nextX += this.moveSpeed;
         }
+
+        this.applyNextMove();
 
         if (this.isShooting) {
             this.shootBullet(Engine.tree);
@@ -173,6 +184,8 @@ class Player extends WithBullets {
         }
     }
 
+    //TODO
+    // Fix ca pour que la position des bullet soit plus précise (au milieu)
     generateBulletCoordinate() {
         let bulletInfo = {0: 'velocity', 1: 'position'};
         bulletInfo['velocity'] = {0: 'X', 1: 'Y'};
@@ -242,8 +255,8 @@ class Player extends WithBullets {
     }
 
     respawn(){
-        this.x = this.spawn.x;
-        this.y = this.spawn.y;
+        this.nextX = this.spawn.x;
+        this.nextY = this.spawn.y;
         this.bullet = [];
     }
 

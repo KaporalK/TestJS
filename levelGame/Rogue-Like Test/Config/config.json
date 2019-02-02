@@ -29,8 +29,8 @@
             "yStart": 450,
             "width": 50,
             "height": 50,
-            "veloX": 0,
-            "veloY": 0,
+            "veloX": 0.6,
+            "veloY": 0.6,
             "poidsPlayer": 5,
             "alphaBounce": 2
           }
@@ -126,6 +126,12 @@
               "yStart": 320,
               "width": 20,
               "height": 20
+            },
+            {
+              "xStart": 30,
+              "yStart": 600,
+              "width": 600,
+              "height": 30
             }
           ]
         }
