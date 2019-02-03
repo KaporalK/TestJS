@@ -4,11 +4,12 @@
  * Une class pour stocker les different objet du lvl pour y acceder facilement si un autre objet en a besoin
  */
 class LevelList{
-    constructor(oui){
+    constructor(){
         this._player = null;
         this._killableThing = [];
         this._brick = [];
         this._annimatedObject = [];
+        this._waypoints = []
     }
 
 
@@ -73,6 +74,26 @@ class LevelList{
         let index = this.animatedObject.indexOf(object);
         if (index > -1) {
             this.animatedObject.splice(index, 1);
+        }
+    }
+
+
+    get waypoints() {
+        return this._waypoints;
+    }
+
+    set waypoints(value) {
+        this._waypoints = value;
+    }
+
+    addWaypoint(waypoint) {
+        this.waypoints.push(waypoint);
+    }
+
+    deleteWaypoint(object) {
+        let index = this.waypoints.indexOf(object);
+        if (index > -1) {
+            this.waypoints.splice(index, 1);
         }
     }
 }

@@ -17,13 +17,15 @@
  */
 class Brick {
 
-    constructor(y, x, width, height,) {
+    constructor(y, x, width, height) {
 
         this._shoundIBeDeleted = false;
         this._x = x;
         this._y = y;
         this._width = width;
         this._height = height;
+
+        this._waypoints = [];
     }
 
     draw() {
@@ -69,5 +71,24 @@ class Brick {
 
     set shoundIBeDeleted(value) {
         this._shoundIBeDeleted = value;
+    }
+
+    get waypoints() {
+        return this._waypoints;
+    }
+
+    set waypoints(value) {
+        this._waypoints = value;
+    }
+
+    addWaypoint(waypoint) {
+        this.waypoints.push(waypoint);
+    }
+
+    deleteWaypoint(object) {
+        let index = this.waypoints.indexOf(object);
+        if (index > -1) {
+            this.waypoints.splice(index, 1);
+        }
     }
 }

@@ -10,6 +10,10 @@
  *                  J'elimine l'itemToColideWith si il n'est pas de la bonne classe
  *                  Si il est de la bonne classe, je le redirige vers la fonction qui fera le calcul
  */
+
+//TODO implementer ce calcul
+// https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
+// Pour savoir si un blck est entre moi et un ennemie
 class ColidingInterface {
 
     constructor(item){

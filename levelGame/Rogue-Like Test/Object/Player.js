@@ -7,7 +7,6 @@
  */
 
 //OMG implements ca exite
-//TODO use implement insted of extend
 //TODO faire un system de hp
 class Player extends WithBullets  {
 
@@ -34,11 +33,12 @@ class Player extends WithBullets  {
         this._canMoveDown = true;
         this._canMoveLeft = true;
         this._canMoveRight = true;
-        this._canMoveNormaly = true;
 
         this._orientation = {'X': 'right', 'Y': 'up'};
 
+        //TODO implementer les guns qui return des bullet pour la logique du spawn de balle
         this._isShooting = false;
+        this._bullets = [];
 
         this._bulletCooldown = 30;
 
@@ -191,67 +191,77 @@ class Player extends WithBullets  {
         bulletInfo['velocity'] = {0: 'X', 1: 'Y'};
         bulletInfo['position'] = {0: 'X', 1: 'Y'};
         if (this.keypressed[UP] && this.keypressed[LEFT]) {
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['Y'] = -4 + Player.getRandomVelocity();
+            bulletInfo['velocity']['X'] = -4 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x - 8;
             bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[UP] && this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['Y'] = -4 + Player.getRandomVelocity();
+            bulletInfo['velocity']['X'] = 4 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x + 8;
             bulletInfo['position']['Y'] = this.y - 8;
         } else if (this.keypressed[RIGHT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['velocity']['X'] = 4;
+            bulletInfo['velocity']['Y'] = 4 + Player.getRandomVelocity();
+            bulletInfo['velocity']['X'] = 4 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x + 8;
             bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[LEFT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['velocity']['X'] = -4;
+            bulletInfo['velocity']['Y'] = 4 + Player.getRandomVelocity();
+            bulletInfo['velocity']['X'] = -4 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x - 8;
             bulletInfo['position']['Y'] = this.y + 8;
         } else if (this.keypressed[UP]) {
-            bulletInfo['velocity']['X'] = 0;
+            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
             bulletInfo['velocity']['Y'] = -4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.keypressed[LEFT]) {
             bulletInfo['velocity']['X'] = -4;
-            bulletInfo['velocity']['Y'] = 0;
+            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x - 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.keypressed[DOWN]) {
-            bulletInfo['velocity']['X'] = 0;
+            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
             bulletInfo['velocity']['Y'] = 4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.keypressed[RIGHT]) {
             bulletInfo['velocity']['X'] = 4;
-            bulletInfo['velocity']['Y'] = -0;
+            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x + 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === UP) {
-            bulletInfo['velocity']['X'] = 0;
+            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
             bulletInfo['velocity']['Y'] = -4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y - 10;
         } else if (this.lastKeyPressed === DOWN) {
-            bulletInfo['velocity']['X'] = 0;
+            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
             bulletInfo['velocity']['Y'] = 4;
             bulletInfo['position']['X'] = this.x;
             bulletInfo['position']['Y'] = this.y + 10;
         } else if (this.lastKeyPressed === LEFT) {
             bulletInfo['velocity']['X'] = -4;
-            bulletInfo['velocity']['Y'] = 0;
+            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x - 10;
             bulletInfo['position']['Y'] = this.y;
         } else if (this.lastKeyPressed === RIGHT) {
             bulletInfo['velocity']['X'] = 4;
-            bulletInfo['velocity']['Y'] = -0;
+            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
             bulletInfo['position']['X'] = this.x + 10;
             bulletInfo['position']['Y'] = this.y;
         }
         return bulletInfo
+    }
+
+    //Todo amélioré ca,
+    // Je pense pas que le min/max change quoi que se soit MDR
+    static getRandomVelocity() {
+        let min = -0.0002;
+        let max = 0.0002;
+        console.log(Math.random() * (max - min +1));
+        return Math.random() * (max - min +2) -1 ;
+
     }
 
     respawn(){

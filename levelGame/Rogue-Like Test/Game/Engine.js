@@ -45,9 +45,6 @@ class Engine {
 
     draw() {
         this.drawBackGround();
-        if (this.debug) {
-            QuadTreeHelper.drawNode(this.tree.root);
-        }
         // console.log('---------------------------------------------------------------------------------------------------------------');
         this._brickList.forEach(function (item, index, array) {
             item.draw();
@@ -55,6 +52,12 @@ class Engine {
         this._animatedObject.forEach(function (item, index, array) {
             item.draw();
         });
+        if (this.debug) {
+            QuadTreeHelper.drawNode(this.tree.root);
+            this.levelList.waypoints.forEach(function(item){
+                item.draw();
+            })
+        }
     };
 
     //Todo rework ca avec des interface

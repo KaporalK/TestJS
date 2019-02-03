@@ -9,7 +9,7 @@ class LevelCreator {
     static createLevel(LevelConfig, Engine) {
         ///TODO les bound dans la config
 
-        let LevelObjList = new LevelList('oui');
+        let LevelObjList = new LevelList();
 
         let player = new Player(LevelConfig.Player.xStart, LevelConfig.Player.yStart,
             LevelConfig.Player.width, LevelConfig.Player.height,
@@ -29,8 +29,15 @@ class LevelCreator {
 
         LevelConfig.Layout.Bloc.forEach(function (item, index, array) {
             let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
-            this.addBrick(bloc);
+            if (item.hasOwnProperty('waypoint')) {
+                let waypoint = new Waypoint(item.waypoint.xStart, item.waypoint.yStart, item.waypoint.width, item.waypoint.height,
+                    item.waypoint.BrickX1, item.waypoint.BrickY1, item.waypoint.BrickX2, item.waypoint.BrickY2,
+                    item.waypoint.orientation, item.waypoint.side);
+                bloc.addWaypoint(waypoint);
+                LevelObjList.addWaypoint(waypoint);
+            }
             LevelObjList.addBrick(bloc);
+            this.addBrick(bloc);
         }, Engine);
 
         return LevelObjList;

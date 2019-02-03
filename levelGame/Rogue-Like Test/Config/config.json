@@ -27,8 +27,8 @@
           {
             "xStart": 450,
             "yStart": 450,
-            "width": 50,
-            "height": 50,
+            "width": 20,
+            "height": 20,
             "veloX": 0.6,
             "veloY": 0.6,
             "poidsPlayer": 5,
@@ -38,100 +38,46 @@
         "Layout": {
           "Bloc": [
             {
-              "xStart": 400,
-              "yStart": 400,
+              "xStart": 150,
+              "yStart": 630,
               "width": 20,
-              "height": 20
+              "height": 140
             },
             {
-              "xStart": 400,
-              "yStart": 400,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 240,
-              "yStart": 400,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 400,
-              "yStart": 240,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 240,
-              "yStart": 240,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 280,
-              "yStart": 400,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 400,
-              "yStart": 280,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 280,
-              "yStart": 280,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 400,
-              "yStart": 320,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 400,
-              "yStart": 320,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 280,
-              "yStart": 320,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 320,
-              "yStart": 280,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 400,
-              "yStart": 360,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 360,
-              "yStart": 400,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 360,
-              "yStart": 320,
-              "width": 20,
-              "height": 20
-            },
-            {
-              "xStart": 30,
+              "xStart": 5,
               "yStart": 600,
-              "width": 600,
-              "height": 30
+              "width": 700,
+              "height": 30,
+              "waypoint": {
+                "xStart": 715,
+                "yStart": 610,
+                "width": 10,
+                "height": 10,
+                "BrickX1": 5,
+                "BrickY1": 600,
+                "BrickX2": 705,
+                "BrickY2": 600,
+                "orientation": "horizontal",
+                "side": "yx"
+              }
+            },
+            {
+              "xStart": 375,
+              "yStart": 400,
+              "width": 20,
+              "height": 200,
+              "waypoint": {
+                "xStart": 355,
+                "yStart": 385,
+                "width": 10,
+                "height": 10,
+                "BrickX1": 380,
+                "BrickY1": 400,
+                "BrickX2": 380,
+                "BrickY2": 600,
+                "orientation": "vertical",
+                "side": "xywh"
+              }
             }
           ]
         }
