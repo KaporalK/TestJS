@@ -259,7 +259,6 @@ class Player extends WithBullets  {
     static getRandomVelocity() {
         let min = -0.0002;
         let max = 0.0002;
-        console.log(Math.random() * (max - min +1));
         return Math.random() * (max - min +2) -1 ;
 
     }

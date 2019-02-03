@@ -56,8 +56,12 @@ class Engine {
             QuadTreeHelper.drawNode(this.tree.root);
             this.levelList.waypoints.forEach(function(item){
                 item.draw();
+                if(item instanceof SoSWaypoint){
+                    // alert();
+                }
             })
         }
+        // alert();
     };
 
     //Todo rework ca avec des interface

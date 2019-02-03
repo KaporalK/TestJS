@@ -39,8 +39,14 @@ class AnimatedObject {
         this._x = x;
         this._y = y;
 
+        this._prevX = 0;
+        this._prevY = 0;
+
         this._nextY = y;
         this._nextX = x;
+
+        this._directionX = '';
+        this._directionY = '';
 
         this._width = width;
         this._height = height;
@@ -67,16 +73,29 @@ class AnimatedObject {
 
     draw() {
         fill(this.color);
-        rect(this.x , this.y , this.width , this.height );
+        rect(this.x, this.y, this.width, this.height);
     };
 
-    applyNextMove(){
+    applyNextMove() {
+        this.prevX = this.x;
+        this.prevY = this.y;
+
+        if (this.nextX < this.x) {
+            this.directionX = 'right'
+        } else if (this.nextX > this.x) {
+            this.directionX = 'left'
+        }
+        if (this.nextY > this.y) {
+            this.directionY = 'down'
+        } else if (this.nextY < this.y) {
+            this.directionY = 'up'
+        }
         this.x = this.nextX;
         this.y = this.nextY;
     }
 
 
-    detectColision(){
+    detectColision() {
         //todo faire un truc
         return true;
     }
@@ -90,14 +109,14 @@ class AnimatedObject {
     }
 
     getBorderX(nextMove = false) {
-        if(nextMove){
+        if (nextMove) {
             return this.nextX + this.width;
         }
         return this.x + this.width;
     }
 
     getBorderY(nextMove = false) {
-        if(nextMove){
+        if (nextMove) {
             return this.nextY + this.height;
         }
         return this.y + this.height;
@@ -207,21 +226,37 @@ class AnimatedObject {
         this._colidingClass = value;
     }
 
-    get nextY(){
+    get nextY() {
         return this._nextY;
     }
 
 
-    set nextY(value){
+    set nextY(value) {
         this._nextY = value;
     }
 
-    get nextX(){
+    get nextX() {
         return this._nextX;
     }
 
 
-    set nextX(value){
+    set nextX(value) {
         this._nextX = value;
+    }
+
+    get prevX() {
+        return this._prevX;
+    }
+
+    set prevX(value) {
+        this._prevX = value;
+    }
+
+    get prevY() {
+        return this._prevY;
+    }
+
+    set prevY(value) {
+        this._prevY = value;
     }
 }

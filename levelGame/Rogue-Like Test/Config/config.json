@@ -16,8 +16,8 @@
         "Player": {
           "xStart": 50,
           "yStart": 50,
-          "width": 10,
-          "height": 10,
+          "width": 15,
+          "height": 15,
           "veloX": 0,
           "veloY": 0,
           "poidsPlayer": 5,
@@ -27,8 +27,8 @@
           {
             "xStart": 450,
             "yStart": 450,
-            "width": 20,
-            "height": 20,
+            "width": 15,
+            "height": 15,
             "veloX": 0.6,
             "veloY": 0.6,
             "poidsPlayer": 5,
@@ -49,14 +49,14 @@
               "width": 700,
               "height": 30,
               "waypoint": {
-                "xStart": 715,
-                "yStart": 610,
-                "width": 10,
-                "height": 10,
+                "xStart": 705,
+                "yStart": 608,
+                "width": 15,
+                "height": 15,
                 "BrickX1": 5,
-                "BrickY1": 600,
+                "BrickY1": 615,
                 "BrickX2": 705,
-                "BrickY2": 600,
+                "BrickY2": 615,
                 "orientation": "horizontal",
                 "side": "yx"
               }
@@ -67,16 +67,34 @@
               "width": 20,
               "height": 200,
               "waypoint": {
-                "xStart": 355,
+                "xStart": 378,
                 "yStart": 385,
-                "width": 10,
-                "height": 10,
-                "BrickX1": 380,
-                "BrickY1": 400,
-                "BrickX2": 380,
+                "width": 15,
+                "height": 15,
+                "BrickX1": 385,
+                "BrickY1": 390,
+                "BrickX2": 385,
                 "BrickY2": 600,
                 "orientation": "vertical",
                 "side": "xywh"
+              }
+            },
+            {
+              "xStart": 400,
+              "yStart": 200,
+              "width": 400,
+              "height": 30,
+              "waypoint": {
+                "xStart": 385,
+                "yStart": 207,
+                "width": 15,
+                "height": 15,
+                "BrickX1": 390,
+                "BrickY1": 215,
+                "BrickX2": 800,
+                "BrickY2": 215,
+                "orientation": "horizontal",
+                "side": "yx"
               }
             }
           ]

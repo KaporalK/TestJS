@@ -7,14 +7,16 @@ class KillableThing extends AnimatedObject {
 
     constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
         super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
+        //TODO config ?
         this.color = [0, 168, 0];
 
         this.colidingClass = new KillableThingColiding(this);
         this._detectionPlayerRange = 150;
         this._maxPlayerRange = 350;
-        this._playerInArea = false;
+        this._movingToTarget = false;
         this._target = null;
         this._playerDetected = false;
+
 
         this._moveUp = false;
         this._moveDown = false;
@@ -26,10 +28,11 @@ class KillableThing extends AnimatedObject {
         this._canMoveRight = true;
     }
 
-    ///TODO trouver un moyen pour pas rester bloquer quand on passe de droite a gauche du block
     live(Engine) {
         //Utilisation des Waypoints pour choisir sont target
         //Si le target n'est pas le joueur
+        ///TODO tester mieu L'IA !!
+        //TODO faire des class pour l'IA
         if (this.target !== Engine.levelList.player) {
             //Je vérifie que c'est un waypoint
             if (this.target instanceof Waypoint) {
@@ -37,28 +40,33 @@ class KillableThing extends AnimatedObject {
                 //si il est pas entre nous, le joueur redevien le target
                 if (!this.isBrickBetweenUs(Engine.levelList.player, this.target)) {
                     this.target = Engine.levelList.player;
-                } else if (this.playerDistance(Engine.levelList.player) > this.detectionPlayerRange) {
+                } else if (this.targetDistance(Engine.levelList.player) > this.detectionPlayerRange) {
                     this.target = Engine.levelList.player;
-                    this.playerInArea = false
+                    this.movingToTarget = false
                 }
-                this.moveToTarget(this.target);
-            } else if (this.target === null) {
+            } else if (this.target === null) { //On pourrait set le player direct quand ont construit le killable ?
                 this.target = Engine.levelList.player;
             }
-            //else{??}
+            if (this.target instanceof SoSWaypoint && this.targetDistance(this.target) < this.width / 2) {
+                Engine.levelList.deleteWaypoint(this.target);
+                this.target = Engine.levelList.player;
+            }
+            this.moveToTarget(this.target);
             //Si le target est le joueur, ou je n'est pas de target
         } else if (this.target === Engine.levelList.player) {
             //Je check si il est en range
-            if (this.playerInArea) {
-                //je regarde la liste des brick qui peuvent être entre lui et moi
+            this.movingToTarget = this.movingToTarget ? this.targetDistance(Engine.levelList.player) < this.maxPlayerRange
+                : this.targetDistance(Engine.levelList.player) < this.detectionPlayerRange;
+            if (this.movingToTarget) {
+                //je regarde la liste des brick qui peuvent être entre lui et moi c-a-d ceux qui ont des waypoints
                 Engine.levelList.brick.forEach(function (item) {
                     if (item.hasOwnProperty('_waypoints') && item.waypoints.length > 0) {
                         let x = item.waypoints.length;
                         for (let i = 0; i < x; i++) {
                             //Si la brick est entre lui est moi son waypoint devient le target
                             let brickbetUs = this.isBrickBetweenUs(Engine.levelList.player, item.waypoints[i]);
-                            console.log(brickbetUs);
                             if (brickbetUs && this.playerDetected) {
+                                console.log(this.checkWitchSide(item.waypoints[i]));
                                 //Todo faire une liste des target possible pour choisir le plus proche si jamais y'en a plusieurs
                                 this.target = item.waypoints[i];
                             } else if (!brickbetUs && !this.playerDetected) {
@@ -68,25 +76,48 @@ class KillableThing extends AnimatedObject {
                     }
                 }, this);
                 this.moveToTarget(this.target);
-                this.playerInArea = this.playerDistance(Engine.levelList.player) < this.maxPlayerRange
-            } else {
-                this.playerInArea = this.playerDistance(Engine.levelList.player) < this.detectionPlayerRange
             }
         }
 
         if (this.moveUp && this.canMoveUp) {
-            this.y -= this.velocityY;
+            this.nextY = this.nextY - this.velocityY;
         }
         if (this.moveDown && this.canMoveDown) {
-            this.y += this.velocityY;
+            this.nextY = this.nextY + this.velocityY;
         }
         if (this.moveLeft && this.canMoveLeft) {
-            this.x -= this.velocityX;
+            this.nextX = this.nextX - this.velocityX;
         }
         if (this.moveRight && this.canMoveRight) {
-            this.x += this.velocityX;
+            this.nextX = this.nextX + this.velocityX;
         }
 
+        //je suis bloqué
+        if (this.movingToTarget && this.prevX === this.nextX && this.prevY === this.nextY) {
+            if (!this.canMoveDown || !this.canMoveRight
+                || !this.canMoveLeft || !this.canMoveUp) {
+                let sosX;
+                let sosY;
+                if (this.directionY === 'down' && this.canMoveDown) {
+                    sosY = this.y + this.width;
+                } else if (this.directionY === 'up' && this.canMoveUp) {
+                    sosY = this.y - this.width;
+                } else {
+                    sosY = this.y;
+                }
+                if (this.directionX === 'left' && this.canMoveLeft) {
+                    sosX = this.x - this.width;
+                } else if (this.directionX === 'right' && this.canMoveRight) {
+                    sosX = this.x + this.width;
+                } else {
+                    sosX = this.x;
+                }
+                this.target = new SoSWaypoint(sosX, sosY, 15, 15);
+                Engine.levelList.addWaypoint(this.target);
+            }
+        }
+
+        this.applyNextMove();
         this.canMoveUp = true;
         this.canMoveRight = true;
         this.canMoveDown = true;
@@ -101,8 +132,8 @@ class KillableThing extends AnimatedObject {
         super.draw();
     }
 
-    // playerDistance(Player) {
-    //     this.playerInArea = !(
+    // targetDistance(Player) {
+    //     this.movingToTarget = !(
     //         (this.x - this.detectionPlayerRange >= Player.x + Player.width)      // trop à gauche
     //         || (this.x + this.width + this.detectionPlayerRange <= Player.x) // trop à gaucheighte
     //         || (this.y - this.detectionPlayerRange >= Player.y + Player.height) // trop en bas
@@ -110,7 +141,7 @@ class KillableThing extends AnimatedObject {
     //     );
     // }
 
-    playerDistance(Player) {
+    targetDistance(Player) {
         let a = Player.x - this.x;
         let b = Player.y - this.y;
         return Math.sqrt(a * a + b * b);
@@ -118,13 +149,12 @@ class KillableThing extends AnimatedObject {
 
     isBrickBetweenUs(Player, waypoint) {
         let det, gamma, lambda;
-        console.log(waypoint.side );
         if (waypoint.side === 'yx') {
             det = (this.x - Player.x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * (this.y - Player.y);
             gamma = ((Player.y - this.y) * (waypoint.BrickX2 - Player.x) + (this.x - Player.x) * (waypoint.BrickY2 - Player.y)) / det;
-        }else if (waypoint.side === 'xywh'){
-            det = ((this.x+ this.width)- Player.x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * ((this.y + this.height)- Player.y);
-            gamma = ((Player.y - (this.y + this.height)) * (waypoint.BrickX2 - Player.x) + ((this.x+ this.width) - Player.x) * (waypoint.BrickY2 - Player.y)) / det;
+        } else if (waypoint.side === 'xywh') {
+            det = ((this.x + this.width) - Player.x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * ((this.y + this.height) - Player.y);
+            gamma = ((Player.y - (this.y + this.height)) * (waypoint.BrickX2 - Player.x) + ((this.x + this.width) - Player.x) * (waypoint.BrickY2 - Player.y)) / det;
         }
         if (det === 0) {
             return false;
@@ -134,16 +164,34 @@ class KillableThing extends AnimatedObject {
         }
     };
 
-    //TODO trouver comment on va vers le joueur;
-    moveToTarget(Player) {
-        if (Player.x + (Player.width / 2) < this.x + (this.width / 2)) {
+    checkWitchSide(waypoint) {
+        let where = '';
+        if (waypoint.orientation === 'vertical') {
+            if (this.x < waypoint.x) {
+                where = 'left';
+            } else if (this.x > waypoint.x) {
+                where = 'right';
+            }
+        } else if (waypoint.orientation === 'horizontal') {
+            if (this.y < waypoint.y) {
+                where = 'up';
+            } else if (this.y > waypoint.y) {
+                where = 'down';
+            }
+        }
+        return where;
+    }
+
+    //TODO trouver un moyen plus intelligent de se déplacer
+    moveToTarget(target) {
+        if (target.x + (target.width / 2) < this.x + (this.width / 2)) {
             this.moveLeft = true;
-        } else if (Player.x + (Player.width / 2) > this.x + (this.width / 2)) {
+        } else if (target.x + (target.width / 2) > this.x + (this.width / 2)) {
             this.moveRight = true;
         }
-        if (Player.y + (Player.height / 2) < this.y + (this.height / 2)) {
+        if (target.y + (target.height / 2) < this.y + (this.height / 2)) {
             this.moveUp = true;
-        } else if (Player.y + (Player.height / 2) > this.y + (this.height / 2)) {
+        } else if (target.y + (target.height / 2) > this.y + (this.height / 2)) {
             this.moveDown = true;
         }
     }
@@ -233,12 +281,12 @@ class KillableThing extends AnimatedObject {
         this._canMoveRight = value;
     }
 
-    get playerInArea() {
-        return this._playerInArea;
+    get movingToTarget() {
+        return this._movingToTarget;
     }
 
-    set playerInArea(value) {
-        this._playerInArea = value;
+    set movingToTarget(value) {
+        this._movingToTarget = value;
     }
 
     get playerDetected() {
