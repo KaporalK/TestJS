@@ -41,6 +41,9 @@ class AnimatedObject {
 
         this._prevX = 0;
         this._prevY = 0;
+        this._prevDirectionX = '';
+        this._prevDirectionY = '';
+
 
         this._nextY = y;
         this._nextX = x;
@@ -79,6 +82,8 @@ class AnimatedObject {
     applyNextMove() {
         this.prevX = this.x;
         this.prevY = this.y;
+        this.prevDirectionX = this.directionX !== this.prevDirectionX ? this.directionX : this.prevDirectionX;
+        this.prevDirectionY = this.directionY !== this.prevDirectionY ? this.directionY : this.prevDirectionY;
 
         if (this.nextX < this.x) {
             this.directionX = 'right'
@@ -258,5 +263,21 @@ class AnimatedObject {
 
     set prevY(value) {
         this._prevY = value;
+    }
+
+    get prevDirectionX() {
+        return this._prevDirectionX;
+    }
+
+    set prevDirectionX(value) {
+        this._prevDirectionX = value;
+    }
+
+    get prevDirectionY() {
+        return this._prevDirectionY;
+    }
+
+    set prevDirectionY(value) {
+        this._prevDirectionY = value;
     }
 }

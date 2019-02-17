@@ -17,6 +17,8 @@ class Engine {
 
         this._brickList = [];
         this._animatedObject = [];
+        this._sosWaypoint = [];
+
 
         this._tree = new QuadTree(Level.Bounds, false);
 
@@ -26,19 +28,27 @@ class Engine {
     }
 
     live() {
-        this._animatedObject.forEach(function (item, index, array) {
-            let node = this.tree.retrieve(item);
+        this._animatedObject.forEach(function (item) {
             if (item.shoundIBeDeleted) {
                 this.deleteAnimatedObject(item);
                 return;
             }
-            node.forEach(function (nodeItem, index, array) {
+            let node = this.tree.retrieve(item);
+            node.forEach(function (nodeItem) {
                 if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);
 
             item.live(this);
+        }, this);
+        this._sosWaypoint.forEach(function (item) {
+            let node = this.tree.retrieve(item);
+            node.forEach(function (nodeItem) {
+                if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                    this.colidingClass.colide(nodeItem);
+                }
+            }, item);
         }, this);
         this.updateTree();
     };
@@ -57,8 +67,11 @@ class Engine {
             this.levelList.waypoints.forEach(function(item){
                 item.draw();
                 if(item instanceof SoSWaypoint){
-                    // alert();
+                    alert('ENGINE LIGNE 70 WTF');
                 }
+            });
+            this.sosWaypoint.forEach(function(item){
+                item.draw();
             })
         }
         // alert();
@@ -93,7 +106,27 @@ class Engine {
         }
     }
 
-    //
+    get sosWaypoint() {
+        return this._sosWaypoint;
+    }
+
+    set sosWaypoint(value) {
+        this._sosWaypoint = value;
+    }
+
+    addSosWaypoint(brick) {
+        this.sosWaypoint.push(brick);
+        this.tree.insert(brick);
+    }
+
+    deleteSosWaypoint(object) {
+        let index = this.sosWaypoint.indexOf(object);
+        if (index > -1) {
+            this.sosWaypoint.splice(index, 1);
+        }
+    }
+
+//
     // static mousePressed(mouseIsPressed) {
     //     if (mouseIsPressed) {
     //         fill(0);

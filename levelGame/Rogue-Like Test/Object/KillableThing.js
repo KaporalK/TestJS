@@ -5,18 +5,24 @@
  */
 class KillableThing extends AnimatedObject {
 
+    //TODO  Rework la propriété _playerDetected
+
     constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
         super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
         //TODO config ?
         this.color = [0, 168, 0];
 
         this.colidingClass = new KillableThingColiding(this);
+        this.ai = new KillableAI(this);
+
         this._detectionPlayerRange = 150;
         this._maxPlayerRange = 350;
         this._movingToTarget = false;
         this._target = null;
         this._playerDetected = false;
 
+        // todo a supprimer ?
+        this._moveHistory = [];
 
         this._moveUp = false;
         this._moveDown = false;
@@ -29,93 +35,30 @@ class KillableThing extends AnimatedObject {
     }
 
     live(Engine) {
-        //Utilisation des Waypoints pour choisir sont target
-        //Si le target n'est pas le joueur
-        ///TODO tester mieu L'IA !!
-        //TODO faire des class pour l'IA
-        if (this.target !== Engine.levelList.player) {
-            //Je vérifie que c'est un waypoint
-            if (this.target instanceof Waypoint) {
-                //Je regarde si le le block est toujours entre nous
-                //si il est pas entre nous, le joueur redevien le target
-                if (!this.isBrickBetweenUs(Engine.levelList.player, this.target)) {
-                    this.target = Engine.levelList.player;
-                } else if (this.targetDistance(Engine.levelList.player) > this.detectionPlayerRange) {
-                    this.target = Engine.levelList.player;
-                    this.movingToTarget = false
-                }
-            } else if (this.target === null) { //On pourrait set le player direct quand ont construit le killable ?
-                this.target = Engine.levelList.player;
-            }
-            if (this.target instanceof SoSWaypoint && this.targetDistance(this.target) < this.width / 2) {
-                Engine.levelList.deleteWaypoint(this.target);
-                this.target = Engine.levelList.player;
-            }
+
+        //-------------------UNIQUEMENT POUR LA SELECTION DU TARGET POUR LA PROCHAINE FRAME--------------//
+        this.ai.chooseTarget(Engine);
+        //-------------------FIN--------------//
+
+        if (this.movingToTarget) {
             this.moveToTarget(this.target);
-            //Si le target est le joueur, ou je n'est pas de target
-        } else if (this.target === Engine.levelList.player) {
-            //Je check si il est en range
-            this.movingToTarget = this.movingToTarget ? this.targetDistance(Engine.levelList.player) < this.maxPlayerRange
-                : this.targetDistance(Engine.levelList.player) < this.detectionPlayerRange;
-            if (this.movingToTarget) {
-                //je regarde la liste des brick qui peuvent être entre lui et moi c-a-d ceux qui ont des waypoints
-                Engine.levelList.brick.forEach(function (item) {
-                    if (item.hasOwnProperty('_waypoints') && item.waypoints.length > 0) {
-                        let x = item.waypoints.length;
-                        for (let i = 0; i < x; i++) {
-                            //Si la brick est entre lui est moi son waypoint devient le target
-                            let brickbetUs = this.isBrickBetweenUs(Engine.levelList.player, item.waypoints[i]);
-                            if (brickbetUs && this.playerDetected) {
-                                console.log(this.checkWitchSide(item.waypoints[i]));
-                                //Todo faire une liste des target possible pour choisir le plus proche si jamais y'en a plusieurs
-                                this.target = item.waypoints[i];
-                            } else if (!brickbetUs && !this.playerDetected) {
-                                this.playerDetected = true;
-                            }
-                        }
-                    }
-                }, this);
-                this.moveToTarget(this.target);
-            }
         }
 
-        if (this.moveUp && this.canMoveUp) {
-            this.nextY = this.nextY - this.velocityY;
+        if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
+            this.nextY -= this.velocityY;
         }
-        if (this.moveDown && this.canMoveDown) {
-            this.nextY = this.nextY + this.velocityY;
+        if (this.moveDown && this.canMoveDown && this.y === this.nextY) {
+            this.nextY += this.velocityY;
         }
-        if (this.moveLeft && this.canMoveLeft) {
-            this.nextX = this.nextX - this.velocityX;
+        if (this.moveLeft && this.canMoveLeft && this.x === this.nextX) {
+            this.nextX -= this.velocityX;
         }
-        if (this.moveRight && this.canMoveRight) {
-            this.nextX = this.nextX + this.velocityX;
+        if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
+            this.nextX += this.velocityX;
         }
 
         //je suis bloqué
-        if (this.movingToTarget && this.prevX === this.nextX && this.prevY === this.nextY) {
-            if (!this.canMoveDown || !this.canMoveRight
-                || !this.canMoveLeft || !this.canMoveUp) {
-                let sosX;
-                let sosY;
-                if (this.directionY === 'down' && this.canMoveDown) {
-                    sosY = this.y + this.width;
-                } else if (this.directionY === 'up' && this.canMoveUp) {
-                    sosY = this.y - this.width;
-                } else {
-                    sosY = this.y;
-                }
-                if (this.directionX === 'left' && this.canMoveLeft) {
-                    sosX = this.x - this.width;
-                } else if (this.directionX === 'right' && this.canMoveRight) {
-                    sosX = this.x + this.width;
-                } else {
-                    sosX = this.x;
-                }
-                this.target = new SoSWaypoint(sosX, sosY, 15, 15);
-                Engine.levelList.addWaypoint(this.target);
-            }
-        }
+        this.ai.unblock(Engine);
 
         this.applyNextMove();
         this.canMoveUp = true;
@@ -132,15 +75,6 @@ class KillableThing extends AnimatedObject {
         super.draw();
     }
 
-    // targetDistance(Player) {
-    //     this.movingToTarget = !(
-    //         (this.x - this.detectionPlayerRange >= Player.x + Player.width)      // trop à gauche
-    //         || (this.x + this.width + this.detectionPlayerRange <= Player.x) // trop à gaucheighte
-    //         || (this.y - this.detectionPlayerRange >= Player.y + Player.height) // trop en bas
-    //         || (this.y + this.height + this.detectionPlayerRange <= Player.y)
-    //     );
-    // }
-
     targetDistance(Player) {
         let a = Player.x - this.x;
         let b = Player.y - this.y;
@@ -148,22 +82,57 @@ class KillableThing extends AnimatedObject {
     }
 
     isBrickBetweenUs(Player, waypoint) {
-        let det, gamma, lambda;
-        if (waypoint.side === 'yx') {
-            det = (this.x - Player.x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * (this.y - Player.y);
-            gamma = ((Player.y - this.y) * (waypoint.BrickX2 - Player.x) + (this.x - Player.x) * (waypoint.BrickY2 - Player.y)) / det;
-        } else if (waypoint.side === 'xywh') {
-            det = ((this.x + this.width) - Player.x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * ((this.y + this.height) - Player.y);
-            gamma = ((Player.y - (this.y + this.height)) * (waypoint.BrickX2 - Player.x) + ((this.x + this.width) - Player.x) * (waypoint.BrickY2 - Player.y)) / det;
+        let playerPos = [
+            {
+                x: Player.x,
+                y: Player.y,
+            },
+            {
+                x: Player.x + Player.width,
+                y: Player.y,
+            },
+            {
+                x: Player.x,
+                y: Player.y + Player.height,
+            },
+            {
+                x: Player.x + Player.width,
+                y: Player.y + Player.height,
+            },
+        ];
+        let thisPos = [
+            {
+                x: this.x,
+                y: this.y,
+            }, {
+                x: this.x + this.width,
+                y: this.y,
+            }, {
+                x: this.x,
+                y: this.y + this.height,
+            }, {
+                x: this.x,
+                y: this.y + this.height,
+            },
+        ];
+        let colide = false;
+        for (let i = 0; i < 4; i++) {
+            let det, gamma, lambda;
+            det = (thisPos[i].x - playerPos[i].x) * (waypoint.BrickY2 - waypoint.BrickY1) - (waypoint.BrickX2 - waypoint.BrickX1) * (thisPos[i].y - playerPos[i].y);
+            gamma = ((playerPos[i].y - thisPos[i].y) * (waypoint.BrickX2 - playerPos[i].x) + (thisPos[i].x - playerPos[i].x) * (waypoint.BrickY2 - playerPos[i].y)) / det;
+            if (det === 0) {
+                return false;
+            } else {
+                lambda = ((waypoint.BrickY2 - waypoint.BrickY1) * (waypoint.BrickX2 - playerPos[i].x) + (waypoint.BrickX1 - waypoint.BrickX2) * (waypoint.BrickY2 - playerPos[i].y)) / det;
+                if (!colide) {
+                    colide = (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
+                }
+            }
         }
-        if (det === 0) {
-            return false;
-        } else {
-            lambda = ((waypoint.BrickY2 - waypoint.BrickY1) * (waypoint.BrickX2 - Player.x) + (waypoint.BrickX1 - waypoint.BrickX2) * (waypoint.BrickY2 - Player.y)) / det;
-            return (0 < lambda && lambda < 1) && (0 < gamma && gamma < 1);
-        }
+        return colide;
     };
 
+    //Debug
     checkWitchSide(waypoint) {
         let where = '';
         if (waypoint.orientation === 'vertical') {
@@ -196,9 +165,44 @@ class KillableThing extends AnimatedObject {
         }
     }
 
+    applyNextMove() {
+        this.prevX = this.x;
+        this.prevY = this.y;
+
+        if (this.directionX !== this.prevDirectionX || this.directionY !== this.prevDirectionY) {
+            if (this.moveHistory.length > 20) {
+                this.moveHistory.splice(0, 1);
+            }
+            this.addMoveHistory([this.directionX, this.directionY, this.x, this.y]);
+        }
+
+        this.prevDirectionX = this.directionX !== this.prevDirectionX ? this.directionX : this.prevDirectionX;
+        this.prevDirectionY = this.directionY !== this.prevDirectionY ? this.directionY : this.prevDirectionY;
+
+        if (this.nextX < this.x) {
+            this.directionX = 'right'
+        } else if (this.nextX > this.x) {
+            this.directionX = 'left'
+        }
+        if (this.nextY > this.y) {
+            this.directionY = 'down'
+        } else if (this.nextY < this.y) {
+            this.directionY = 'up'
+        }
+
+        this.x = this.nextX;
+        this.y = this.nextY;
+
+    }
+
+
     respawn() {
         this.x = Math.floor(Math.random() * 750) + 1;
         this.y = Math.floor(Math.random() * 750) + 1;
+    }
+
+    amIBlocked() {
+        return (this.movingToTarget && this.prevX === this.nextX && this.prevY === this.nextY);
     }
 
     get detectionPlayerRange() {
@@ -304,5 +308,24 @@ class KillableThing extends AnimatedObject {
     set target(value) {
         this._target = value;
     }
+
+    deleteMoveHistory(object) {
+        let index = this.moveHistory.indexOf(object);
+        if (index > -1) {
+            this.moveHistory.splice(index, 1);
+        }
+    }
+
+    get moveHistory() {
+        return this._moveHistory;
+    }
+
+    set moveHistory(value) {
+        this._moveHistory = value;
+    }
+
+    addMoveHistory(object) {
+        this._moveHistory.push(object);
+    };
 }
 

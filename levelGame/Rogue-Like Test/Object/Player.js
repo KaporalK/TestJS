@@ -49,17 +49,11 @@ class Player extends WithBullets  {
         this._moveSpeed = 2;
 
         this.registerPlayerEvent();
-        this.colidingClass = new PlayerColiding(this);
+        this.colidingClass = new PlayerColidingV2(this);
     }
 
     live(Engine) {
-        let Player = this;
-
         this.detectPlayerBoderColision();
-        // console.log(this.moveDown);
-        // console.log(this.canMoveDown);
-        // console.log(this.y);
-        // console.log(this.nextY);
 
         if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
             this.nextY -= this.moveSpeed;

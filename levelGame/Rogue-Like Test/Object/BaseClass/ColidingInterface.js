@@ -13,18 +13,19 @@
 
 //TODO implementer ce calcul
 // https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
+// https://developer.roblox.com/articles/2D-Collision-Detection
 // Pour savoir si un blck est entre moi et un ennemie
 class ColidingInterface {
 
-    constructor(item){
+    constructor(item) {
         this._item = item;
     }
 
-    support(){
+    support() {
         return [];
     }
 
-    colide(itemToColideWith){
+    colide(itemToColideWith) {
         return this.item;
     }
 
@@ -35,6 +36,7 @@ class ColidingInterface {
             itemY + this.item.height > itemToColideWith.y
         )
     }
+
     detectBasicColision(itemToColideWith) {
         return !(
             (this.item.x - COLISION_DETECTION_OFFSET >= itemToColideWith.x + itemToColideWith.width)      // trop à gauche
@@ -42,6 +44,32 @@ class ColidingInterface {
             || (this.item.y - COLISION_DETECTION_OFFSET >= itemToColideWith.y + itemToColideWith.height) // trop en bas
             || (this.item.y + this.item.height + COLISION_DETECTION_OFFSET <= itemToColideWith.y)
         );
+    }
+
+    findAndApplyMinimumVectorToNotColide(itemToColideWith) {
+        let edgeDifferences = [
+            new Vector((itemToColideWith.x - (this.item.nextX + this.item.width)), 0),
+            new Vector(((itemToColideWith.x + itemToColideWith.width) - this.item.nextX), 0),
+            new Vector(0, (itemToColideWith.y - (this.item.nextY + this.item.height))),
+            new Vector(0, ((itemToColideWith.y + itemToColideWith.height) - this.item.nextY)),
+        ];
+        edgeDifferences.sort(function (a, b) {
+            return a.getMagnitude() > b.getMagnitude()
+        });
+        let minimumVector = edgeDifferences[0];
+
+        if (minimumVector.y < 0) {
+            this.item.canMoveDown = false;
+        } else if (minimumVector.y > 0) {
+            this.item.canMoveUp = false;
+        }
+        if (minimumVector.x < 0) {
+            this.item.canMoveRight = false;
+        } else if (minimumVector.x > 0) {
+            this.item.canMoveLeft = false;
+        }
+        this.item.nextX += minimumVector.x;
+        this.item.nextY += minimumVector.y;
     }
 
     get item() {

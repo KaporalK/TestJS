@@ -17,6 +17,9 @@ class SoSWaypoint
         this._y = y;
         this._width = width;
         this._height = height;
+
+        this._colidingClass = new SosWaypoinColiding(this);
+
     }
 
     draw() {
@@ -24,6 +27,14 @@ class SoSWaypoint
         rect(this.x, this.y, this.width, this.height);
     };
 
+
+    get colidingClass() {
+        return this._colidingClass;
+    }
+
+    set colidingClass(value) {
+        this._colidingClass = value;
+    }
 
     get x() {
         return this._x;

@@ -26,11 +26,14 @@ class Brick {
         this._height = height;
 
         this._waypoints = [];
+        this._color = [255, 0 ,0];
+
     }
 
     draw() {
-        fill(255, 0, 0);
+        fill(this.color);
         rect(this.x , this.y , this.width , this.height );
+        // this.color = [255, 0 ,0];
     }
 
     get y() {
@@ -90,5 +93,12 @@ class Brick {
         if (index > -1) {
             this.waypoints.splice(index, 1);
         }
+    }
+    get color() {
+        return this._color;
+    }
+
+    set color(value) {
+        this._color = value;
     }
 }
