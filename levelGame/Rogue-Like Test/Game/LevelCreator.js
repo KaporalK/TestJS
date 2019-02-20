@@ -21,7 +21,7 @@ class LevelCreator {
         Engine.hud = new HUD([new TextContainer('Resources/font/test_ttf.TTF', 'Weapons', 870, 150, 15, {horizontal: CENTER }, '#000000')]);
 
         //Construction du layout
-        LevelObjList.offset = {x: offsetX, y: offsetY, height: LevelConfig.Bounds.height, width: LevelConfig.Bounds.width };
+        LevelObjList.offset = {x: offsetX, y: offsetY, height: LevelConfig.Bounds.height+ offsetY , width: LevelConfig.Bounds.width+ offsetX };
 
         //Construction du joueur
         let player = new Player(LevelConfig.Player.yStart + offsetY, LevelConfig.Player.xStart + offsetX,
