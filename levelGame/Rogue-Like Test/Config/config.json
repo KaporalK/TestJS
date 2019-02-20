@@ -1,7 +1,7 @@
 {
   "World": {
-    "width": 800,
-    "height": 800,
+    "width": 950,
+    "height": 950,
     "frameRate": 120,
     "Levels": {
       "Tests": {
@@ -9,7 +9,7 @@
         "background": 220,
         "Bounds": {
           "x": 0,
-          "y": 0,
+          "y": 145,
           "width": 800,
           "height": 800
         },
@@ -100,6 +100,11 @@
           ]
         }
       }
+    }
+  },
+  "Animations": {
+    "GunList": {
+      "Default": "Resources/img/defaultGun.png"
     }
   }
 }

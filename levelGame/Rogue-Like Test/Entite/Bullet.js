@@ -37,17 +37,4 @@ class Bullet extends AnimatedObject {
             this.shoundIBeDeleted = true;
         }
     }
-
-    doIKillSomethingNow(KillableThingList){
-        let bullet = this;
-        KillableThingList.forEach(function (item, index, array) {
-            if(bullet.x < item.x + item.width &&
-                bullet.x + bullet.width > item.x &&
-                bullet.y < item.y + item.height &&
-                bullet.y + bullet.height > item.y
-            ){
-                item.shoundIBeDeleted = true;
-            }
-        })
-    }
 }

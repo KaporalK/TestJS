@@ -1,7 +1,7 @@
 let World;
 let Gamer;
 let Ennemie;
-
+let Animations;
 
 let rogueGame;
 
@@ -10,7 +10,7 @@ function preload() {
 }
 
 function setup() {
-    rogueGame = new RogueGame(World)
+    rogueGame = new RogueGame(World);
 }
 
 function draw() {
@@ -21,6 +21,7 @@ function draw() {
 
 function setLocalVar(data){
     World = data.World;
+    Animations = data.Animations;
     Gamer = data.Player;
     Ennemie = data.Ennemie;
 }

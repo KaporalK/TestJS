@@ -43,8 +43,7 @@ class RogueGame {
         frameRate(World.frameRate);
         createCanvas(World.width, World.height);
         background(51);
-    }
-    ;
+    };
 
     draw() {
         if (!this._pause) {
@@ -53,8 +52,7 @@ class RogueGame {
             //engine.applyGravity();
             this.engine.draw();
         }
-    }
-    ;
+    };
 
     get engine() {
         return this._engine;

@@ -6,9 +6,10 @@
  * Cette classe représente le joueur qu'on joue
  */
 
-//OMG implements ca exite
+// import {PlayerColidingV2} from "./ColidingClass/PlayerColidingV2";
+
 //TODO faire un system de hp
-class Player extends WithBullets  {
+class Player extends WithInventory {
 
 
     /**
@@ -36,24 +37,20 @@ class Player extends WithBullets  {
 
         this._orientation = {'X': 'right', 'Y': 'up'};
 
-        //TODO implementer les guns qui return des bullet pour la logique du spawn de balle
-        this._isShooting = false;
-        this._bullets = [];
-
-        this._bulletCooldown = 30;
-
-
         this._keypressed = {};
         this._lastKeyPressed = '';
 
         this._moveSpeed = 2;
 
         this.registerPlayerEvent();
+
+        this._inventory.addGunAndSetCurrent(new DefaultGun(this));
+
         this.colidingClass = new PlayerColidingV2(this);
     }
 
     live(Engine) {
-        this.detectPlayerBoderColision();
+        this.detectPlayerBoderColision(Engine);
 
         if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
             this.nextY -= this.moveSpeed;
@@ -70,13 +67,10 @@ class Player extends WithBullets  {
 
         this.applyNextMove();
 
-        if (this.isShooting) {
-            this.shootBullet(Engine.tree);
+        if (this.inventory.currentGun.isShooting) {
+            this.inventory.currentGun.shootBullet(Engine.tree);
         }
-
-        this.bulletCooldown -= (this.bulletCooldown !== 0 ? 1 : 0);
-
-        this.liveBullet(Engine);
+        this.inventory.currentGun.nextBullet -= (this.inventory.currentGun.nextBullet !== 0 ? 1 : 0);
 
         this.canMoveUp = true;
         this.canMoveRight = true;
@@ -85,7 +79,7 @@ class Player extends WithBullets  {
     };
 
     draw() {
-        this._bullets.forEach(function (item, index, array) {
+        this.inventory.currentGun.bullets.forEach(function (item) {
             item.draw();
         });
         super.draw();
@@ -113,7 +107,8 @@ class Player extends WithBullets  {
                         this.moveLeft = true;
                         break;
                     case SPACE: //spaceBar
-                        this.isShooting = true;
+                        // this.isShooting = true;
+                        this.inventory.currentGun.isShooting = true;
                         break;
                     case 69: //spaceBar
                 }
@@ -143,8 +138,9 @@ class Player extends WithBullets  {
                         this.moveLeft = false;
                         break;
                     case SPACE: //spaceBar
-                        this.isShooting = false;
-                        this.keypressed[keyCode] = false;
+                        // this.isShooting = false;
+                        this.inventory.currentGun.isShooting = false;
+                        this.keypressed[keyCode] = false; //Wtf ?
                         break;
                 }
                 this.keypressed[keyCode] = false;
@@ -152,112 +148,20 @@ class Player extends WithBullets  {
         )
     }
 
-    detectPlayerBoderColision() {
-        if (10 > this.x) {
+    detectPlayerBoderColision(Engine) {
+        if (Engine.levelList.offset.x + 5 > this.x) {
             this.moveLeft = false;
-        } else if (this.getBorderX() > width - 10) {
+        } else if (this.getBorderX() > Engine.levelList.offset.width - 10) {
             this.moveRight = false;
         }
-        if (10 > this.y) {
+        if (Engine.levelList.offset.y + 5 > this.y) {
             this.moveUp = false;
-        } else if (this.getBorderY() > height - 10) {
+        } else if (this.getBorderY() > Engine.levelList.offset.height - 10) {
             this.moveDown = false;
         }
     }
 
-    shootBullet(tree) {
-        if (this._bulletCooldown <= 0) {
-            let newBullet;
-            let coordinate = this.generateBulletCoordinate();
-
-            newBullet = new Bullet(coordinate['position']['Y'], coordinate['position']['X'],
-                2, 2, coordinate['velocity']['X'], coordinate['velocity']['Y'], 5, 5);
-            tree.insert(newBullet);
-            this.addBullet(newBullet);
-            this.bulletCooldown = 10;
-        }
-    }
-
-    //TODO
-    // Fix ca pour que la position des bullet soit plus précise (au milieu)
-    generateBulletCoordinate() {
-        let bulletInfo = {0: 'velocity', 1: 'position'};
-        bulletInfo['velocity'] = {0: 'X', 1: 'Y'};
-        bulletInfo['position'] = {0: 'X', 1: 'Y'};
-        if (this.keypressed[UP] && this.keypressed[LEFT]) {
-            bulletInfo['velocity']['Y'] = -4 + Player.getRandomVelocity();
-            bulletInfo['velocity']['X'] = -4 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x - 8;
-            bulletInfo['position']['Y'] = this.y - 8;
-        } else if (this.keypressed[UP] && this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['Y'] = -4 + Player.getRandomVelocity();
-            bulletInfo['velocity']['X'] = 4 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x + 8;
-            bulletInfo['position']['Y'] = this.y - 8;
-        } else if (this.keypressed[RIGHT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4 + Player.getRandomVelocity();
-            bulletInfo['velocity']['X'] = 4 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x + 8;
-            bulletInfo['position']['Y'] = this.y + 8;
-        } else if (this.keypressed[LEFT] && this.keypressed[DOWN]) {
-            bulletInfo['velocity']['Y'] = 4 + Player.getRandomVelocity();
-            bulletInfo['velocity']['X'] = -4 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x - 8;
-            bulletInfo['position']['Y'] = this.y + 8;
-        } else if (this.keypressed[UP]) {
-            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['position']['X'] = this.x;
-            bulletInfo['position']['Y'] = this.y - 10;
-        } else if (this.keypressed[LEFT]) {
-            bulletInfo['velocity']['X'] = -4;
-            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x - 10;
-            bulletInfo['position']['Y'] = this.y;
-        } else if (this.keypressed[DOWN]) {
-            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['position']['X'] = this.x;
-            bulletInfo['position']['Y'] = this.y + 10;
-        } else if (this.keypressed[RIGHT]) {
-            bulletInfo['velocity']['X'] = 4;
-            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x + 10;
-            bulletInfo['position']['Y'] = this.y;
-        } else if (this.lastKeyPressed === UP) {
-            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
-            bulletInfo['velocity']['Y'] = -4;
-            bulletInfo['position']['X'] = this.x;
-            bulletInfo['position']['Y'] = this.y - 10;
-        } else if (this.lastKeyPressed === DOWN) {
-            bulletInfo['velocity']['X'] = 0 + Player.getRandomVelocity();
-            bulletInfo['velocity']['Y'] = 4;
-            bulletInfo['position']['X'] = this.x;
-            bulletInfo['position']['Y'] = this.y + 10;
-        } else if (this.lastKeyPressed === LEFT) {
-            bulletInfo['velocity']['X'] = -4;
-            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x - 10;
-            bulletInfo['position']['Y'] = this.y;
-        } else if (this.lastKeyPressed === RIGHT) {
-            bulletInfo['velocity']['X'] = 4;
-            bulletInfo['velocity']['Y'] = 0 + Player.getRandomVelocity();
-            bulletInfo['position']['X'] = this.x + 10;
-            bulletInfo['position']['Y'] = this.y;
-        }
-        return bulletInfo
-    }
-
-    //Todo amélioré ca,
-    // Je pense pas que le min/max change quoi que se soit MDR
-    static getRandomVelocity() {
-        let min = -0.0002;
-        let max = 0.0002;
-        return Math.random() * (max - min +2) -1 ;
-
-    }
-
-    respawn(){
+    respawn() {
         this.nextX = this.spawn.x;
         this.nextY = this.spawn.y;
         this.bullet = [];
@@ -386,5 +290,13 @@ class Player extends WithBullets  {
 
     set moveSpeed(value) {
         this._moveSpeed = value;
+    }
+
+    get nextBullet() {
+        return this._nextBullet;
+    }
+
+    set nextBullet(value) {
+        this._nextBullet = value;
     }
 }

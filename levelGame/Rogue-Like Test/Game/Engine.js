@@ -19,7 +19,7 @@ class Engine {
         this._animatedObject = [];
         this._sosWaypoint = [];
 
-
+        this._hud = null;
         this._tree = new QuadTree(Level.Bounds, false);
 
         this._levelList = LevelCreator.createLevel(Level, this);
@@ -41,6 +41,9 @@ class Engine {
             }, item);
 
             item.live(this);
+            if(item instanceof WithInventory){
+                item.inventory.live(this);
+            }
         }, this);
         this._sosWaypoint.forEach(function (item) {
             let node = this.tree.retrieve(item);
@@ -49,7 +52,7 @@ class Engine {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);
-        }, this);
+        }, this);+
         this.updateTree();
     };
 
@@ -74,16 +77,16 @@ class Engine {
                 item.draw();
             })
         }
-        // alert();
+        this.hud.draw(this.levelList.player.inventory);
     };
 
     //Todo rework ca avec des interface
     updateTree() {
         this.tree.clear();
         this.tree.insert(this.brickList);
-        this.animatedObject.forEach(function (item, index, array) {
-            if (item instanceof WithBullets && item.bullets.length !== 0) {
-                this.tree.insert(item.bullets);
+        this.animatedObject.forEach(function (item) {
+            if (item instanceof WithInventory && item.inventory.currentGun.bullets.length !== 0) {
+                this.tree.insert(item.inventory.currentGun.bullets);
             }
         }, this);
         this.tree.insert(this.animatedObject);
@@ -125,17 +128,6 @@ class Engine {
             this.sosWaypoint.splice(index, 1);
         }
     }
-
-//
-    // static mousePressed(mouseIsPressed) {
-    //     if (mouseIsPressed) {
-    //         fill(0);
-    //     } else {
-    //         fill(255);
-    //     }
-    //     ellipse(mouseX, mouseY, 80, 80);
-    // };
-
 
     get debug() {
         return this._debug;
@@ -195,6 +187,14 @@ class Engine {
 
     set levelList(value) {
         this._levelList = value;
+    }
+
+    get hud() {
+        return this._hud;
+    }
+
+    set hud(value) {
+        this._hud = value;
     }
 }
 

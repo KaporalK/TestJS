@@ -8,18 +8,32 @@ class LevelCreator {
 
     static createLevel(LevelConfig, Engine) {
         ///TODO les bound dans la config
+        //TODO Rework les class Ici pour prendre des objet anonyme en constructeur
+
+        //UTILISER L'OFFSET!!!! pour le hud,
+        //Pourquoi pas mettre un offset dans les config pour faire differents lvls
+        //TODO fonction addOffsetToXYParams
+        let offsetX = LevelConfig.Bounds.x;
+        let offsetY = LevelConfig.Bounds.y;
 
         let LevelObjList = new LevelList();
+        //todo rework ca MDR
+        Engine.hud = new HUD([new TextContainer('Resources/font/test_ttf.TTF', 'Weapons', 870, 150, 15, {horizontal: CENTER })]);
 
-        let player = new Player(LevelConfig.Player.xStart, LevelConfig.Player.yStart,
+        //Construction du layout
+        LevelObjList.offset = {x: offsetX, y: offsetY, height: LevelConfig.Bounds.height, width: LevelConfig.Bounds.width };
+
+        //Construction du joueur
+        let player = new Player(LevelConfig.Player.yStart + offsetY, LevelConfig.Player.xStart + offsetX,
             LevelConfig.Player.width, LevelConfig.Player.height,
             LevelConfig.Player.veloX, LevelConfig.Player.veloY,
             LevelConfig.Player.poidsPlayer, LevelConfig.Player.alphaBounce);
         Engine.addAnimatedObject(player);
         LevelObjList.player = player;
 
-        LevelConfig.Ennemies.forEach(function (item, index, array) {
-            let badGuy = new KillableThing(item.xStart, item.yStart,
+        //Construction des Ennemie
+        LevelConfig.Ennemies.forEach(function (item) {
+            let badGuy = new KillableThing(item.xStart + offsetX, item.yStart + offsetY,
                 item.width, item.height,
                 item.veloX, item.veloY,
                 item.poidsPlayer, item.alphaBounce);
@@ -27,11 +41,15 @@ class LevelCreator {
             LevelObjList.addKillableThing(badGuy);
         }, Engine);
 
-        LevelConfig.Layout.Bloc.forEach(function (item, index, array) {
-            let bloc = new Brick(item.yStart, item.xStart, item.width, item.height);
+
+        //Construction des Brick / Mur
+        LevelConfig.Layout.Bloc.forEach(function (item) {
+            let bloc = new Brick(item.yStart + offsetY, item.xStart + offsetX, item.width, item.height);
             if (item.hasOwnProperty('waypoint')) {
-                let waypoint = new Waypoint(item.waypoint.xStart, item.waypoint.yStart, item.waypoint.width, item.waypoint.height,
-                    item.waypoint.BrickX1, item.waypoint.BrickY1, item.waypoint.BrickX2, item.waypoint.BrickY2,
+                let waypoint = new Waypoint(item.waypoint.xStart + offsetX, item.waypoint.yStart + offsetY,
+                    item.waypoint.width, item.waypoint.height,
+                    item.waypoint.BrickX1 + offsetX, item.waypoint.BrickY1 + offsetY,
+                    item.waypoint.BrickX2 + offsetX, item.waypoint.BrickY2 + offsetY,
                     item.waypoint.orientation, item.waypoint.side);
                 bloc.addWaypoint(waypoint);
                 LevelObjList.addWaypoint(waypoint);
@@ -39,6 +57,8 @@ class LevelCreator {
             LevelObjList.addBrick(bloc);
             this.addBrick(bloc);
         }, Engine);
+
+        //TODO refact ca dans les configs
 
         return LevelObjList;
     }

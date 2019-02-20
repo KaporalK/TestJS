@@ -3,15 +3,26 @@
  *
  * Une class pour stocker les different objet du lvl pour y acceder facilement si un autre objet en a besoin
  */
-class LevelList{
-    constructor(){
+class LevelList {
+    constructor() {
         this._player = null;
         this._killableThing = [];
         this._brick = [];
         this._annimatedObject = [];
-        this._waypoints = []
+        this._waypoints = [];
+
+        this._offset = {x: 0, y: 0, height:0, width: 0}
+
     }
 
+
+    get offset() {
+        return this._offset;
+    }
+
+    set offset(value) {
+        this._offset = value;
+    }
 
     get player() {
         return this._player;
@@ -39,6 +50,7 @@ class LevelList{
             this.killableThing.splice(index, 1);
         }
     }
+
     get brick() {
         return this._brick;
     }
