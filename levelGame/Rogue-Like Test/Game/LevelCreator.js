@@ -18,7 +18,7 @@ class LevelCreator {
 
         let LevelObjList = new LevelList();
         //todo rework ca MDR
-        Engine.hud = new HUD([new TextContainer('Resources/font/test_ttf.TTF', 'Weapons', 870, 150, 15, {horizontal: CENTER })]);
+        Engine.hud = new HUD([new TextContainer('Resources/font/test_ttf.TTF', 'Weapons', 870, 150, 15, {horizontal: CENTER }, '#000000')]);
 
         //Construction du layout
         LevelObjList.offset = {x: offsetX, y: offsetY, height: LevelConfig.Bounds.height, width: LevelConfig.Bounds.width };
