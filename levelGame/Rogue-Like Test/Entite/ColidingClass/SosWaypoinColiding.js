@@ -9,7 +9,6 @@
     }
 
 
-    //TODO un fonction colide with block pour que chaque nouveaux objet implemente la logique de facon simple
     colide(itemToColideWith) {
         if (itemToColideWith instanceof Brick) {
             if (this.detectBasicColision(itemToColideWith)) {

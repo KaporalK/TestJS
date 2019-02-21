@@ -2,6 +2,7 @@ let World;
 let Gamer;
 let Ennemie;
 let Animations;
+let configHUD;
 
 let rogueGame;
 
@@ -21,6 +22,7 @@ function draw() {
 
 function setLocalVar(data){
     World = data.World;
+    configHUD = data.HUD;
     Animations = data.Animations;
     Gamer = data.Player;
     Ennemie = data.Ennemie;

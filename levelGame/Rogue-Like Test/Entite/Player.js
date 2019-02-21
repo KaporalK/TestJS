@@ -12,7 +12,7 @@
  * Cette classe représente le joueur qu'on joue
  */
 
-// import {PlayerColidingV2} from "./ColidingClass/PlayerColidingV2";
+// import {PlayerColiding} from "./ColidingClass/PlayerColiding";
 
 //TODO faire un system de hp
 class Player extends WithInventory {
@@ -40,7 +40,7 @@ class Player extends WithInventory {
 
         this._inventory.addGunAndSetCurrent(new DefaultGun(this));
 
-        this.colidingClass = new PlayerColidingV2(this);
+        this.colidingClass = new PlayerColiding(this);
     }
 
     live(Engine) {

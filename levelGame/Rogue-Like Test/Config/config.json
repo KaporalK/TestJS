@@ -102,5 +102,20 @@
     "GunList": {
       "Default": "Resources/img/defaultGun.png"
     }
+  },
+  "HUD": {
+    "text": [
+      {
+        "path": "Resources/font/test_ttf.TTF",
+        "text": "Weapons",
+        "x": 820,
+        "y": 160,
+        "fontsize": 15,
+        "align": {
+          "horizontal": "CENTER"
+        },
+        "color": "#000000"
+      }
+    ]
   }
 }

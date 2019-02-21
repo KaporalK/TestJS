@@ -1,14 +1,14 @@
 class TextContainer {
 
-    constructor(font, text, x, y, fontsize, align, color) {
+    constructor(params) {
 
-        this._font = loadFont(font);
-        this._fontsize = fontsize;
-        this._text = text;
-        this._x = x;
-        this._y = y;
-        this._align = align;
-        this._color = color;
+        this._font = loadFont(params.path);
+        this._fontsize = params.fontsize;
+        this._text = params.text;
+        this._x = params.x;
+        this._y = params.y;
+        this._align = params.align;
+        this._color = params.color;
     }
 
     draw() {

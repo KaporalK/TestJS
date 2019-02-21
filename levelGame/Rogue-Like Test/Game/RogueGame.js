@@ -22,6 +22,8 @@ class RogueGame {
         RogueGame.initGame(World);
         this.engine = new Engine(World.Levels.Tests, true);
 
+        this.engine.createHUD(configHUD);
+
         this._pause = false;
         this.registerEvent();
 

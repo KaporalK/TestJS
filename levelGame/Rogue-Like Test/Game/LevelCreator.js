@@ -13,8 +13,6 @@ class LevelCreator {
         let offsetY = LevelConfig.Bounds.y;
 
         let LevelObjList = new LevelList();
-        //todo rework ca MDR
-        Engine.hud = new HUD([new TextContainer('Resources/font/test_ttf.TTF', 'Weapons', 870, 150, 15, {horizontal: CENTER}, '#000000')]);
 
         //Construction du layout
         LevelObjList.offset = LevelCreator.createBounds(LevelConfig.Bounds);
@@ -44,8 +42,6 @@ class LevelCreator {
             LevelObjList.addBrick(bloc);
             this.addBrick(bloc);
         }, Engine);
-
-        //TODO refact ca dans les configs
 
         return LevelObjList;
     }

@@ -20,6 +20,7 @@ class Engine {
         this._sosWaypoint = [];
 
         this._hud = null;
+
         this._tree = new QuadTree(Level.Bounds, false);
 
         this._levelList = LevelCreator.createLevel(Level, this);
@@ -80,7 +81,13 @@ class Engine {
         this.hud.draw(this.levelList.player.inventory);
     };
 
-    //Todo rework ca avec des interface
+    createHUD(congifHUD){
+        this.hud = new HUD([]);
+        congifHUD.text.forEach(function(item){
+            this.hud.addElements(new TextContainer(item))
+        }, this);
+    }
+
     updateTree() {
         this.tree.clear();
         this.tree.insert(this.brickList);
