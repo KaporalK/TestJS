@@ -7,8 +7,8 @@ class KillableThing extends AnimatedObject {
 
     //TODO  Rework la propriété _playerDetected
 
-    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
-        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
+    constructor(params) {
+        super(params);
         //TODO config ?
         this.color = [0, 168, 0];
 

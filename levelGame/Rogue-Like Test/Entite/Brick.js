@@ -17,13 +17,13 @@
  */
 class Brick {
 
-    constructor(y, x, width, height) {
+    constructor(params) {
 
         this._shoundIBeDeleted = false;
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
+        this._x = params.x;
+        this._y = params.y;
+        this._width = params.width;
+        this._height = params.height;
 
         this._waypoints = [];
         this._color = [255, 0 ,0];

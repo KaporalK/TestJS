@@ -14,43 +14,39 @@
           "height": 800
         },
         "Player": {
-          "xStart": 50,
-          "yStart": 50,
+          "x": 50,
+          "y": 50,
           "width": 15,
           "height": 15,
-          "veloX": 0,
-          "veloY": 0,
-          "poidsPlayer": 5,
-          "alphaBounce": 2
+          "velocityX": 0,
+          "velocityY": 0
         },
         "Ennemies": [
           {
-            "xStart": 450,
-            "yStart": 450,
+            "x": 450,
+            "y": 450,
             "width": 15,
             "height": 15,
-            "veloX": 0.6,
-            "veloY": 0.6,
-            "poidsPlayer": 5,
-            "alphaBounce": 2
+            "velocityX": 0.6,
+            "velocityY": 0.6
           }
         ],
         "Layout": {
           "Bloc": [
             {
-              "xStart": 150,
-              "yStart": 630,
+              "x": 150,
+              "y": 630,
               "width": 20,
               "height": 140
             },
             {
-              "xStart": 5,
-              "yStart": 600,
+              "x": 5,
+              "y": 600,
               "width": 700,
               "height": 30,
               "waypoint": {
-                "xStart": 705,
-                "yStart": 608,
+                "x": 705,
+                "y": 608,
                 "width": 15,
                 "height": 15,
                 "BrickX1": 5,
@@ -62,13 +58,13 @@
               }
             },
             {
-              "xStart": 375,
-              "yStart": 400,
+              "x": 375,
+              "y": 400,
               "width": 20,
               "height": 200,
               "waypoint": {
-                "xStart": 378,
-                "yStart": 385,
+                "x": 378,
+                "y": 385,
                 "width": 15,
                 "height": 15,
                 "BrickX1": 385,
@@ -80,13 +76,13 @@
               }
             },
             {
-              "xStart": 400,
-              "yStart": 200,
+              "x": 400,
+              "y": 200,
               "width": 400,
               "height": 30,
               "waypoint": {
-                "xStart": 385,
-                "yStart": 207,
+                "x": 385,
+                "y": 207,
                 "width": 15,
                 "height": 15,
                 "BrickX1": 400,

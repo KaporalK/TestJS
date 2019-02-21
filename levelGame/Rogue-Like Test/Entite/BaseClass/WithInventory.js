@@ -6,8 +6,8 @@
 class WithInventory extends AnimatedObject{
 
 
-    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
-        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
+    constructor(params) {
+        super(params);
 
         this._inventory = new Inventory(this);
 

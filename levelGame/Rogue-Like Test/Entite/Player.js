@@ -2,6 +2,12 @@
  * @class Player
  *
  * @param super
+ * @param y
+ * @param x
+ * @param width
+ * @param height
+ * @param velocityX
+ * @param velocityY
  *
  * Cette classe représente le joueur qu'on joue
  */
@@ -11,20 +17,8 @@
 //TODO faire un system de hp
 class Player extends WithInventory {
 
-
-    /**
-     *
-     * @param y
-     * @param x
-     * @param width
-     * @param height
-     * @param velocityX
-     * @param velocityY
-     * @param poids
-     * @param alphaBounce
-     */
-    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
-        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
+    constructor(params) {
+        super(params);
 
         this._moveUp = false;
         this._moveDown = false;
@@ -148,15 +142,16 @@ class Player extends WithInventory {
         )
     }
 
+    //Todo better border detection
     detectPlayerBoderColision(Engine) {
-        if (Engine.levelList.offset.x + 5 > this.x) {
+        if (Engine.levelList.offset.x > this.x) {
             this.moveLeft = false;
-        } else if (this.getBorderX() > Engine.levelList.offset.width - 10) {
+        } else if (this.getBorderX() > Engine.levelList.offset.width) {
             this.moveRight = false;
         }
-        if (Engine.levelList.offset.y + 5 > this.y) {
+        if (Engine.levelList.offset.y > this.y) {
             this.moveUp = false;
-        } else if (this.getBorderY() > Engine.levelList.offset.height - 10) {
+        } else if (this.getBorderY() > Engine.levelList.offset.height) {
             this.moveDown = false;
         }
     }

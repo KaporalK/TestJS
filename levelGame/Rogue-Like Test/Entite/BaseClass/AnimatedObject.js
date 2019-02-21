@@ -7,8 +7,6 @@
  * @param height
  * @param velocityX pas vraiment utilisé
  * @param velocityY pas vraiment utilisé
- * @param poids nonUtilisé
- * @param alphaBounce non utilisé
  *
  * Cette class représente la base d'un objet qui bouge
  * elle a des fonction très simple et ne devrais pas être utiliser tel quel
@@ -21,23 +19,22 @@
  */
 class AnimatedObject {
     /**
-     * @param y
-     * @param x
-     * @param width
-     * @param height
-     * @param velocityX
-     * @param velocityY
-     * @param poids
-     * @param alphaBounce
+     * @param params
      */
-    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
+    // constructor(y, x, width, height, velocityX, velocityY) {
+    constructor(params) {
+
+        if(!params.hasOwnProperty('x') || !params.hasOwnProperty('y')){
+            params.x = params.xStart;
+            params.y = params.yStart;
+        }
 
         this._shoundIBeDeleted = false;
 
-        this._spawn = {x: x, y: y};
+        this._spawn = {x: params.x, y: params.y};
 
-        this._x = x;
-        this._y = y;
+        this._x = params.x;
+        this._y = params.y;
 
         this._prevX = 0;
         this._prevY = 0;
@@ -45,24 +42,22 @@ class AnimatedObject {
         this._prevDirectionY = '';
 
 
-        this._nextY = y;
-        this._nextX = x;
+        this._nextY = params.y;
+        this._nextX = params.x;
 
         this._directionX = '';
         this._directionY = '';
 
-        this._width = width;
-        this._height = height;
+        this._width = params.width;
+        this._height = params.height;
 
         //1 = droite
         // this._directionX = 1;
         // 1 un bas;
         // this._directionY = 1;
-        this._velocityX = velocityX;
-        this._velocityY = velocityY;
+        this._velocityX = params.velocityX;
+        this._velocityY = params.velocityY;
 
-        this._alphaBounce = alphaBounce;
-        this._poids = poids;
         this._color = 255;
 
         this._colidingClass = null;
@@ -157,22 +152,6 @@ class AnimatedObject {
 
     set velocityY(value) {
         this._velocityY = value;
-    }
-
-    get poids() {
-        return this._poids;
-    }
-
-    set poids(value) {
-        this._poids = value;
-    }
-
-    get alphaBounce() {
-        return this._alphaBounce;
-    }
-
-    set alphaBounce(value) {
-        this._alphaBounce = value;
     }
 
     get directionX() {

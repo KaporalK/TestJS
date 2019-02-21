@@ -1,25 +1,24 @@
 class Waypoint {
 
-    constructor(x, y, width, height, BrickX1, BrickY1, BrickX2, BrickY2, orientation, side) {
+    constructor(params) {
 
         //Faut pas hesiter a placer le waypoint a un endroi un peu wtf
         // L'ennemie va check a chaque frame si y'a toujours le block entre eux a chaque frame anyway
         //Pareille pour les brick X/Y
         //Si il faut tricher pour que les ennemie ne reste pas bloquer faut le faire
-        this._x = x;
-        this._y = y;
-        this._width = width;
-        this._height = height;
-
+        this._x = params.x;
+        this._y = params.y;
+        this._width = params.width;
+        this._height = params.height;
         //Les point x/y a utiliser si on veut savoir si
         // le block est entre un ennemie et le player
         // Si c'est le cas on donne ce waypoint a l'ennemie
-        this._orientation = orientation;
-        this._side = side;
-        this._BrickX1 = BrickX1;
-        this._BrickY1 = BrickY1;
-        this._BrickX2 = BrickX2;
-        this._BrickY2 = BrickY2;
+        this._orientation = params.orientation;
+        this._side = params.side;
+        this._BrickX1 = params.BrickX1;
+        this._BrickY1 = params.BrickY1;
+        this._BrickX2 = params.BrickX2;
+        this._BrickY2 = params.BrickY2;
     }
 
     draw() {

@@ -8,8 +8,8 @@
  */
 class Bullet extends AnimatedObject {
 
-    constructor(y, x, width, height, velocityX, velocityY, poids, alphaBounce) {
-        super(y, x, width, height, velocityX, velocityY, poids, alphaBounce);
+    constructor(params) {
+        super(params);
         this.color = [0, 50, 200];
         this.colidingClass = new BulletColiding(this);
     }
