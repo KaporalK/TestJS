@@ -4,6 +4,8 @@
  * Cette class sert a crée le niveau et a le passer ensuite a l'engine
  * On lui passe la config du lvl pour le créer
  */
+
+//Todo lazy loading !
 class LevelCreator {
 
     static createLevel(LevelConfig, Engine) {
@@ -42,6 +44,12 @@ class LevelCreator {
             LevelObjList.addBrick(bloc);
             this.addBrick(bloc);
         }, Engine);
+
+        LevelConfig.Layout.Pickups.forEach(function(item){
+            let pickUp = new PowerUps(LevelCreator.addOffsetToXYParams(item, offsetX, offsetY));
+            this.addAnimatedObject(pickUp);
+        }, Engine);
+
 
         return LevelObjList;
     }

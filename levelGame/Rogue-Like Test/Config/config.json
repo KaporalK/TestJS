@@ -93,6 +93,17 @@
                 "side": "yx"
               }
             }
+          ],
+          "Pickups": [
+            {
+              "x": 100,
+              "y": 700,
+              "width": 5,
+              "height": 5,
+              "velocityX": 0,
+              "velocityY": 0,
+              "class": "ShotGun"
+            }
           ]
         }
       }
@@ -100,7 +111,8 @@
   },
   "Animations": {
     "GunList": {
-      "Default": "Resources/img/defaultGun.png"
+      "Default": "Resources/img/defaultGun.png",
+      "ShotGun": "Resources/img/shotGun.png"
     }
   },
   "HUD": {

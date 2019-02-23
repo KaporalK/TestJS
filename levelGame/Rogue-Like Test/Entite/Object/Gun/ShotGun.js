@@ -1,17 +1,17 @@
-class DefaultGun {
+class ShotGun {
 
     constructor(item) {
         this._isShooting = false;
         this._bullets = [];
 
-        this._bulletCooldown = 30;
+        this._bulletCooldown = 90;
         this._nextBullet = 0;
 
         this._item = item;
 
 
         //Todo refact HUDSprite ?
-        this._hudSprite = new Animation(Animations.GunList.Default);
+        this._hudSprite = new Animation(Animations.GunList.ShotGun);
 
     }
 
@@ -21,9 +21,11 @@ class DefaultGun {
 
     shootBullet(tree) {
         if (this.nextBullet <= 0) {
-            let newBullet;
-            let bulletInfo = this.generateBulletCoordinate();
-            newBullet = new Bullet(bulletInfo);
+            let newBullet = [];
+            //Todo bulet count pour les guns
+            for (let i = 0; i < 4; i++) {
+                newBullet[i] = new Bullet(this.generateBulletCoordinate());
+            }
             tree.insert(newBullet);
             this.addBullet(newBullet);
             this.nextBullet = this.bulletCooldown;
@@ -41,63 +43,63 @@ class DefaultGun {
         };
 
         if (this.item.keypressed[UP] && this.item.keypressed[LEFT]) {
-            bulletInfo.velocityY = -6 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityX = -6 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityY = -ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityX = -ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x;
             bulletInfo.y = this.item.y;
         } else if (this.item.keypressed[UP] && this.item.keypressed[RIGHT]) {
-            bulletInfo.velocityY = -6 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityX = 6 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityY = -ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityX = ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + this.item.width;
             bulletInfo.y = this.item.y;
         } else if (this.item.keypressed[RIGHT] && this.item.keypressed[DOWN]) {
-            bulletInfo.velocityY = 6 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityX = 6 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityY = ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityX = ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + this.item.width;
             bulletInfo.y = this.item.y + this.item.height;
         } else if (this.item.keypressed[LEFT] && this.item.keypressed[DOWN]) {
-            bulletInfo.velocityY = 6 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityX = -6 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityY = ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityX = -ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x;
             bulletInfo.y = this.item.y + this.item.height;
         } else if (this.item.keypressed[UP]) {
-            bulletInfo.velocityX = 0 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityY = -6;
+            bulletInfo.velocityX = ShotGun.getRandomVelocity();
+            bulletInfo.velocityY = -ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + (this.item.width / 2);
             bulletInfo.y = this.item.y;
         } else if (this.item.keypressed[LEFT]) {
-            bulletInfo.velocityX = -6;
-            bulletInfo.velocityY = 0 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityX = -ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityY = ShotGun.getRandomVelocity();
             bulletInfo.x = this.item.x;
             bulletInfo.y = this.item.y + (this.item.height / 2);
         } else if (this.item.keypressed[DOWN]) {
-            bulletInfo.velocityX = 0 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityY = 6;
+            bulletInfo.velocityX = ShotGun.getRandomVelocity();
+            bulletInfo.velocityY = ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + (this.item.width / 2);
             bulletInfo.y = this.item.y + this.item.height;
         } else if (this.item.keypressed[RIGHT]) {
-            bulletInfo.velocityX = 6;
-            bulletInfo.velocityY = 0 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityX = ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityY = ShotGun.getRandomVelocity();
             bulletInfo.x = this.item.x + this.item.width;
             bulletInfo.y = this.item.y + (this.item.height / 2);
         } else if (this.item.lastKeyPressed === UP) {
-            bulletInfo.velocityX = 0 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityY = -6;
+            bulletInfo.velocityX = ShotGun.getRandomVelocity();
+            bulletInfo.velocityY = -ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + (this.item.width / 2);
             bulletInfo.y = this.item.y;
         } else if (this.item.lastKeyPressed === DOWN) {
-            bulletInfo.velocityX = 0 + DefaultGun.getRandomVelocity();
-            bulletInfo.velocityY = 6;
+            bulletInfo.velocityX = ShotGun.getRandomVelocity();
+            bulletInfo.velocityY = ShotGun.getRandomVelocity(5, 7);
             bulletInfo.x = this.item.x + (this.item.width / 2);
             bulletInfo.y = this.item.y + this.item.height;
         } else if (this.item.lastKeyPressed === LEFT) {
-            bulletInfo.velocityX = -6;
-            bulletInfo.velocityY = 0 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityX = -ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityY = ShotGun.getRandomVelocity();
             bulletInfo.x = this.item.x;
             bulletInfo.y = this.item.y + (this.item.height / 2);
         } else if (this.item.lastKeyPressed === RIGHT) {
-            bulletInfo.velocityX = 6;
-            bulletInfo.velocityY = 0 + DefaultGun.getRandomVelocity();
+            bulletInfo.velocityX = ShotGun.getRandomVelocity(5, 7);
+            bulletInfo.velocityY = ShotGun.getRandomVelocity();
             bulletInfo.x = this.item.x + this.item.width;
             bulletInfo.y = this.item.y + (this.item.height / 2);
         }
@@ -105,7 +107,6 @@ class DefaultGun {
     }
 
     //Todo amélioré ca,
-    // Je pense pas que le min/max change quoi que se soit MDR
     static getRandomVelocity(xMin = -1, xMax = 1) {
         return random(xMin, xMax );
     }
@@ -125,8 +126,17 @@ class DefaultGun {
         }
     }
 
-    addBullet(object) {
-        this._bullets.push(object);
+    addBullet(item) {
+        if (item instanceof Array) {
+            let len = item.length;
+            let i;
+            for (i = 0; i < len; i++) {
+                this._bullets.push(item[i]);
+            }
+        } else {
+            this._bullets.push(item);
+        }
+
     };
 
     get bullets() {

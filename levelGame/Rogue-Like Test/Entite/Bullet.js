@@ -6,6 +6,8 @@
  *
  * Pourra être rework ou utiliser pour faire dautres projectiles
  */
+
+//Todo différents type de munition
 class Bullet extends AnimatedObject {
 
     constructor(params) {

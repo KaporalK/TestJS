@@ -15,6 +15,7 @@ class Engine {
         this._gravity = Level.gravity;
         this._background = Level.background;
 
+        //Todo utiliser LevelList pour ca
         this._brickList = [];
         this._animatedObject = [];
         this._sosWaypoint = [];
@@ -31,6 +32,7 @@ class Engine {
     live() {
         this._animatedObject.forEach(function (item) {
             if (item.shoundIBeDeleted) {
+                console.log('toto');
                 this.deleteAnimatedObject(item);
                 return;
             }
@@ -38,11 +40,12 @@ class Engine {
             node.forEach(function (nodeItem) {
                 if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);
+                    console.log('oooooo')
                 }
             }, item);
 
             item.live(this);
-            if(item instanceof WithInventory){
+            if (item instanceof WithInventory) {
                 item.inventory.live(this);
             }
         }, this);
@@ -53,7 +56,7 @@ class Engine {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);
-        }, this);+
+        }, this);
         this.updateTree();
     };
 
@@ -68,22 +71,22 @@ class Engine {
         });
         if (this.debug) {
             QuadTreeHelper.drawNode(this.tree.root);
-            this.levelList.waypoints.forEach(function(item){
+            this.levelList.waypoints.forEach(function (item) {
                 item.draw();
-                if(item instanceof SoSWaypoint){
+                if (item instanceof SoSWaypoint) {
                     alert('ENGINE LIGNE 70 WTF');
                 }
             });
-            this.sosWaypoint.forEach(function(item){
+            this.sosWaypoint.forEach(function (item) {
                 item.draw();
             })
         }
         this.hud.draw(this.levelList.player.inventory);
     };
 
-    createHUD(congifHUD){
+    createHUD(congifHUD) {
         this.hud = new HUD([]);
-        congifHUD.text.forEach(function(item){
+        congifHUD.text.forEach(function (item) {
             this.hud.addElements(new TextContainer(item))
         }, this);
     }

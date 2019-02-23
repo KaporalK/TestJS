@@ -1,6 +1,6 @@
-class Inventory{
+class Inventory {
 
-    constructor(Item){
+    constructor(Item) {
 
         this._item = Item;
 
@@ -8,38 +8,77 @@ class Inventory{
         this._gunList = [];
         this._indexOfCurrentGun = null;
 
+        this.registerInventoryEvent();
     }
 
-    draw(){
+    draw() {
         this.currentGun.drawInventory();
     }
 
-    live(Engine){
+    live(Engine) {
         this.liveBullets(Engine);
     }
 
-    liveBullets(Engine){
+    liveBullets(Engine) {
         // https://github.com/mikechambers/ExamplesByMesh/tree/master/JavaScript/QuadTree
         this.currentGun.bullets.forEach(function (item) {
-            let node = Engine.tree.retrieve(item);
-            node.forEach(function (nodeItem) {
-                if( nodeItem !== item && this.colidingClass.support().includes(nodeItem.constructor.name)){
-                    this.colidingClass.colide(nodeItem);
-                }
-            }, item);
             if (item.shoundIBeDeleted) {
                 this.deleteBullet(item);
                 return;
             }
+            let node = Engine.tree.retrieve(item);
+            node.forEach(function (nodeItem) {
+                if (nodeItem !== item && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                    this.colidingClass.colide(nodeItem);
+                }
+            }, item);
             item.live(Engine);
-        },this.currentGun);
+        }, this.currentGun);
     }
 
-    addGunAndSetCurrent(object){
+    pickUpPowerUp(powerUp) {
+        //Todo instance of gun (ou item.hasOnwProperty)
+        if (powerUp instanceof ShotGun) {
+            powerUp.item = this.item;
+            this.addGunAndSetCurrent(powerUp);
+        }
+    }
+
+    addGunAndSetCurrent(object) {
+
+        if(this.gunList.includes(object)){
+            return;
+        }
+
         this.gunList.push(object);
         this.currentGun = object;
-        this.indexOfCurrentGun =  this.gunList.indexOf(object);
+        this.indexOfCurrentGun = this.gunList.indexOf(object);
 
+    }
+
+    registerInventoryEvent() {
+        document.addEventListener('keydown', (event) => {
+                const keyCode = event.keyCode;
+                switch (keyCode) {
+                    case Z: //z
+                        this.changeCurrentGun();
+                        break;
+                }
+            }
+        )
+    }
+
+    changeCurrentGun() {
+        let totalGun = this.gunList.length;
+        this.indexOfCurrentGun += 1;
+        if (this.indexOfCurrentGun >= totalGun) {
+            this.indexOfCurrentGun = 0;
+        }
+        //transfere de gun + de bullets pour qu'elles continuent de vivre
+        let bullets = this.currentGun.bullets;
+        this.currentGun.bullets = [];
+        this.currentGun = this.gunList[this.indexOfCurrentGun];
+        this.currentGun.bullets = bullets;
     }
 
     deleteGun(object) {

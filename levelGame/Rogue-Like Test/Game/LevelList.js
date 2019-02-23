@@ -10,6 +10,7 @@ class LevelList {
         this._brick = [];
         this._annimatedObject = [];
         this._waypoints = [];
+        this._pickUps = [];
 
         this._offset = {x: 0, y: 0, height:0, width: 0}
 
@@ -78,8 +79,8 @@ class LevelList {
         this._annimatedObject = value;
     }
 
-    addAnimatedObject(brick) {
-        this.brick.push(brick);
+    addAnimatedObject(value) {
+        this.animatedObject.push(value);
     }
 
     deleteAnimatedObject(object) {
@@ -108,4 +109,25 @@ class LevelList {
             this.waypoints.splice(index, 1);
         }
     }
+
+    get pickUps() {
+        return this._pickUps;
+    }
+
+    set pickUps(value) {
+        this._pickUps = value;
+    }
+
+
+    addPickUps(waypoint) {
+        this.pickUps.push(waypoint);
+    }
+
+    deletePickUps(object) {
+        let index = this.pickUps.indexOf(object);
+        if (index > -1) {
+            this.pickUps.splice(index, 1);
+        }
+    }
+
 }

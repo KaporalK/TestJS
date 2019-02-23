@@ -5,7 +5,7 @@
     }
 
     support() {
-        return ['Brick', 'KillableThing'];
+        return ['Brick', 'KillableThing', 'PowerUps'];
     }
 
 
@@ -24,10 +24,16 @@
                     this.item.respawn();
                 }
             }
+        } else if (itemToColideWith instanceof PowerUps) {
+            if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
+                itemToColideWith.pickUp(this.item);
+                console.log('totot');
+            }
+
         }
     }
 
-    calculNextPosition(){
+    calculNextPosition() {
         if (this.item.moveUp && this.item.canMoveUp) {
             this.item.nextY = this.item.nextY - this.item.moveSpeed;
         }
