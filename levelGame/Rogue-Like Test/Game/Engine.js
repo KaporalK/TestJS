@@ -32,18 +32,16 @@ class Engine {
     live() {
         this._animatedObject.forEach(function (item) {
             if (item.shoundIBeDeleted) {
-                console.log('toto');
                 this.deleteAnimatedObject(item);
                 return;
             }
             let node = this.tree.retrieve(item);
+            node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
             node.forEach(function (nodeItem) {
                 if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);
-                    console.log('oooooo')
                 }
             }, item);
-
             item.live(this);
             if (item instanceof WithInventory) {
                 item.inventory.live(this);
@@ -51,6 +49,7 @@ class Engine {
         }, this);
         this._sosWaypoint.forEach(function (item) {
             let node = this.tree.retrieve(item);
+            node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
             node.forEach(function (nodeItem) {
                 if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);

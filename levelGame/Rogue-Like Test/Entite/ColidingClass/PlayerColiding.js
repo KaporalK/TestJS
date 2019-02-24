@@ -12,6 +12,7 @@
     colide(itemToColideWith) {
         if (itemToColideWith instanceof Brick) {
             if (this.detectBasicColision(itemToColideWith)) {
+                //Todo faudrait pas faire cette methode 2 fois dans la même boucle
                 this.calculNextPosition();
                 //du génie !
                 if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
@@ -26,8 +27,8 @@
             }
         } else if (itemToColideWith instanceof PowerUps) {
             if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
+                //Y'a un bug, je pickUp les power 2 fois
                 itemToColideWith.pickUp(this.item);
-                console.log('totot');
             }
 
         }

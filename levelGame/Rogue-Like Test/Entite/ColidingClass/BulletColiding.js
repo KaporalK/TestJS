@@ -16,9 +16,10 @@ class BulletColiding extends ColidingInterface {
                 this.item.y < itemToColideWith.y + itemToColideWith.height &&
                 this.item.y + this.item.height > itemToColideWith.y
             ) {
-                itemToColideWith.shoundIBeDeleted = true;
+                console.log(itemToColideWith.hp);
+                itemToColideWith.hp -= this.item.damage;
                 this.item.shoundIBeDeleted = true;
-                itemToColideWith.respawn(); //Ca marche pas
+                console.log(this.item.velocityX, this.item.velocityY);
             }
         }else if(itemToColideWith instanceof Brick){
             if (this.item.x < itemToColideWith.x + itemToColideWith.width &&

@@ -9,10 +9,28 @@ class Inventory {
         this._indexOfCurrentGun = null;
 
         this.registerInventoryEvent();
+
+        this._xGunListStart = 860;
+        this._yGunListStart = 140;
+        this._heightGunSprite = 40;
     }
 
     draw() {
-        this.currentGun.drawInventory();
+        let i = this.indexOfCurrentGun;
+        let gunLength = this.gunList.length;
+
+        for (let j = 1; j <= gunLength; j++) {
+            this.gunList[i].drawInventory(this.xGunListStart, this.yGunListStart + (j * this.heightGunSprite));
+            i++;
+            if (i >= gunLength) {
+                i = 0;
+            }
+        }
+
+        // this.gunList.forEach(function (item) {
+        //     item.drawInventory(this.xGunListStart, this.yGunListStart + (i * this.heightGunSprite));
+        //     i++;
+        // }, this);
     }
 
     live(Engine) {
@@ -27,6 +45,7 @@ class Inventory {
                 return;
             }
             let node = Engine.tree.retrieve(item);
+            node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
             node.forEach(function (nodeItem) {
                 if (nodeItem !== item && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);
@@ -46,7 +65,7 @@ class Inventory {
 
     addGunAndSetCurrent(object) {
 
-        if(this.gunList.includes(object)){
+        if (this.gunList.includes(object)) {
             return;
         }
 
@@ -122,5 +141,29 @@ class Inventory {
 
     set item(value) {
         this._item = value;
+    }
+
+    get xGunListStart() {
+        return this._xGunListStart;
+    }
+
+    set xGunListStart(value) {
+        this._xGunListStart = value;
+    }
+
+    get yGunListStart() {
+        return this._yGunListStart;
+    }
+
+    set yGunListStart(value) {
+        this._yGunListStart = value;
+    }
+
+    get heightGunSprite() {
+        return this._heightGunSprite;
+    }
+
+    set heightGunSprite(value) {
+        this._heightGunSprite = value;
     }
 }

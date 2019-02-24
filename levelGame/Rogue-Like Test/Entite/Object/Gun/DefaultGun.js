@@ -15,8 +15,8 @@ class DefaultGun {
 
     }
 
-    drawInventory() {
-        animation(this.hudSprite, 860, 180);
+    drawInventory(x, y) {
+        animation(this.hudSprite, x, y);
     }
 
     shootBullet(tree) {

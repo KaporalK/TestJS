@@ -21,6 +21,12 @@ class KillableThing extends AnimatedObject {
         this._target = null;
         this._playerDetected = false;
 
+        this._hp = 100;
+        // this._baseVelocityX = this.velocityX;
+        // this._baseVelocityY = this.velocityY;
+        // this._friction = 0.03;
+        // this._resistance = 5;
+
         // todo a supprimer ?
         this._moveHistory = [];
 
@@ -35,6 +41,10 @@ class KillableThing extends AnimatedObject {
     }
 
     live(Engine) {
+
+        if (this.hp <= 0) {
+            this.shoundIBeDeleted = true;
+        }
 
         //-------------------UNIQUEMENT POUR LA SELECTION DU TARGET POUR LA PROCHAINE FRAME--------------//
         this.ai.chooseTarget(Engine);
@@ -203,6 +213,46 @@ class KillableThing extends AnimatedObject {
 
     amIBlocked() {
         return (this.movingToTarget && this.prevX === this.nextX && this.prevY === this.nextY);
+    }
+
+    get friction() {
+        return this._friction;
+    }
+
+    set friction(value) {
+        this._friction = value;
+    }
+
+    get baseVelocityX() {
+        return this._baseVelocityX;
+    }
+
+    set baseVelocityX(value) {
+        this._baseVelocityX = value;
+    }
+
+    get baseVelocityY() {
+        return this._baseVelocityY;
+    }
+
+    set baseVelocityY(value) {
+        this._baseVelocityY = value;
+    }
+
+    get resistance() {
+        return this._resistance;
+    }
+
+    set resistance(value) {
+        this._resistance = value;
+    }
+
+    get hp() {
+        return this._hp;
+    }
+
+    set hp(value) {
+        this._hp = value;
     }
 
     get detectionPlayerRange() {

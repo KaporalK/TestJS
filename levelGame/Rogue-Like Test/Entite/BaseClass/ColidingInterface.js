@@ -72,6 +72,20 @@ class ColidingInterface {
         this.item.nextY += minimumVector.y;
     }
 
+    findMinimumVectorToNotColide(itemToColideWith) {
+        let edgeDifferences = [
+            new Vector((itemToColideWith.x - (this.item.nextX + this.item.width)), 0),
+            new Vector(((itemToColideWith.x + itemToColideWith.width) - this.item.nextX), 0),
+            new Vector(0, (itemToColideWith.y - (this.item.nextY + this.item.height))),
+            new Vector(0, ((itemToColideWith.y + itemToColideWith.height) - this.item.nextY)),
+        ];
+        edgeDifferences.sort(function (a, b) {
+            return a.getMagnitude() > b.getMagnitude()
+        });
+        return edgeDifferences[0];
+    }
+
+
     get item() {
         return this._item;
     }

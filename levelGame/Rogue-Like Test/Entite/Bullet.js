@@ -12,8 +12,11 @@ class Bullet extends AnimatedObject {
 
     constructor(params) {
         super(params);
-        this.color = [0, 50, 200];
-        this.colidingClass = new BulletColiding(this);
+        this._color = [0, 50, 200];
+        this._colidingClass = new BulletColiding(this);
+
+        this._damage = 35;
+
     }
 
     live(Engine){
@@ -38,5 +41,29 @@ class Bullet extends AnimatedObject {
         } else if (this.getBorderY() > height + 50) {
             this.shoundIBeDeleted = true;
         }
+    }
+
+    get color() {
+        return this._color;
+    }
+
+    set color(value) {
+        this._color = value;
+    }
+
+    get colidingClass() {
+        return this._colidingClass;
+    }
+
+    set colidingClass(value) {
+        this._colidingClass = value;
+    }
+
+    get damage() {
+        return this._damage;
+    }
+
+    set damage(value) {
+        this._damage = value;
     }
 }
