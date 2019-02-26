@@ -12,9 +12,6 @@
     colide(itemToColideWith) {
         if (itemToColideWith instanceof Brick) {
             if (this.detectBasicColision(itemToColideWith)) {
-                //Todo faudrait pas faire cette methode 2 fois dans la même boucle
-                this.calculNextPosition();
-                //du génie !
                 if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                     this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
                 }

@@ -16,7 +16,7 @@ class Bullet extends AnimatedObject {
         this._colidingClass = new BulletColiding(this);
 
         this._damage = 35;
-
+        this._force = 5;
     }
 
     live(Engine){
@@ -65,5 +65,13 @@ class Bullet extends AnimatedObject {
 
     set damage(value) {
         this._damage = value;
+    }
+
+    get force() {
+        return this._force;
+    }
+
+    set force(value) {
+        this._force = value;
     }
 }

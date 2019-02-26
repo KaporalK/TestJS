@@ -5,17 +5,15 @@ class KillableThingColiding extends ColidingInterface {
     }
 
     support() {
-        return ['Brick'];
+        return ['Brick', 'KillableThing'];
     }
 
     colide(itemToColideWith) {
-        if (itemToColideWith instanceof Brick) {
+        if (itemToColideWith instanceof Brick || itemToColideWith instanceof KillableThing) {
             if (this.detectBasicColision(itemToColideWith)) {
-                this.calculNextPosition();
                 if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                     this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
                 }
-
             }
         }
     }

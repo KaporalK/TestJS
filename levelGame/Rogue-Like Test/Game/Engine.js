@@ -37,6 +37,11 @@ class Engine {
             }
             let node = this.tree.retrieve(item);
             node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
+            //TODO Rework responsabilité
+            //Todo faudrait pas faire cette methode 2 fois dans la même boucle
+            if (item.colidingClass.hasOwnProperty('calculNextPosition')) {
+                item.colidingClass.calculNextPosition()
+            }
             node.forEach(function (nodeItem) {
                 if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
                     this.colidingClass.colide(nodeItem);

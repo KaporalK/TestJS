@@ -35,7 +35,7 @@ class KillableAI
                 //si il est pas entre nous, le joueur redevien le target
                 if (!this.item.isBrickBetweenUs(Engine.levelList.player, this.item.target)) {
                     this.item.target = Engine.levelList.player;
-                } else if (this.item.targetDistance(Engine.levelList.player) > this.item.detectionPlayerRange) {
+                } else if ((this.item.targetDistance(Engine.levelList.player) > this.item.detectionPlayerRange) && this.item.hp === this.item.maxHp) {
                     this.item.target = Engine.levelList.player;
                     this.item.movingToTarget = false
                 }
@@ -52,7 +52,8 @@ class KillableAI
             //Je check si il est en range
             this.item.movingToTarget = this.item.movingToTarget ? this.item.targetDistance(Engine.levelList.player) < this.item.maxPlayerRange
                 : this.item.targetDistance(Engine.levelList.player) < this.item.detectionPlayerRange;
-            if (this.item.movingToTarget) {
+            if (this.item.movingToTarget || this.item.hp < this.item.maxHp) {
+                console.log('toto');
                 //je regarde la liste des brick qui peuvent être entre lui et moi c-a-d ceux qui ont des waypoints
                 Engine.levelList.brick.forEach(function (item) {
                     if (item.hasOwnProperty('_waypoints') && item.waypoints.length > 0) {

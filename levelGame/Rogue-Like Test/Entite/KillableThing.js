@@ -22,13 +22,14 @@ class KillableThing extends AnimatedObject {
         this._playerDetected = false;
 
         this._hp = 100;
-        // this._baseVelocityX = this.velocityX;
-        // this._baseVelocityY = this.velocityY;
-        // this._friction = 0.03;
-        // this._resistance = 5;
+        this._maxHp = this._hp;
+        //KnockNackVelocity ||force velocity a ajouter au mouvement ?
+        this._baseVelocityX = this.velocityX;
+        this._baseVelocityY = this.velocityY;
+        this._resistance = 5;
 
-        // todo a supprimer ?
-        this._moveHistory = [];
+        this._friction = 0.5;
+        this._force = {x: 0, y: 0, puissance: 0};
 
         this._moveUp = false;
         this._moveDown = false;
@@ -50,9 +51,22 @@ class KillableThing extends AnimatedObject {
         this.ai.chooseTarget(Engine);
         //-------------------FIN--------------//
 
-        if (this.movingToTarget) {
+        if (this.movingToTarget || this.hp < this.maxHp) {
             this.moveToTarget(this.target);
         }
+
+        //TODO ApplyForce, a amélioré
+        // Reduire la force en fonction de la puissance un truc du genre
+        if (this.force.puissance !== 0) {
+            this.nextY += this.force.y;
+            this.nextX += this.force.x;
+            console.log(this.force);
+            this.force.puissance *= this.friction;
+            if (this.force.puissance <= 0.1) {
+                this.force.puissance = 0;
+            }
+        }
+
 
         if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
             this.nextY -= this.velocityY;
@@ -179,13 +193,6 @@ class KillableThing extends AnimatedObject {
         this.prevX = this.x;
         this.prevY = this.y;
 
-        if (this.directionX !== this.prevDirectionX || this.directionY !== this.prevDirectionY) {
-            if (this.moveHistory.length > 20) {
-                this.moveHistory.splice(0, 1);
-            }
-            this.addMoveHistory([this.directionX, this.directionY, this.x, this.y]);
-        }
-
         this.prevDirectionX = this.directionX !== this.prevDirectionX ? this.directionX : this.prevDirectionX;
         this.prevDirectionY = this.directionY !== this.prevDirectionY ? this.directionY : this.prevDirectionY;
 
@@ -269,6 +276,14 @@ class KillableThing extends AnimatedObject {
 
     set maxPlayerRange(value) {
         this._maxPlayerRange = value;
+    }
+
+    get force() {
+        return this._force;
+    }
+
+    set force(value) {
+        this._force = value;
     }
 
     get moveUp() {
@@ -359,23 +374,12 @@ class KillableThing extends AnimatedObject {
         this._target = value;
     }
 
-    deleteMoveHistory(object) {
-        let index = this.moveHistory.indexOf(object);
-        if (index > -1) {
-            this.moveHistory.splice(index, 1);
-        }
+    get maxHp() {
+        return this._maxHp;
     }
 
-    get moveHistory() {
-        return this._moveHistory;
+    set maxHp(value) {
+        this._maxHp = value;
     }
-
-    set moveHistory(value) {
-        this._moveHistory = value;
-    }
-
-    addMoveHistory(object) {
-        this._moveHistory.push(object);
-    };
 }
 
