@@ -5,7 +5,6 @@
  */
 class KillableThing extends AnimatedObject {
 
-    //TODO  Rework la propriété _playerDetected
 
     constructor(params) {
         super(params);
@@ -15,11 +14,10 @@ class KillableThing extends AnimatedObject {
         this.colidingClass = new KillableThingColiding(this);
         this.ai = new KillableAI(this);
 
-        this._detectionPlayerRange = 150;
-        this._maxPlayerRange = 350;
+        this._detectionPlayerRange = 350;
+        this._maxPlayerRange = 550;
         this._movingToTarget = false;
         this._target = null;
-        this._playerDetected = false;
 
         this._hp = 100;
         this._maxHp = this._hp;
@@ -45,44 +43,12 @@ class KillableThing extends AnimatedObject {
 
         if (this.hp <= 0) {
             this.shoundIBeDeleted = true;
+            return;
         }
 
         //-------------------UNIQUEMENT POUR LA SELECTION DU TARGET POUR LA PROCHAINE FRAME--------------//
-        this.ai.chooseTarget(Engine);
-        //-------------------FIN--------------//
-
-        if (this.movingToTarget || this.hp < this.maxHp) {
-            this.moveToTarget(this.target);
-        }
-
-        //TODO ApplyForce, a amélioré
-        // Reduire la force en fonction de la puissance un truc du genre
-        if (this.force.puissance !== 0) {
-            this.nextY += this.force.y;
-            this.nextX += this.force.x;
-            console.log(this.force);
-            this.force.puissance *= this.friction;
-            if (this.force.puissance <= 0.1) {
-                this.force.puissance = 0;
-            }
-        }
-
-
-        if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
-            this.nextY -= this.velocityY;
-        }
-        if (this.moveDown && this.canMoveDown && this.y === this.nextY) {
-            this.nextY += this.velocityY;
-        }
-        if (this.moveLeft && this.canMoveLeft && this.x === this.nextX) {
-            this.nextX -= this.velocityX;
-        }
-        if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
-            this.nextX += this.velocityX;
-        }
-
-        //je suis bloqué
-        this.ai.unblock(Engine);
+        this.ai.live(Engine);
+        //-------------------FIN------------------------
 
         this.applyNextMove();
         this.canMoveUp = true;
@@ -175,19 +141,6 @@ class KillableThing extends AnimatedObject {
         return where;
     }
 
-    //TODO trouver un moyen plus intelligent de se déplacer
-    moveToTarget(target) {
-        if (target.x + (target.width / 2) < this.x + (this.width / 2)) {
-            this.moveLeft = true;
-        } else if (target.x + (target.width / 2) > this.x + (this.width / 2)) {
-            this.moveRight = true;
-        }
-        if (target.y + (target.height / 2) < this.y + (this.height / 2)) {
-            this.moveUp = true;
-        } else if (target.y + (target.height / 2) > this.y + (this.height / 2)) {
-            this.moveDown = true;
-        }
-    }
 
     applyNextMove() {
         this.prevX = this.x;
@@ -356,14 +309,6 @@ class KillableThing extends AnimatedObject {
 
     set movingToTarget(value) {
         this._movingToTarget = value;
-    }
-
-    get playerDetected() {
-        return this._playerDetected;
-    }
-
-    set playerDetected(value) {
-        this._playerDetected = value;
     }
 
     get target() {

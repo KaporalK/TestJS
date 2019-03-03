@@ -1,15 +1,9 @@
 class Sprite {
 
     //TODO animation extractor
-    /**
-     *
-     *
-     */
-
-
+    // Un classe qui lirait un fichier json et qui crée une série d'animation en fonciton
 
     constructor(animation, speed) {
-        //todo
         this._x = 0;
         this._y = 0;
         this._animation = animation;

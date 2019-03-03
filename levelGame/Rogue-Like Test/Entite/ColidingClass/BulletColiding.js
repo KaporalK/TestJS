@@ -23,6 +23,7 @@ class BulletColiding extends ColidingInterface {
                 itemToColideWith.force.y = this.item.velocityY;
                 //calcul maison
                 itemToColideWith.force.puissance = abs((this.item.velocityY + this.item.velocityX) * this.item.force);
+                itemToColideWith.ai.moveStrat.push('knockBack');
             }
         } else if (itemToColideWith instanceof Brick) {
             if (this.item.x < itemToColideWith.x + itemToColideWith.width &&
