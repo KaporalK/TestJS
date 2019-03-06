@@ -29,7 +29,7 @@ class AnimatedObject {
             params.y = params.yStart;
         }
 
-        this._shoundIBeDeleted = false;
+        this._shouldIBeDeleted = false;
 
         this._spawn = {x: params.x, y: params.y};
 
@@ -186,12 +186,12 @@ class AnimatedObject {
         this._height = value;
     }
 
-    get shoundIBeDeleted() {
-        return this._shoundIBeDeleted;
+    get shouldIBeDeleted() {
+        return this._shouldIBeDeleted;
     }
 
-    set shoundIBeDeleted(value) {
-        this._shoundIBeDeleted = value;
+    set shouldIBeDeleted(value) {
+        this._shouldIBeDeleted = value;
     }
 
     get color() {

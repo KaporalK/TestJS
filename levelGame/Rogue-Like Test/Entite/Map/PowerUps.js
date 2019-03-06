@@ -16,7 +16,7 @@ class PowerUps extends AnimatedObject{
 
     pickUp(player){
         player.inventory.pickUpPowerUp(this.powerType);
-        this.shoundIBeDeleted = true;
+        this.shouldIBeDeleted = true;
     }
 
 

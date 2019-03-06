@@ -1,8 +1,12 @@
-class ShotGun {
+class ShotGun extends Gun {
 
     constructor(item) {
+        //TODO superclass gun plus utile que ca
+        super();
+
         this._isShooting = false;
         this._bullets = [];
+        this._bulletClass = Bullet;
 
         this._bulletCooldown = 90;
         this._nextBullet = 0;
@@ -24,7 +28,7 @@ class ShotGun {
             let newBullet = [];
             //Todo bulet count pour les guns
             for (let i = 0; i < 4; i++) {
-                newBullet[i] = new Bullet(this.generateBulletCoordinate());
+                newBullet[i] = new this.bulletClass(this.generateBulletCoordinate());
             }
             tree.insert(newBullet);
             this.addBullet(newBullet);
@@ -108,7 +112,7 @@ class ShotGun {
 
     //Todo amélioré ca,
     static getRandomVelocity(xMin = -1, xMax = 1) {
-        return random(xMin, xMax );
+        return random(xMin, xMax);
     }
 
     get isShooting() {
@@ -117,6 +121,14 @@ class ShotGun {
 
     set isShooting(value) {
         this._isShooting = value;
+    }
+
+    get bulletClass() {
+        return this._bulletClass;
+    }
+
+    set bulletClass(value) {
+        this._bulletClass = value;
     }
 
     deleteBullet(object) {

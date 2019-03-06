@@ -1,8 +1,11 @@
-class DefaultGun {
+class DefaultGun extends Gun{
 
     constructor(item) {
+        super();
+
         this._isShooting = false;
         this._bullets = [];
+        this._bulletClass = Bullet;
 
         this._bulletCooldown = 30;
         this._nextBullet = 0;
@@ -23,7 +26,7 @@ class DefaultGun {
         if (this.nextBullet <= 0) {
             let newBullet;
             let bulletInfo = this.generateBulletCoordinate();
-            newBullet = new Bullet(bulletInfo);
+            newBullet = new this.bulletClass(bulletInfo);
             tree.insert(newBullet);
             this.addBullet(newBullet);
             this.nextBullet = this.bulletCooldown;
@@ -116,6 +119,14 @@ class DefaultGun {
 
     set isShooting(value) {
         this._isShooting = value;
+    }
+
+    get bulletClass() {
+        return this._bulletClass;
+    }
+
+    set bulletClass(value) {
+        this._bulletClass = value;
     }
 
     deleteBullet(object) {

@@ -8,7 +8,7 @@
  */
 
 //Todo différents type de munition
-class Bullet extends AnimatedObject {
+class Bullet extends BaseBullet {
 
     constructor(params) {
         super(params);
@@ -23,24 +23,10 @@ class Bullet extends AnimatedObject {
         this.amIToFarFromHome();
 
         super.live();
-        // console.log(this.shoundIBeDeleted);
     }
 
     draw(){
         super.draw();
-    }
-
-    amIToFarFromHome(){
-        if (- 50 > this.x) {
-            this.shoundIBeDeleted = true;
-        } else if (this.getBorderX() > width + 50) {
-            this.shoundIBeDeleted = true;
-        }
-        if (- 50 > this.y) {
-            this.shoundIBeDeleted = true;
-        } else if (this.getBorderY() > height + 50) {
-            this.shoundIBeDeleted = true;
-        }
     }
 
     get color() {

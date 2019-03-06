@@ -40,7 +40,7 @@ class Inventory {
     liveBullets(Engine) {
         // https://github.com/mikechambers/ExamplesByMesh/tree/master/JavaScript/QuadTree
         this.currentGun.bullets.forEach(function (item) {
-            if (item.shoundIBeDeleted) {
+            if (item.shouldIBeDeleted) {
                 this.deleteBullet(item);
                 return;
             }
@@ -57,9 +57,11 @@ class Inventory {
 
     pickUpPowerUp(powerUp) {
         //Todo instance of gun (ou item.hasOnwProperty)
-        if (powerUp instanceof ShotGun) {
+        if (powerUp instanceof Gun) {
             powerUp.item = this.item;
             this.addGunAndSetCurrent(powerUp);
+        }else if (powerUp instanceof BouncingBullet){
+            this.changeBulletType(BouncingBullet);
         }
     }
 
@@ -73,6 +75,10 @@ class Inventory {
         this.currentGun = object;
         this.indexOfCurrentGun = this.gunList.indexOf(object);
 
+    }
+    //TODO pouvoir stocker les type de bullet qu'on a / avoir un nombre de mun limité ?
+    changeBulletType(bulletType){
+        this.currentGun.bulletClass = bulletType;
     }
 
     registerInventoryEvent() {

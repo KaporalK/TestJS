@@ -27,11 +27,28 @@ class Engine {
         this._levelList = LevelCreator.createLevel(Level, this);
         this._debug = debug;
 
+
+        // if (this.debug === true) {
+        //     this.registerDebugEvent()
+        // }
+
     }
+    //TODO editeur de niveau
+    // registerDebugEvent() {
+    //     console.log('roro');
+    //     document.addEventListener('click', function (event){
+    //             console.log(event);
+    //             console.log('pit');
+    //
+    //         }
+    //     );
+    //
+    // }
+
 
     live() {
         this._animatedObject.forEach(function (item) {
-            if (item.shoundIBeDeleted) {
+            if (item.shouldIBeDeleted) {
                 this.deleteAnimatedObject(item);
                 return;
             }

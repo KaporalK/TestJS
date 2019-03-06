@@ -42,7 +42,7 @@ class KillableThing extends AnimatedObject {
     live(Engine) {
 
         if (this.hp <= 0) {
-            this.shoundIBeDeleted = true;
+            this.shouldIBeDeleted = true;
             return;
         }
 

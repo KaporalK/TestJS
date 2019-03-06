@@ -151,6 +151,15 @@
               "velocityX": 0,
               "velocityY": 0,
               "class": "ShotGun"
+            },
+            {
+              "x": 120,
+              "y": 720,
+              "width": 5,
+              "height": 5,
+              "velocityX": 0,
+              "velocityY": 0,
+              "class": "BouncingBullet"
             }
           ]
         }

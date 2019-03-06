@@ -19,7 +19,7 @@ class Brick {
 
     constructor(params) {
 
-        this._shoundIBeDeleted = false;
+        this._shouldIBeDeleted = false;
         this._x = params.x;
         this._y = params.y;
         this._width = params.width;
@@ -68,12 +68,12 @@ class Brick {
         this._height = value;
     }
 
-    get shoundIBeDeleted() {
-        return this._shoundIBeDeleted;
+    get shouldIBeDeleted() {
+        return this._shouldIBeDeleted;
     }
 
-    set shoundIBeDeleted(value) {
-        this._shoundIBeDeleted = value;
+    set shouldIBeDeleted(value) {
+        this._shouldIBeDeleted = value;
     }
 
     get waypoints() {
