@@ -11,7 +11,7 @@
  *                  Si il est de la bonne classe, je le redirige vers la fonction qui fera le calcul
  */
 
-//TODO implementer ce calcul
+// ameliorer ce calcul
 // https://stackoverflow.com/questions/9043805/test-if-two-lines-intersect-javascript-function
 // https://developer.roblox.com/articles/2D-Collision-Detection
 // Pour savoir si un blck est entre moi et un ennemie
@@ -30,10 +30,10 @@ class ColidingInterface {
     }
 
     detectRealColision(itemX, itemY, itemToColideWith) {
-        return (itemX < itemToColideWith.x + itemToColideWith.width &&
-            itemX + this.item.width > itemToColideWith.x &&
-            itemY < itemToColideWith.y + itemToColideWith.height &&
-            itemY + this.item.height > itemToColideWith.y
+        return (itemX + this.item.velocityX < itemToColideWith.x + itemToColideWith.width &&
+            itemX + this.item.width + this.item.velocityX > itemToColideWith.x &&
+            itemY + this.item.velocityY < itemToColideWith.y + itemToColideWith.height &&
+            itemY + this.item.height + this.item.velocityY > itemToColideWith.y
         )
     }
 

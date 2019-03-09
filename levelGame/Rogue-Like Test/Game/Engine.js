@@ -105,9 +105,9 @@ class Engine {
         this.hud.draw(this.levelList.player.inventory);
     };
 
-    createHUD(congifHUD) {
+    createHUD(configHUD) {
         this.hud = new HUD([]);
-        congifHUD.text.forEach(function (item) {
+        configHUD.text.forEach(function (item) {
             this.hud.addElements(new TextContainer(item))
         }, this);
     }

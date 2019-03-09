@@ -34,7 +34,7 @@ class BouncingBulletColiding extends ColidingInterface {
                 let l_collision = player_right - itemToColideWith.x;
                 let r_collision = tiles_right - this.item.x;
 
-
+                //todo corriger bug quand tu tire dans un angle
                 //Top collision
                 if (t_collision < b_collision && t_collision < l_collision && t_collision < r_collision) {
                     this.item.velocityY *= -1;

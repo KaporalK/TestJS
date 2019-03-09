@@ -66,9 +66,6 @@ class KillableAI {
     //faut que je fasse un ARBRE plus simple des etat de mes enemie,
     //le jeux est simple, faut que les choix de l'ai soit limité
 
-    //https://fr.wikipedia.org/wiki/Interpolation_polynomiale
-    //todo Utiliser ca quand y'a plusieurs obstace entre moi et le player MERCI Avenir!
-
     live(Engine) {
 
         this.applyAIBeforeMovingToTarget(Engine);
@@ -138,7 +135,6 @@ class KillableAI {
 
     //--------------------------------STATES STRATEGIE ------------------------------
 
-    //Todo rework les fonction static ?
     defaultTargetLogic(Engine) {
         this.item.target = Engine.levelList.player;
         this.states.state = ['playerTarget'];

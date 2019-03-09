@@ -8,8 +8,6 @@ class BulletColiding extends ColidingInterface {
         return ['KillableThing', 'Brick'];
     }
 
-    //Pas besoin de if instanceOf car le support return qu'une class
-    //TODO plz rework me
     colide(itemToColideWith) {
         if (itemToColideWith instanceof KillableThing) {
             if (this.detectRealColision(this.item.x, this.item.y, itemToColideWith)) {

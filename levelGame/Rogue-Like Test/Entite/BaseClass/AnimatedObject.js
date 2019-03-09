@@ -96,7 +96,6 @@ class AnimatedObject {
 
 
     detectColision() {
-        //todo faire un truc
         return true;
     }
 

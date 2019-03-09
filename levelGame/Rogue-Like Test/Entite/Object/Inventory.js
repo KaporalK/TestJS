@@ -56,7 +56,6 @@ class Inventory {
     }
 
     pickUpPowerUp(powerUp) {
-        //Todo instance of gun (ou item.hasOnwProperty)
         if (powerUp instanceof Gun) {
             powerUp.item = this.item;
             this.addGunAndSetCurrent(powerUp);
