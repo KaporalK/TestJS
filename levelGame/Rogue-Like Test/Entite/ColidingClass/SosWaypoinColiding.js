@@ -4,8 +4,11 @@
         super(item);
     }
 
-    support() {
-        return ['Brick'];
+    support(item) {
+        if (item instanceof Brick) {
+            return true
+        }
+        return false;
     }
 
 

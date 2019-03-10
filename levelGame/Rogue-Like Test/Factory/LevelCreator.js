@@ -6,7 +6,9 @@
  */
 
 //Todo lazy loading !
+
 class LevelCreator {
+
 
     static createLevel(LevelConfig, Engine) {
         //UTILISER L'OFFSET!!!! pour le hud,
@@ -26,7 +28,8 @@ class LevelCreator {
 
         //Construction des Ennemie
         LevelConfig.Ennemies.forEach(function (item) {
-            let badGuy = new KillableThing(LevelCreator.addOffsetToXYParams(item, offsetX, offsetY));
+            let className = EnemieFactory.getKillableThingClass(item.class);
+            let badGuy = new className(LevelCreator.addOffsetToXYParams(item, offsetX, offsetY));
             this.addAnimatedObject(badGuy);
             LevelObjList.addKillableThing(badGuy);
         }, Engine);
@@ -45,7 +48,7 @@ class LevelCreator {
             this.addBrick(bloc);
         }, Engine);
 
-        LevelConfig.Layout.Pickups.forEach(function(item){
+        LevelConfig.Layout.Pickups.forEach(function (item) {
             let pickUp = new PowerUps(LevelCreator.addOffsetToXYParams(item, offsetX, offsetY));
             this.addAnimatedObject(pickUp);
         }, Engine);

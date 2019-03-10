@@ -4,8 +4,11 @@ class PowerUpColiding extends ColidingInterface {
         super(item);
     }
 
-    support() {
-        return ['Brick'];
+    support(item) {
+        if (item instanceof Brick) {
+            return true
+        }
+        return false;
     }
 
     colide(itemToColideWith) {
@@ -20,7 +23,7 @@ class PowerUpColiding extends ColidingInterface {
         }
     }
 
-    calculNextPosition(){
+    calculNextPosition() {
         if (this.item.moveUp && this.item.canMoveUp) {
             this.item.nextY = this.item.nextY - this.item.velocityY;
         }

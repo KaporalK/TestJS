@@ -4,8 +4,15 @@
         super(item);
     }
 
-    support() {
-        return ['Brick', 'KillableThing', 'PowerUps'];
+    support(item) {
+        if(item instanceof KillableThing){
+            return true
+        }else if(item instanceof  Brick){
+            return true
+        }else if(item instanceof PowerUps){
+            return true
+        }
+        return false;
     }
 
 
@@ -16,7 +23,7 @@
                     this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
                 }
             }
-        } else if (itemToColideWith instanceof KillableThing) {
+        } else if (itemToColideWith instanceof KillableThing) { //TODO hp
             if (this.detectBasicColision(itemToColideWith)) {
                 if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                     this.item.respawn();

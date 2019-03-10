@@ -1,29 +1,32 @@
-class KillableAI {
+class MoucheIdleAI {
 
     constructor(item) {
         this._item = item;
 
         this._states = {
             'target': this.item.target,
-            'state': ['defaultTarget']
+            'state': ['idle']
         };
 
         //On défini les eta possible de l'objet avec les fonctions de callback associé
         this._possibleState = {
-            'defaultTarget': 'defaultTargetLogic',
-            'waypointTarget': 'waypointTargetLogic',
-            'nullTarget': 'defaultTargetLogic',
-            'sosWaypointNearby': 'sosWaypointNearbyLogic',
-            'sosWaypointTarget': 'sosWaypointTargetLogic',
-            'playerTarget': 'playerTargetLogic',
-            'imBlocked': 'imBlockLogic',
+            'idle': 'findIdleTarget',
+            'goingToTarget': 'idleTargetLogic',
             'imHurt': 'modifierDummyFunc', // modifier
         };
 
-        this._sosWaypointMaxTimeTarget = 1000;
-        this._sosWaypointTimeTarget = 0;
 
-        this._directionalStrat = [];
+        this._idleTarget = 0;
+        this._maxIdleTarget = 5;
+
+        this._idleRange = 15;
+        this._nextIdlePosRange = 50;
+
+        this._maxTimeGoingToTarget = 1000;
+        this._timeGoingToTarget = 0;
+
+
+        this._directionalStrat = ['moveToTargetLogic'];
 
         this._possibleDirectionalStrat = {
             'moveToTargetLogic': 'moveToTargetLogic',
@@ -81,18 +84,12 @@ class KillableAI {
     applyAIBeforeMovingToTarget(Engine) {
 
         //Default comportement
-        //
-        // defaultTarget  ----->  playerTarget
-        // waypointTarget ----->  playerTarget
-        // nullTarget ----->  playerTarget
-        // sosWaypointNearby ----->  playerTarget
-        // sosWaypointTarget ----->  true
-        // playerTarget   ----->  waypointsTarget
+        // 'idle': 'findIdleTarget', --->   goingToTarget
+        // 'goingToTarget': 'playerTargetLogic', ---> idle
 
         //State modifier
         //
-        // imHurt
-        // imBlocked
+        // 'imHurt': 'modifierDummyFunc', // modifier
 
         // this.addAdditionalState(Engine);
         let currentStates = this.states.state; //Les states vont surment changer en cours de routes
@@ -107,9 +104,6 @@ class KillableAI {
         if (this.item.hp < this.item.maxHp) {
             this.states.state.push('imHurt');
         }
-        if (this.item.amIBlocked()) {
-            this.states.state.push('imBlocked');
-        }
     }
 
     //-----------------------MOVEMENT AI---------------------------------
@@ -123,7 +117,6 @@ class KillableAI {
             this[this.possibleDirectionalStrat[currentDirectionalStrat[i]]](Engine);
         }
 
-
         // Default ---->  ++ moveLogic
         // bulletColiding.true ---> ++ knockBack
         // applyForce.force < 0.1 ---> --- knockBack
@@ -133,92 +126,44 @@ class KillableAI {
             this[this.possibleMoveStrat[currentMoveStrat[i]]](Engine);
         }
 
-
     }
 
     //--------------------------------STATES STRATEGIE ------------------------------
 
-    defaultTargetLogic(Engine) {
-        this.item.target = Engine.levelList.player;
-        this.states.state = ['playerTarget'];
-
-    }
-    
-    playerTargetLogic(Engine) {
-
-        //todo revoir le placement de cette ligne
-        this.item.movingToTarget = this.item.movingToTarget ? this.item.targetDistance(Engine.levelList.player) < this.item.maxPlayerRange
-            : this.item.targetDistance(Engine.levelList.player) < this.item.detectionPlayerRange;
-
-        if (this.item.movingToTarget || this.states.state.includes('imHurt')) {
-
-            if (!this.directionalStrat.includes('moveToTargetLogic')) {
-                this.directionalStrat.push('moveToTargetLogic');
-            }
-
-            //je regarde la liste des brick qui peuvent être entre lui et moi c-a-d ceux qui ont des waypoints
-            Engine.levelList.brick.forEach(function (item) {
-                if (item.hasOwnProperty('_waypoints') && item.waypoints.length > 0) {
-                    let x = item.waypoints.length;
-                    for (let i = 0; i < x; i++) {
-                        //Si la brick est entre lui est moi son waypoint devient le target
-                        let brickbetUs = this.item.isBrickBetweenUs(Engine.levelList.player, item.waypoints[i]);
-                        if (brickbetUs) {
-                            //Todo faire une liste des target possible pour choisir le plus proche si jamais y'en a plusieurs
-                            this.item.target = item.waypoints[i];
-                            this.states.state = ['waypointTarget'];
-                        }
-                    }
-                }
-            }, this);
-        } else if (this.directionalStrat.includes('moveToTargetLogic')) {
-            let i = this.directionalStrat.indexOf('moveToTargetLogic');
-            this.directionalStrat.splice(i);
-        }
-    }
-    
-    waypointTargetLogic(Engine) {
-
-        //Je regarde si le le block est toujours entre nous
-        //si il est pas entre nous, le joueur redevien le target
-        if (!this.item.isBrickBetweenUs(Engine.levelList.player, this.item.target)) {
-            this.item.target = Engine.levelList.player;
-            this.states.state = ['playerTarget'];
-        } else if ((this.item.targetDistance(Engine.levelList.player) > this.item.detectionPlayerRange) && this.item.hp === this.item.maxHp) {
-            this.item.target = Engine.levelList.player;
-            this.item.movingToTarget = false;
-            this.states.state = ['playerTarget'];
-        }
-    }
-
-    sosWaypointTargetLogic(Engine) {
-
-        this.sosWaypointTimeTarget ++;
-
-        if ((this.item.targetDistance(this.item.target) < this.item.width / 3) || (this.sosWaypointTimeTarget >= this.sosWaypointMaxTimeTarget)) {
-            this.states.state = ['sosWaypointNearby']
-        }
-    }
-
-    sosWaypointNearbyLogic(Engine) {
-        Engine.deleteSosWaypoint(this.item.target);
-        this.item.target = Engine.levelList.player;
-        this.states.state = ['playerTarget'];
-    }
-
-    imBlockLogic(Engine) {
-        let distance = new Vector(this.item.x, this.item.y);
-        let realSosPos = new Vector(this.item.x, this.item.y);
-        let playerVect = new Vector(Engine.levelList.player.x, Engine.levelList.player.y);
-        distance.subtractFrom(playerVect);
-        distance.divideBy(2);
-        realSosPos.subtractFrom(distance);
+    findIdleTarget(Engine) {
         if (this.item.target instanceof SoSWaypoint) {
             Engine.deleteSosWaypoint(this.item.target);
         }
-        this.item.target = new SoSWaypoint(realSosPos.x, realSosPos.y, this.item.width, this.item.height);
-        this.states.state = ['sosWaypointTarget'];
+
+        let nextIdleX = this.item.x;
+        let nextIdleY = this.item.y;
+
+
+        if (this.idleTarget < this.maxIdleTarget) {
+            nextIdleX = random(this.item.x - this.idleRange, this.item.x + this.idleRange);
+            nextIdleY = random(this.item.y - this.idleRange, this.item.y + this.idleRange);
+        } else if (this.idleTarget === this.maxIdleTarget) {
+            nextIdleX = random(this.item.x - this.nextIdlePosRange, this.item.x + this.nextIdlePosRange);
+            nextIdleY = random(this.item.y - this.nextIdlePosRange, this.item.y + this.nextIdlePosRange);
+            this.idleTarget = 0;
+        }
+
+        this.item.target = new SoSWaypoint(nextIdleX, nextIdleY, this.item.width, this.item.height);
+
         Engine.addSosWaypoint(this.item.target);
+
+        this.states.state = ['goingToTarget'];
+        this.timeGoingToTarget = 0;
+
+    }
+
+    idleTargetLogic(Engine) {
+
+        this.timeGoingToTarget++;
+        if ((this.timeGoingToTarget >= this.maxTimeGoingToTarget) || (this.item.targetDistance(this.item.target) < this.item.width / 3)) {
+            this.states.state = ['idle'];
+            Engine.deleteSosWaypoint(this.item.target);
+        }
 
     }
 
@@ -254,7 +199,6 @@ class KillableAI {
     }
 
     moveLogic(Engine) {
-
         if (this.item.moveUp && this.item.canMoveUp && this.item.y === this.item.nextY) {
             this.item.nextY -= this.item.velocityY;
         }
@@ -270,24 +214,56 @@ class KillableAI {
     }
 
 
-    modifierDummyFunc(){
+    get maxTimeGoingToTarget() {
+        return this._maxTimeGoingToTarget;
+    }
+
+    set maxTimeGoingToTarget(value) {
+        this._maxTimeGoingToTarget = value;
+    }
+
+    get timeGoingToTarget() {
+        return this._timeGoingToTarget;
+    }
+
+    set timeGoingToTarget(value) {
+        this._timeGoingToTarget = value;
+    }
+
+    modifierDummyFunc() {
         return true;
     }
 
-    get sosWaypointMaxTimeTarget() {
-        return this._sosWaypointMaxTimeTarget;
+    get idleTarget() {
+        return this._idleTarget;
     }
 
-    set sosWaypointMaxTimeTarget(value) {
-        this._sosWaypointMaxTimeTarget = value;
+    set idleTarget(value) {
+        this._idleTarget = value;
     }
 
-    get sosWaypointTimeTarget() {
-        return this._sosWaypointTimeTarget;
+    get maxIdleTarget() {
+        return this._maxIdleTarget;
     }
 
-    set sosWaypointTimeTarget(value) {
-        this._sosWaypointTimeTarget = value;
+    set maxIdleTarget(value) {
+        this._maxIdleTarget = value;
+    }
+
+    get idleRange() {
+        return this._idleRange;
+    }
+
+    set idleRange(value) {
+        this._idleRange = value;
+    }
+
+    get nextIdlePosRange() {
+        return this._nextIdlePosRange;
+    }
+
+    set nextIdlePosRange(value) {
+        this._nextIdlePosRange = value;
     }
 
     get directionalStrat() {

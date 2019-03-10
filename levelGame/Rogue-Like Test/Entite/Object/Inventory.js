@@ -47,7 +47,7 @@ class Inventory {
             let node = Engine.tree.retrieve(item);
             node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
             node.forEach(function (nodeItem) {
-                if (nodeItem !== item && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                if (nodeItem !== item && this.colidingClass.support(nodeItem)) {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);

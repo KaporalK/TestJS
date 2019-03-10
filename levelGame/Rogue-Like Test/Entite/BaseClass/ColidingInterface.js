@@ -21,8 +21,8 @@ class ColidingInterface {
         this._item = item;
     }
 
-    support() {
-        return [];
+    support(item) {
+        return false;
     }
 
     colide(itemToColideWith) {
@@ -30,11 +30,21 @@ class ColidingInterface {
     }
 
     detectRealColision(itemX, itemY, itemToColideWith) {
-        return (itemX + this.item.velocityX < itemToColideWith.x + itemToColideWith.width &&
-            itemX + this.item.width + this.item.velocityX > itemToColideWith.x &&
-            itemY + this.item.velocityY < itemToColideWith.y + itemToColideWith.height &&
-            itemY + this.item.height + this.item.velocityY > itemToColideWith.y
-        )
+        let ret = false;
+        if (this.item.hasOwnProperty('velocityX')) {
+            ret = (itemX + this.item.velocityX < itemToColideWith.x + itemToColideWith.width &&
+                itemX + this.item.width + this.item.velocityX > itemToColideWith.x &&
+                itemY + this.item.velocityY < itemToColideWith.y + itemToColideWith.height &&
+                itemY + this.item.height + this.item.velocityY > itemToColideWith.y
+            )
+        } else {
+            ret = (itemX < itemToColideWith.x + itemToColideWith.width &&
+                itemX + this.item.width > itemToColideWith.x &&
+                itemY < itemToColideWith.y + itemToColideWith.height &&
+                itemY + this.item.height > itemToColideWith.y
+            )
+        }
+        return ret;
     }
 
     detectBasicColision(itemToColideWith) {

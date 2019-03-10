@@ -4,8 +4,13 @@ class BouncingBulletColiding extends ColidingInterface {
         super(item);
     }
 
-    support() {
-        return ['KillableThing', 'Brick'];
+    support(item) {
+        if(item instanceof KillableThing){
+            return true
+        }else if(item instanceof  Brick){
+            return true
+        }
+        return false;
     }
 
     //Pas besoin de if instanceOf car le support return qu'une class

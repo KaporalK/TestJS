@@ -13,6 +13,16 @@ class SoSWaypoint
 
         //Faut pas hesiter a placer le waypoint a un endroi un peu wtf
         // L'ennemie va check a chaque frame si y'a toujours le block entre eux a chaque frame anyway
+        if(x > 940){
+            x = 940
+        }else if (x < 0){
+            x = 0
+        }
+        if(y > 940){
+            y = 940
+        }else if (y < 0){
+            y = 0
+        }
         this._x = x;
         this._y = y;
         this._width = width;

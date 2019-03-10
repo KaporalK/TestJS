@@ -27,23 +27,22 @@ class Engine {
         this._levelList = LevelCreator.createLevel(Level, this);
         this._debug = debug;
 
+        this.registerDebugEvent();
 
         // if (this.debug === true) {
         //     this.registerDebugEvent()
         // }
 
     }
-    //TODO editeur de niveau
-    // registerDebugEvent() {
-    //     console.log('roro');
-    //     document.addEventListener('click', function (event){
-    //             console.log(event);
-    //             console.log('pit');
-    //
-    //         }
-    //     );
-    //
-    // }
+    // TODO editeur de niveau
+    registerDebugEvent() {
+        document.addEventListener('click', function (event){
+                console.log(event.clientX,event.clientY );
+
+            }
+        );
+
+    }
 
 
     live() {
@@ -60,7 +59,7 @@ class Engine {
                 item.colidingClass.calculNextPosition()
             }
             node.forEach(function (nodeItem) {
-                if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                if (nodeItem !== this && this.colidingClass.support(nodeItem)) {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);
@@ -73,7 +72,7 @@ class Engine {
             let node = this.tree.retrieve(item);
             node = QuadTreeItemHelper.purgeQuadTreeRetrieve(node);
             node.forEach(function (nodeItem) {
-                if (nodeItem !== this && this.colidingClass.support().includes(nodeItem.constructor.name)) {
+                if (nodeItem !== this && this.colidingClass.support(nodeItem)) {
                     this.colidingClass.colide(nodeItem);
                 }
             }, item);
@@ -154,6 +153,11 @@ class Engine {
     }
 
     deleteSosWaypoint(object) {
+        if(this.debug){
+            if(!(object instanceof SoSWaypoint)){
+                console.log('WTF');
+            }
+        }
         let index = this.sosWaypoint.indexOf(object);
         if (index > -1) {
             this.sosWaypoint.splice(index, 1);

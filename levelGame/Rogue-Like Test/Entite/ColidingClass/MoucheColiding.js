@@ -1,21 +1,20 @@
-class KillableThingColiding extends ColidingInterface {
+class MoucheColiding extends ColidingInterface {
 
     constructor(item) {
         super(item);
     }
 
-    //Default des killable thing c'est les truc au sol
     support(item) {
-        if(item instanceof GroundEnemie){
+        if (item instanceof FlyingEnemie) {
             return true
-        }else if(item instanceof  Brick){
+        } else if (item instanceof Brick) {
             return true
         }
         return false;
     }
 
     colide(itemToColideWith) {
-        if (itemToColideWith instanceof Brick || itemToColideWith instanceof GroundEnemie) {
+        if (itemToColideWith instanceof Brick || itemToColideWith instanceof FlyingEnemie) {
             if (this.detectBasicColision(itemToColideWith)) {
                 if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
                     this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
@@ -24,7 +23,7 @@ class KillableThingColiding extends ColidingInterface {
         }
     }
 
-    calculNextPosition(){
+    calculNextPosition() {
         if (this.item.moveUp && this.item.canMoveUp) {
             this.item.nextY = this.item.nextY - this.item.velocityY;
         }

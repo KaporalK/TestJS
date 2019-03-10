@@ -71,6 +71,7 @@ class KillableThing extends AnimatedObject {
         return Math.sqrt(a * a + b * b);
     }
 
+    //TODO NEXT IMPORTANT Rework ca pour plus avoir a utiliser les barre noire naze
     isBrickBetweenUs(Player, waypoint) {
         let playerPos = [
             {
