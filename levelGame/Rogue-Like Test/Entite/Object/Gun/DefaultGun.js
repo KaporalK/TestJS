@@ -107,8 +107,6 @@ class DefaultGun extends Gun{
         return bulletInfo
     }
 
-    //Todo amélioré ca,
-    // Je pense pas que le min/max change quoi que se soit MDR
     static getRandomVelocity(xMin = -1, xMax = 1) {
         return random(xMin, xMax );
     }

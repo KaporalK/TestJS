@@ -5,7 +5,7 @@ class BulletColiding extends ColidingInterface {
     }
 
     support(item) {
-        if(item instanceof KillableThing){
+        if(item instanceof BaseEnemie){
             return true
         }else if(item instanceof  Brick){
             return true
@@ -14,7 +14,7 @@ class BulletColiding extends ColidingInterface {
     }
 
     colide(itemToColideWith) {
-        if (itemToColideWith instanceof KillableThing) {
+        if (itemToColideWith instanceof BaseEnemie) {
             if (this.detectRealColision(this.item.x, this.item.y, itemToColideWith)) {
                 itemToColideWith.hp -= this.item.damage;
                 itemToColideWith.force.x = this.item.velocityX;

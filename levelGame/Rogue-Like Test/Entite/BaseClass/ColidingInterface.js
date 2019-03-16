@@ -96,6 +96,37 @@ class ColidingInterface {
     }
 
 
+    findCollidingSide(itemToColideWith, collidingCallbacks){
+
+        let player_bottom = this.item.y + this.item.height;
+        let tiles_bottom = itemToColideWith.y + itemToColideWith.height;
+        let player_right = this.item.x + this.item.width;
+        let tiles_right = itemToColideWith.x + itemToColideWith.width;
+
+        let b_collision = tiles_bottom - this.item.y;
+        let t_collision = player_bottom - itemToColideWith.y;
+        let l_collision = player_right - itemToColideWith.x;
+        let r_collision = tiles_right - this.item.x;
+
+        //Bottom collision
+        if (t_collision < b_collision && t_collision < l_collision && t_collision < r_collision) {
+            collidingCallbacks.bottom(itemToColideWith);
+        }
+        //Top collision
+        if (b_collision < t_collision && b_collision < l_collision && b_collision < r_collision) {
+            collidingCallbacks.top(itemToColideWith);
+        }
+        //Right collision
+        if (l_collision < r_collision && l_collision < t_collision && l_collision < b_collision) {
+            collidingCallbacks.right(itemToColideWith);
+        }
+        //Left collision
+        if (r_collision < l_collision && r_collision < t_collision && r_collision < b_collision) {
+            collidingCallbacks.left(itemToColideWith);
+        }
+    }
+
+
     get item() {
         return this._item;
     }

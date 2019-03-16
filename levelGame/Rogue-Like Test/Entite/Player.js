@@ -14,7 +14,6 @@
 
 // import {PlayerColiding} from "./ColidingClass/PlayerColiding";
 
-//TODO faire un system de hp
 class Player extends WithInventory {
 
     constructor(params) {
@@ -29,7 +28,17 @@ class Player extends WithInventory {
         this._canMoveLeft = true;
         this._canMoveRight = true;
 
+        this._hp = 1000;
+        this._invincibleForXFrame = 0;
+        this._invincibleFrame = 120;
+        //todo estce vraiment necessaire ?
         this._orientation = {'X': 'right', 'Y': 'up'};
+
+        this._force = {x: 0, y: 0, puissance: 0};
+        this._friction = 0.9;
+
+
+        this._appliableBehaviour = [];
 
         this._keypressed = {};
         this._lastKeyPressed = '';
@@ -44,6 +53,14 @@ class Player extends WithInventory {
     }
 
     live(Engine) {
+
+        if (this.hp <= 0) {
+            this.shouldIBeDeleted = true;
+        }
+        if(this.invincibleForXFrame > 0){
+            this.invincibleForXFrame --;
+        }
+
         this.detectPlayerBoderColision(Engine);
 
         if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
@@ -58,6 +75,14 @@ class Player extends WithInventory {
         if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
             this.nextX += this.moveSpeed;
         }
+
+        this.appliableBehaviour.forEach(function(item){
+           if(!item.active){
+               let i = this.appliableBehaviour.indexOf(item);
+               this.appliableBehaviour.splice(i);
+           }
+           item.updateEntity(this);
+        }, this);
 
         this.applyNextMove();
 
@@ -293,5 +318,53 @@ class Player extends WithInventory {
 
     set nextBullet(value) {
         this._nextBullet = value;
+    }
+
+    get hp() {
+        return this._hp;
+    }
+
+    set hp(value) {
+        this._hp = value;
+    }
+
+    get invincibleForXFrame() {
+        return this._invincibleForXFrame;
+    }
+
+    set invincibleForXFrame(value) {
+        this._invincibleForXFrame = value;
+    }
+
+    get invincibleFrame() {
+        return this._invincibleFrame;
+    }
+
+    set invincibleFrame(value) {
+        this._invincibleFrame = value;
+    }
+
+    get force() {
+        return this._force;
+    }
+
+    set force(value) {
+        this._force = value;
+    }
+
+    get appliableBehaviour() {
+        return this._appliableBehaviour;
+    }
+
+    set appliableBehaviour(value) {
+        this._appliableBehaviour = value;
+    }
+
+    get friction() {
+        return this._friction;
+    }
+
+    set friction(value) {
+        this._friction = value;
     }
 }

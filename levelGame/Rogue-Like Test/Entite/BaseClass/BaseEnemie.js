@@ -1,9 +1,9 @@
 /**
- * @class KillableThing
+ * @class BaseEnemie
  *
  * Class très basique pour faire un mechant
  */
-class KillableThing extends AnimatedObject {
+class BaseEnemie extends AnimatedObject {
 
 
     constructor(params) {
@@ -19,6 +19,8 @@ class KillableThing extends AnimatedObject {
         this._movingToTarget = false;
         this._target = null;
 
+        this._damage = 200;
+
         this._hp = 100;
         this._maxHp = this._hp;
         //KnockNackVelocity ||force velocity a ajouter au mouvement ?
@@ -28,6 +30,7 @@ class KillableThing extends AnimatedObject {
 
         this._friction = 0.5;
         this._force = {x: 0, y: 0, puissance: 0};
+        this._weight = 15;
 
         this._moveUp = false;
         this._moveDown = false;
@@ -326,6 +329,22 @@ class KillableThing extends AnimatedObject {
 
     set maxHp(value) {
         this._maxHp = value;
+    }
+
+    get damage() {
+        return this._damage;
+    }
+
+    get weight() {
+        return this._weight;
+    }
+
+    set weight(value) {
+        this._weight = value;
+    }
+
+    set damage(value) {
+        this._damage = value;
     }
 }
 

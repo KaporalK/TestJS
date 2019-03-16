@@ -1,5 +1,6 @@
 class KillableAI {
 
+    //Todo rework les fonction dans des class behaviour
     constructor(item) {
         this._item = item;
 
@@ -41,7 +42,6 @@ class KillableAI {
 
     //Utilisation des Waypoints pour choisir sont target
     //Si le target n'est pas le joueur
-    ///TODO tester mieu L'IA !!
     //-------------------UNIQUEMENT POUR LA SELECTION DU TARGET POUR LA PROCHAINE FRAME--------------//
     ////
     //TODO utiliser le system de waypoint pour placer des target intermédiaire entre l'ennemie et le vrai target

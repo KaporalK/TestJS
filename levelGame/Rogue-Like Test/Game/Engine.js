@@ -9,6 +9,9 @@
  * Normalement aucun métier ne devrais atterir ici.
  *
  */
+
+//TODO OMG faut passer la plupar de cette class en static
+// Bonne chance :)
 class Engine {
 
     constructor(Level, debug = false) {

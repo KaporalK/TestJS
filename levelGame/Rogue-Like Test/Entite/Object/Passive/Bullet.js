@@ -7,7 +7,6 @@
  * Pourra être rework ou utiliser pour faire dautres projectiles
  */
 
-//Todo différents type de munition
 class Bullet extends BaseBullet {
 
     constructor(params) {

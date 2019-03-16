@@ -52,7 +52,6 @@ class RogueGame {
         if (!this._pause) {
             //put drawing code here
             this.engine.live();
-            //engine.applyGravity();
             this.engine.draw();
         }
     };

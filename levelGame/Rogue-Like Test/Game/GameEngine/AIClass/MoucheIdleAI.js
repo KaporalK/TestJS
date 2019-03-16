@@ -42,36 +42,6 @@ class MoucheIdleAI {
 
     }
 
-    //Utilisation des Waypoints pour choisir sont target
-    //Si le target n'est pas le joueur
-    ///TODO tester mieu L'IA !!
-    //-------------------UNIQUEMENT POUR LA SELECTION DU TARGET POUR LA PROCHAINE FRAME--------------//
-    ////
-    //TODO utiliser le system de waypoint pour placer des target intermédiaire entre l'ennemie et le vrai target
-    //  Pour pouvoir alterner le mouvement de l'enemie
-    // Exemple:
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    // --------------------------------------------------------------
-    // -----------------------------[TARGET 2]-----------------------
-    // --------------------------------------------------------------
-    // ----------------------------[WAYPOINT]------------------------
-    // --------------------------------------------------------------
-    // ---------------------------|          |--[TARGET 1]-----------
-    // ---------------------------|          |-----------------------
-    // ---------------------------|          |-----------------------
-    // ---------------------------|          |-----------------------
-    // ----------[TARGET 3]-------|          |-----------------------
-    // ---------------------------|          |-----------------------
-    // -----[RealTarget]----------|          |-----------[ENNEMIE]---
-    // --------------------------------------------------------------
-//https://en.wikipedia.org/wiki/Finite-state_machine
-///https://gamedev.stackexchange.com/questions/2194/new-to-creating-ai-where-to-start
-
-    //il faut un state handler, qui va prendre le state, faire les actions possible et changer de state si besoin
-    //faut que je fasse un ARBRE plus simple des etat de mes enemie,
-    //le jeux est simple, faut que les choix de l'ai soit limité
-
     live(Engine) {
 
         this.applyAIBeforeMovingToTarget(Engine);

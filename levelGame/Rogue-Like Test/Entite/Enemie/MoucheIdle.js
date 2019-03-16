@@ -11,7 +11,7 @@ class MoucheIdle extends FlyingEnemie{
 
         this.color = [0, 0, 0];
 
-        this._hp = 50;
+        this._hp = 34;
         this._maxHp = this._hp;
 
         this._detectionPlayerRange = 750;
