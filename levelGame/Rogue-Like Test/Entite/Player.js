@@ -45,6 +45,9 @@ class Player extends WithInventory {
 
         this._moveSpeed = 2;
 
+        //C'est un état particulier qui va intérompre les autres états et empécher plus de dégat + knockback
+        this._knockback = null;
+
         this.registerPlayerEvent();
 
         this._inventory.addGunAndSetCurrent(new DefaultGun(this));
@@ -57,32 +60,44 @@ class Player extends WithInventory {
         if (this.hp <= 0) {
             this.shouldIBeDeleted = true;
         }
-        if(this.invincibleForXFrame > 0){
-            this.invincibleForXFrame --;
+        //todo réfléchir sur les frame d'invincibilité par rapport au knockback
+        if (this.invincibleForXFrame > 0) {
+            this.invincibleForXFrame--;
         }
 
-        this.detectPlayerBoderColision(Engine);
+        if (this.knockback !== null) {
+            const end = this.knockback.updateEntity(this);
+            console.log('toto');
+            this.detectPlayerBoderColision(Engine);
+            if (end) {
+                this.knockback = null;
+            }
+        } else {
+            this.detectPlayerBoderColision(Engine);
 
-        if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
-            this.nextY -= this.moveSpeed;
-        }
-        if (this.moveDown && this.canMoveDown && this.y === this.nextY) {
-            this.nextY += this.moveSpeed;
-        }
-        if (this.moveLeft && this.canMoveLeft && this.x === this.nextX) {
-            this.nextX -= this.moveSpeed;
-        }
-        if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
-            this.nextX += this.moveSpeed;
-        }
+            if (this.moveUp && this.canMoveUp && this.y === this.nextY) {
+                this.nextY -= this.moveSpeed;
+            }
+            if (this.moveDown && this.canMoveDown && this.y === this.nextY) {
+                this.nextY += this.moveSpeed;
+            }
+            if (this.moveLeft && this.canMoveLeft && this.x === this.nextX) {
+                this.nextX -= this.moveSpeed;
+            }
+            if (this.moveRight && this.canMoveRight && this.x === this.nextX) {
+                this.nextX += this.moveSpeed;
+            }
 
-        this.appliableBehaviour.forEach(function(item){
-           if(!item.active){
-               let i = this.appliableBehaviour.indexOf(item);
-               this.appliableBehaviour.splice(i);
-           }
-           item.updateEntity(this);
-        }, this);
+            this.appliableBehaviour.forEach(function (item) {
+                console.log('BITE');
+                if (!item.active) {
+                    let i = this.appliableBehaviour.indexOf(item);
+                    this.appliableBehaviour.splice(i);
+                    return;
+                }
+                item.updateEntity(this);
+            }, this);
+        }
 
         this.applyNextMove();
 
@@ -366,5 +381,13 @@ class Player extends WithInventory {
 
     set friction(value) {
         this._friction = value;
+    }
+
+    get knockback() {
+        return this._knockback;
+    }
+
+    set knockback(value) {
+        this._knockback = value;
     }
 }

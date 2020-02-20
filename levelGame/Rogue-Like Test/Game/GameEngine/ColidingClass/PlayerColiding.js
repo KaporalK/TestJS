@@ -18,10 +18,8 @@
     //Si ca devient trop compliquer on utilise le partern de l ai
     colide(itemToColideWith) {
         if (itemToColideWith instanceof Brick) {
-            if (this.detectBasicColision(itemToColideWith)) {
-                if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
-                    this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
-                }
+            if (this.detectRealColision(this.item.nextX, this.item.nextY, itemToColideWith)) {
+                this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
             }
         } else if (itemToColideWith instanceof BaseEnemie) {
             if (this.detectBasicColision(itemToColideWith)) {
@@ -34,30 +32,42 @@
                     }
 
                     this.findAndApplyMinimumVectorToNotColide(itemToColideWith);
-                    //todo rework le *3 en une variable du player
+                    // todo rework le *3 en une variable du player
                     this.findCollidingSide(itemToColideWith,
                         {
                             item: this.item,
                             top: function (itemToColideWith) {
-                                this.item.force.y = itemToColideWith.velocityY * 3;
-                                this.item.force.puissance = 2 * abs((itemToColideWith.velocityY + itemToColideWith.velocityX) * itemToColideWith.weight);
-                                this.item.appliableBehaviour.push(new Knockback());
+                                this.item.knockback = new Knockback(
+                                    0,
+                                    3,
+                                    0.2
+                                );
 
                             },
                             bottom: function (itemToColideWith) {
-                                this.item.force.y = -itemToColideWith.velocityY * 3;
-                                this.item.force.puissance = 2 * abs((itemToColideWith.velocityY + itemToColideWith.velocityX) * itemToColideWith.weight);
-                                this.item.appliableBehaviour.push(new Knockback());
+                                this.item.knockback = new Knockback(
+                                    0,
+                                    -3,
+                                    0.2
+                                );
                             },
                             left: function (itemToColideWith) {
-                                this.item.force.x = itemToColideWith.velocityX * 3;
-                                this.item.force.puissance = 2 * abs((itemToColideWith.velocityY + itemToColideWith.velocityX) * itemToColideWith.weight);
-                                this.item.appliableBehaviour.push(new Knockback());
+                                this.item.knockback = new Knockback(
+                                    3,
+                                    0,
+                                    0.2
+                                );
+
                             },
                             right: function (itemToColideWith) {
-                                this.item.force.x = -itemToColideWith.velocityX * 3;
-                                this.item.force.puissance = 2 * abs((itemToColideWith.velocityY + itemToColideWith.velocityX) * itemToColideWith.weight);
-                                this.item.appliableBehaviour.push(new Knockback());
+                                // this.item.force.x = -itemToColideWith.velocityX * 3;
+                                // this.item.force.puissance = 2 * abs((itemToColideWith.velocityY + itemToColideWith.velocityX) * itemToColideWith.weight);
+                                // this.item.appliableBehaviour.push(new Knockback());
+                                this.item.knockback = new Knockback(
+                                    -3,
+                                    0,
+                                    0.2
+                                );
                             }
                         }
                     );

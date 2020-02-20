@@ -1,6 +1,8 @@
 class KillableAI {
 
-    //Todo rework les fonction dans des class behaviour
+    //TODO ABSOLUMENT rework les fonction dans des class behaviour
+    // new behaviour(this.item)
+
     constructor(item) {
         this._item = item;
 
@@ -16,7 +18,7 @@ class KillableAI {
             'nullTarget': 'defaultTargetLogic',
             'sosWaypointNearby': 'sosWaypointNearbyLogic',
             'sosWaypointTarget': 'sosWaypointTargetLogic',
-            'playerTarget': 'playerTargetLogic',
+            'playerTarget': PlayerTargetLogic.findIdleTarget,
             'imBlocked': 'imBlockLogic',
             'imHurt': 'modifierDummyFunc', // modifier
         };
@@ -97,6 +99,7 @@ class KillableAI {
         // this.addAdditionalState(Engine);
         let currentStates = this.states.state; //Les states vont surment changer en cours de routes
         for (let i = 0; i < this.states.state.length; i++) {
+            console.log(this.possibleState[currentStates[i]]);
             this[this.possibleState[currentStates[i]]](Engine);
         }
 

@@ -31,7 +31,7 @@ class BouncingBulletColiding extends ColidingInterface {
 
                 this.findCollidingSide(itemToColideWith,
                     {
-                        item: this.item,
+                        item: this.item ,
                         top: function () {
                             this.item.velocityY *= -1;
                         },
